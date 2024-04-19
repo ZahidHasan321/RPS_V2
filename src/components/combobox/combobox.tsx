@@ -4,19 +4,18 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { createFileRoute } from "@tanstack/react-router";
 import React from "react";
 
-import { cn } from "@/lib/utils";
-import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons";
 import {
   Command,
-  CommandInput,
   CommandEmpty,
   CommandGroup,
+  CommandInput,
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
+import { cn } from "@/lib/utils";
+import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons";
 
 type framework = {
   value: string;
@@ -52,8 +51,8 @@ const Combobox = ({ frameworks, addToData, selectedList }: ComboboxProps) => {
       </PopoverTrigger>
       <PopoverContent className="w-[200px] p-0">
         <Command>
+          <CommandInput placeholder="Search framework..." className="h-9" />
           <CommandList>
-            <CommandInput placeholder="Search framework..." className="h-9" />
             <CommandEmpty>No framework found.</CommandEmpty>
             <CommandGroup>
               {frameworks.map((framework) => {
@@ -66,14 +65,20 @@ const Combobox = ({ frameworks, addToData, selectedList }: ComboboxProps) => {
                       framework.value !== value
                     }
                     value={framework.value}
+                    keywords={[framework.label]}
                     onSelect={(currentValue) => {
                       setValue(currentValue === value ? "" : currentValue);
-                      frameworks.filter((item) => item.value !== currentValue);
 
                       if (addToData) {
                         //select
                         if (currentValue !== value) {
                           addToData((data) => [...data, currentValue]);
+
+                          if (value) {
+                            addToData((data) =>
+                              data.filter((item) => item !== value)
+                            );
+                          }
                         } else {
                           //unselect
                           addToData((data) =>
