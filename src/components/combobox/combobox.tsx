@@ -4,7 +4,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import React from "react";
+import React, { useEffect } from "react";
 
 import {
   Command,
@@ -25,15 +25,37 @@ type framework = {
 type ComboboxProps = {
   frameworks: framework[];
   addToData?: React.Dispatch<React.SetStateAction<string[]>>;
+  setData?: React.Dispatch<React.SetStateAction<string>>;
   selectedList?: string[];
+  disabled?: boolean;
+  placeholder?: string;
+  label?: string;
 };
 
-const Combobox = ({ frameworks, addToData, selectedList }: ComboboxProps) => {
+const Combobox = ({
+  frameworks,
+  addToData,
+  setData,
+  selectedList,
+  placeholder = "Search framework...",
+  label = "Select framework",
+  disabled = false,
+}: ComboboxProps) => {
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState("");
 
+  if (value != "") console.log("combobox", value);
+
+  useEffect(() => {
+    if (disabled === true) {
+      if (addToData) addToData((data) => data.filter((item) => item !== value));
+      setData && setData("");
+      setValue("");
+    }
+  }, [disabled, value, addToData, setData]);
+
   return (
-    <Popover open={open} onOpenChange={setOpen}>
+    <Popover open={open && !disabled} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Button
           variant="outline"
@@ -45,15 +67,15 @@ const Combobox = ({ frameworks, addToData, selectedList }: ComboboxProps) => {
             ? frameworks.find(
                 (framework: framework) => framework.value === value
               )?.label
-            : "Select framework..."}
+            : label}
           <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-[200px] p-0">
         <Command>
-          <CommandInput placeholder="Search framework..." className="h-9" />
+          <CommandInput placeholder={placeholder} className="h-9" />
           <CommandList>
-            <CommandEmpty>No framework found.</CommandEmpty>
+            <CommandEmpty>No data found.</CommandEmpty>
             <CommandGroup>
               {frameworks.map((framework) => {
                 return (
@@ -68,6 +90,8 @@ const Combobox = ({ frameworks, addToData, selectedList }: ComboboxProps) => {
                     keywords={[framework.label]}
                     onSelect={(currentValue) => {
                       setValue(currentValue === value ? "" : currentValue);
+                      if (setData)
+                        setData(currentValue === value ? "" : currentValue);
 
                       if (addToData) {
                         //select

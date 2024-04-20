@@ -37,7 +37,11 @@ const Home = () => {
   return (
     <div>
       <Suspense fallback={<p>Loading</p>}>
-        {data?.map((item) => <p className="p-2">{item?.data?.color}</p>)}
+        {data?.map((item) => (
+          <p key={item.id} className="px-2">
+            {item?.data?.color}
+          </p>
+        ))}
       </Suspense>
     </div>
   );

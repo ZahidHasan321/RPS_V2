@@ -1,46 +1,138 @@
+import BasicTable from "@/components/basicTable/basicTable";
 import Combobox from "@/components/combobox/combobox";
+import CreateExamCommittee from "@/components/modals/createExamCommittee";
+import { useQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { ColumnDef } from "@tanstack/react-table";
+import { Suspense, useState } from "react";
 
-type data = {
-  value: string;
-  label: string;
+const years = [
+  {
+    value: "2022",
+    label: "2022",
+  },
+
+  {
+    value: "2023",
+    label: "2023",
+  },
+  {
+    value: "2024",
+    label: "2024",
+  },
+];
+
+const semesters = new Map([
+  [
+    "2022",
+    [
+      {
+        value: "1",
+        label: "1st",
+      },
+      {
+        value: "2",
+        label: "2nd",
+      },
+      {
+        value: "3",
+        label: "3rd",
+      },
+    ],
+  ],
+]);
+
+type Member = {
+  id: number;
+  name: string;
+  role: "chairman" | "member" | "tabulator";
+  contact: number;
 };
 
-const Home = () => {
-  const [members, setMembers] = useState<string[]>([]);
-  const [data, setData] = useState<data[]>([
-    {
-      value: "1",
-      label: "RPDN,CSE,CU",
-    },
-    {
-      value: "2",
-      label: "ANC,CSE,CU",
-    },
-    {
-      value: "3",
-      label: "RK,CSE,CU",
-    },
-    {
-      value: "4",
-      label: "OSI,CSE,CU",
-    },
-  ]);
+const MemberData: Member[] = [
+  {
+    id: 1,
+    name: "teacher1",
+    role: "chairman",
+    contact: 12345,
+  },
+  {
+    id: 2,
+    name: "teacher2",
+    role: "tabulator",
+    contact: 12345,
+  },
+  {
+    id: 3,
+    name: "teacher3",
+    role: "member",
+    contact: 12345,
+  },
+];
 
-  console.log(members);
-  const count = 5;
+const columns: ColumnDef<Member>[] = [
+  {
+    header: "Id",
+    accessorKey: "id",
+    cell: (info) => info.getValue(),
+  },
+  {
+    header: "name",
+    accessorKey: "name",
+    cell: (info) => info.getValue(),
+  },
+  {
+    header: "role",
+    accessorKey: "role",
+    cell: (info) => info.getValue(),
+  },
+  {
+    header: "contact",
+    accessorKey: "contact",
+    cell: (info) => info.getValue(),
+  },
+];
+
+const Home = () => {
+  const [session, setSession] = useState("");
+  const [semester, setSemester] = useState("");
+
+  const { data: memberList } = useQuery({
+    queryKey: ["committeeMembers", session, semester],
+    queryFn: () => MemberData,
+    enabled: session !== "" && semester !== "",
+  });
 
   return (
-    <div className="h-screen w-full flex flex-col gap-10 justify-center items-center">
-      {[...Array(count)].map((_: unknown, idx: number) => (
+    <div className="h-screen w-full flex flex-col">
+      <div className="flex m-10 gap-10">
         <Combobox
-          key={idx}
-          frameworks={data}
-          addToData={setMembers}
-          selectedList={members}
+          frameworks={years}
+          setData={setSession}
+          placeholder="Search session...."
+          label="Select session"
         />
-      ))}
+        <Combobox
+          frameworks={semesters.get(session) || []}
+          disabled={session === "" ? true : false}
+          setData={setSemester}
+          placeholder="Search semester...."
+          label="Select semester"
+        />
+        <div className="ml-auto">
+          <CreateExamCommittee />
+        </div>
+      </div>
+
+      <div>
+        <Suspense fallback={<p>Loading</p>}>
+          {memberList ? (
+            <BasicTable data={memberList} columns={columns} />
+          ) : (
+            <p>There is no data</p>
+          )}
+        </Suspense>
+      </div>
     </div>
   );
 };
