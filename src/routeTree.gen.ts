@@ -10,49 +10,49 @@
 
 // Import Routes
 
-import { Route as rootRoute } from "./routes/__root";
-import { Route as AuthImport } from "./routes/_auth";
-import { Route as IndexImport } from "./routes/index";
-import { Route as AdminIndexImport } from "./routes/admin/index";
+import { Route as rootRoute } from './routes/__root'
+import { Route as AuthImport } from './routes/_auth'
+import { Route as IndexImport } from './routes/index'
+import { Route as AdminIndexImport } from './routes/admin/index'
 
 // Create/Update Routes
 
 const AuthRoute = AuthImport.update({
-  id: "/_auth",
+  id: '/_auth',
   getParentRoute: () => rootRoute,
-} as any);
+} as any)
 
 const IndexRoute = IndexImport.update({
-  path: "/",
+  path: '/',
   getParentRoute: () => rootRoute,
-} as any);
+} as any)
 
 const AdminIndexRoute = AdminIndexImport.update({
-  path: "/admin/",
+  path: '/admin/',
   getParentRoute: () => rootRoute,
-} as any);
+} as any)
 
 // Populate the FileRoutesByPath interface
 
-declare module "@tanstack/react-router" {
+declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    "/": {
-      preLoaderRoute: typeof IndexImport;
-      parentRoute: typeof rootRoute;
-    };
-    "/_auth": {
-      preLoaderRoute: typeof AuthImport;
-      parentRoute: typeof rootRoute;
-    };
-    "/admin/": {
-      preLoaderRoute: typeof AdminIndexImport;
-      parentRoute: typeof rootRoute;
-    };
+    '/': {
+      preLoaderRoute: typeof IndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/_auth': {
+      preLoaderRoute: typeof AuthImport
+      parentRoute: typeof rootRoute
+    }
+    '/admin/': {
+      preLoaderRoute: typeof AdminIndexImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
 // Create and export the route tree
 
-export const routeTree = rootRoute.addChildren([IndexRoute, AdminIndexRoute]);
+export const routeTree = rootRoute.addChildren([IndexRoute, AdminIndexRoute])
 
 /* prettier-ignore-end */

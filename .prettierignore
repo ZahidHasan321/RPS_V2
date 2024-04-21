@@ -1,1 +1,3 @@
 **/*.html
+.eslintrc.cjs
+postcss.config.js
