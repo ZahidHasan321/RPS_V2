@@ -23,7 +23,7 @@ type framework = {
   label: string;
 };
 
-type ComboboxProps= {
+type ComboboxProps = {
   frameworks: framework[];
   addToData?: React.Dispatch<React.SetStateAction<MemberIdItem[]>>;
   setData?: React.Dispatch<React.SetStateAction<string>>;
@@ -42,7 +42,7 @@ const Combobox = ({
   placeholder = "Search framework...",
   label = "Select framework",
   disabled = false,
-  pValue
+  pValue,
 }: ComboboxProps) => {
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState(pValue ? pValue : "");
@@ -51,7 +51,8 @@ const Combobox = ({
 
   useEffect(() => {
     if (disabled === true) {
-      if (addToData) addToData((data) => data.filter((item) => item.value !== value));
+      if (addToData)
+        addToData((data) => data.filter((item) => item.value !== value));
       setData && setData("");
       setValue("");
     }
@@ -68,7 +69,7 @@ const Combobox = ({
         >
           {value
             ? frameworks.find(
-                (framework: framework) => framework.value === value
+                (framework: framework) => framework.value === value,
               )?.label
             : label}
           <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
@@ -86,7 +87,9 @@ const Combobox = ({
                     key={framework.value}
                     disabled={
                       selectedList &&
-                      selectedList.find(item => item.value === framework.value) &&
+                      selectedList.find(
+                        (item) => item.value === framework.value,
+                      ) &&
                       framework.value !== value
                     }
                     value={framework.value}
@@ -99,17 +102,20 @@ const Combobox = ({
                       if (addToData) {
                         //select
                         if (currentValue !== value) {
-                          addToData((data) => [...data, {idx, value:currentValue}]);
+                          addToData((data) => [
+                            ...data,
+                            { idx, value: currentValue },
+                          ]);
 
                           if (value) {
                             addToData((data) =>
-                              data.filter((item) => item.value !== value)
+                              data.filter((item) => item.value !== value),
                             );
                           }
                         } else {
                           //unselect
                           addToData((data) =>
-                            data.filter((item) => item.value !== currentValue)
+                            data.filter((item) => item.value !== currentValue),
                           );
                         }
                       }
@@ -121,7 +127,7 @@ const Combobox = ({
                     <CheckIcon
                       className={cn(
                         "ml-auto h-4 w-4",
-                        value === framework.value ? "opacity-100" : "opacity-0"
+                        value === framework.value ? "opacity-100" : "opacity-0",
                       )}
                     />
                   </CommandItem>

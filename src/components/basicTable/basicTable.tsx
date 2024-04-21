@@ -40,7 +40,7 @@ const BasicTable = <T extends object>({
                       ? null
                       : flexRender(
                           header.column.columnDef.header,
-                          header.getContext()
+                          header.getContext(),
                         )}
                     {header.column.getCanResize() && (
                       <div
@@ -66,7 +66,7 @@ const BasicTable = <T extends object>({
                     <td key={cell.id} style={{ width: cell.column.getSize() }}>
                       {flexRender(
                         cell.column.columnDef.cell,
-                        cell.getContext()
+                        cell.getContext(),
                       )}
                     </td>
                   );

@@ -1,4 +1,6 @@
-import { useEffect, useState } from "react";
+import { PlusIcon } from "@radix-ui/react-icons";
+import { useState } from "react";
+import Combobox from "../combobox/combobox";
 import { Button } from "../ui/button";
 import {
   Dialog,
@@ -8,8 +10,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "../ui/dialog";
-import Combobox from "../combobox/combobox";
-import { PlusIcon } from "@radix-ui/react-icons";
 
 type framework = {
   value: string;
@@ -19,8 +19,7 @@ type framework = {
 export type MemberIdItem = {
   idx: number;
   value: string;
-}
-
+};
 
 const CreateExamCommittee = () => {
   const [members, setMembers] = useState<MemberIdItem[]>([]);
@@ -48,7 +47,6 @@ const CreateExamCommittee = () => {
     console.log(members);
   }
 
-  
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -69,10 +67,14 @@ const CreateExamCommittee = () => {
               selectedList={members}
               placeholder="Search teacher...."
               label="Select member"
-              pValue={members.find(item => item.idx === idx)?.value}
+              pValue={members.find((item) => item.idx === idx)?.value}
             />
             {idx === count.length - 1 && count.length < 7 && (
-              <Button onClick={() => setCount((count) => [...count, count.length+1])}>
+              <Button
+                onClick={() =>
+                  setCount((count) => [...count, count.length + 1])
+                }
+              >
                 <PlusIcon />
               </Button>
             )}

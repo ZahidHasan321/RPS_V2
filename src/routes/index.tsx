@@ -19,7 +19,7 @@ const Home = () => {
     queryKey: ["phones"],
     queryFn: async (): Promise<Phone[]> => {
       return await axios("https://api.restful-api.dev/objects").then(
-        (res) => res.data
+        (res) => res.data,
       );
     },
   });
