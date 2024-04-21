@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "../ui/button";
 import {
   Dialog,
@@ -16,9 +16,15 @@ type framework = {
   label: string;
 };
 
+export type MemberIdItem = {
+  idx: number;
+  value: string;
+}
+
+
 const CreateExamCommittee = () => {
-  const [members, setMembers] = useState<string[]>([]);
-  const [count, setCount] = useState<number>(3);
+  const [members, setMembers] = useState<MemberIdItem[]>([]);
+  const [count, setCount] = useState<number[]>([1, 2, 3, 4]);
   const [teachers, setTeachers] = useState<framework[]>([
     {
       value: "1",
@@ -42,6 +48,7 @@ const CreateExamCommittee = () => {
     console.log(members);
   }
 
+  
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -53,7 +60,7 @@ const CreateExamCommittee = () => {
           <DialogTitle>Create new exam committee</DialogTitle>
         </DialogHeader>
 
-        {[...Array(count)].map((_: unknown, idx: number) => (
+        {count.map((num: unknown, idx: number) => (
           <div key={idx} className="flex flex-row items-center ">
             <Combobox
               key={idx}
@@ -62,9 +69,10 @@ const CreateExamCommittee = () => {
               selectedList={members}
               placeholder="Search teacher...."
               label="Select member"
+              pValue={members.find(item => item.idx === idx)?.value}
             />
-            {idx === count - 1 && count < 7 && (
-              <Button onClick={() => setCount((count) => count + 1)}>
+            {idx === count.length - 1 && count.length < 7 && (
+              <Button onClick={() => setCount((count) => [...count, count.length+1])}>
                 <PlusIcon />
               </Button>
             )}

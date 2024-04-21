@@ -16,20 +16,22 @@ import {
 } from "@/components/ui/command";
 import { cn } from "@/lib/utils";
 import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons";
+import { MemberIdItem } from "../modals/createExamCommittee";
 
 type framework = {
   value: string;
   label: string;
 };
 
-type ComboboxProps = {
+type ComboboxProps= {
   frameworks: framework[];
-  addToData?: React.Dispatch<React.SetStateAction<string[]>>;
+  addToData?: React.Dispatch<React.SetStateAction<MemberIdItem[]>>;
   setData?: React.Dispatch<React.SetStateAction<string>>;
-  selectedList?: string[];
+  selectedList?: MemberIdItem[];
   disabled?: boolean;
   placeholder?: string;
   label?: string;
+  pValue?: string;
 };
 
 const Combobox = ({
@@ -40,15 +42,16 @@ const Combobox = ({
   placeholder = "Search framework...",
   label = "Select framework",
   disabled = false,
+  pValue
 }: ComboboxProps) => {
   const [open, setOpen] = React.useState(false);
-  const [value, setValue] = React.useState("");
+  const [value, setValue] = React.useState(pValue ? pValue : "");
 
   if (value != "") console.log("combobox", value);
 
   useEffect(() => {
     if (disabled === true) {
-      if (addToData) addToData((data) => data.filter((item) => item !== value));
+      if (addToData) addToData((data) => data.filter((item) => item.value !== value));
       setData && setData("");
       setValue("");
     }
@@ -77,13 +80,13 @@ const Combobox = ({
           <CommandList>
             <CommandEmpty>No data found.</CommandEmpty>
             <CommandGroup>
-              {frameworks.map((framework) => {
+              {frameworks.map((framework, idx) => {
                 return (
                   <CommandItem
                     key={framework.value}
                     disabled={
                       selectedList &&
-                      selectedList.includes(framework.value) &&
+                      selectedList.find(item => item.value === framework.value) &&
                       framework.value !== value
                     }
                     value={framework.value}
@@ -96,17 +99,17 @@ const Combobox = ({
                       if (addToData) {
                         //select
                         if (currentValue !== value) {
-                          addToData((data) => [...data, currentValue]);
+                          addToData((data) => [...data, {idx, value:currentValue}]);
 
                           if (value) {
                             addToData((data) =>
-                              data.filter((item) => item !== value)
+                              data.filter((item) => item.value !== value)
                             );
                           }
                         } else {
                           //unselect
                           addToData((data) =>
-                            data.filter((item) => item !== currentValue)
+                            data.filter((item) => item.value !== currentValue)
                           );
                         }
                       }
