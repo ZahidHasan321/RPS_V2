@@ -15,8 +15,8 @@ import {
   CommandList,
 } from "@/components/ui/command";
 import { cn } from "@/lib/utils";
+import { multiComboBoxItem } from "@/type";
 import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons";
-import { MemberIdItem } from "../modals/createExamCommittee";
 
 type framework = {
   value: string;
@@ -24,10 +24,11 @@ type framework = {
 };
 
 type ComboboxProps = {
+  boxNumber?: number;
   frameworks: framework[];
-  addToData?: React.Dispatch<React.SetStateAction<MemberIdItem[]>>;
+  addToData?: React.Dispatch<React.SetStateAction<multiComboBoxItem[]>>;
   setData?: React.Dispatch<React.SetStateAction<string>>;
-  selectedList?: MemberIdItem[];
+  selectedList?: multiComboBoxItem[];
   disabled?: boolean;
   placeholder?: string;
   label?: string;
@@ -35,6 +36,7 @@ type ComboboxProps = {
 };
 
 const Combobox = ({
+  boxNumber,
   frameworks,
   addToData,
   setData,
@@ -46,8 +48,6 @@ const Combobox = ({
 }: ComboboxProps) => {
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState(pValue ? pValue : "");
-
-  if (value != "") console.log("combobox", value);
 
   useEffect(() => {
     if (disabled === true) {
@@ -81,7 +81,7 @@ const Combobox = ({
           <CommandList>
             <CommandEmpty>No data found.</CommandEmpty>
             <CommandGroup>
-              {frameworks.map((framework, idx) => {
+              {frameworks.map((framework) => {
                 return (
                   <CommandItem
                     key={framework.value}
@@ -100,11 +100,14 @@ const Combobox = ({
                         setData(currentValue === value ? "" : currentValue);
 
                       if (addToData) {
-                        //select
-                        if (currentValue !== value) {
+                        if (currentValue !== value && boxNumber !== undefined) {
                           addToData((data) => [
                             ...data,
-                            { idx, value: currentValue },
+                            {
+                              idx: boxNumber,
+                              value: currentValue,
+                              role: boxNumber === 0 ? "CHAIRMAN" : "MEMBER",
+                            },
                           ]);
 
                           if (value) {

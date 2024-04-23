@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import axios from "axios";
 import { Suspense } from "react";
 
@@ -36,6 +36,17 @@ const Home = () => {
 
   return (
     <div>
+      <div className="flex flex-row gap-10 ">
+        <Link className="text-blue-600" to="/admin">
+          Go to admin
+        </Link>
+        <Link className="text-blue-600" to="/exam-committee">
+          Go to exam committee
+        </Link>
+        <Link className="text-blue-600" to="/examiner">
+          Go to examiner
+        </Link>
+      </div>
       <Suspense fallback={<p>Loading</p>}>
         {data?.map((item) => (
           <p key={item.id} className="px-2">

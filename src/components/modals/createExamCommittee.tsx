@@ -10,8 +10,9 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "../ui/dialog";
+import { Checkbox } from "../ui/checkbox";
 
-type framework = {
+type teacher = {
   value: string;
   label: string;
 };
@@ -19,12 +20,13 @@ type framework = {
 export type MemberIdItem = {
   idx: number;
   value: string;
+  role?: "CHAIRMAN" | "MEMBER" | "TABULATOR";
 };
 
 const CreateExamCommittee = () => {
   const [members, setMembers] = useState<MemberIdItem[]>([]);
   const [count, setCount] = useState<number[]>([1, 2, 3, 4]);
-  const [teachers, setTeachers] = useState<framework[]>([
+  const [teachers, setTeachers] = useState<teacher[]>([
     {
       value: "1",
       label: "RPDN,CSE,CU",
@@ -47,6 +49,7 @@ const CreateExamCommittee = () => {
     console.log(members);
   }
 
+  //TODO: Fix the design here
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -57,30 +60,68 @@ const CreateExamCommittee = () => {
         <DialogHeader>
           <DialogTitle>Create new exam committee</DialogTitle>
         </DialogHeader>
-
-        {count.map((num: unknown, idx: number) => (
-          <div key={idx} className="flex flex-row items-center ">
+        <div className="flex flex-row gap-2">
+          <div>
             <Combobox
-              key={idx}
+              boxNumber={0}
               frameworks={teachers}
               addToData={setMembers}
               selectedList={members}
               placeholder="Search teacher...."
-              label="Select member"
-              pValue={members.find((item) => item.idx === idx)?.value}
+              label="Select chairman"
+              pValue={members.find((item) => item.idx === 0)?.value}
             />
-            {idx === count.length - 1 && count.length < 7 && (
-              <Button
-                onClick={() =>
-                  setCount((count) => [...count, count.length + 1])
-                }
-              >
-                <PlusIcon />
-              </Button>
-            )}
-          </div>
-        ))}
+            {count.map((num: number, idx: number) => {
+              const selectedMember: MemberIdItem | undefined = members.find(
+                (item) => item.idx === num,
+              );
+              return (
+                <div key={idx} className="flex flex-row items-center ">
+                  <Combobox
+                    key={idx}
+                    boxNumber={num}
+                    frameworks={teachers}
+                    addToData={setMembers}
+                    selectedList={members}
+                    placeholder="Search teacher...."
+                    label="Select member"
+                    pValue={selectedMember?.value}
+                  />
+                  {selectedMember && (
+                    <Checkbox
+                      onCheckedChange={(checked: boolean) =>
+                        setMembers(
+                          members.map((item) =>
+                            item.idx === num
+                              ? {
+                                  ...item,
+                                  role: checked ? "TABULATOR" : "MEMBER",
+                                }
+                              : item,
+                          ),
+                        )
+                      }
+                      checked={
+                        selectedMember.role === "TABULATOR" ? true : false
+                      }
+                    />
+                  )}
 
+                  {idx === count.length - 1 && count.length < 7 && (
+                    <Button
+                      onClick={() =>
+                        setCount((count) => [...count, count.length + 1])
+                      }
+                    >
+                      <PlusIcon />
+                    </Button>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+          <p>Set as Tabulator</p>
+        </div>
         <DialogFooter>
           <Button onClick={handleSubmit}>Submit</Button>
         </DialogFooter>

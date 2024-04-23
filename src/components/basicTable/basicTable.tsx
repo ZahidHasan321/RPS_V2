@@ -22,6 +22,7 @@ const BasicTable = <T extends object>({
     getCoreRowModel: getCoreRowModel(),
   });
 
+  //TODO: Design the table accordingly
   return (
     <div className="p-2 block max-w-full overflow-x-scroll overflow-y-hidden">
       <div className="h-2" />

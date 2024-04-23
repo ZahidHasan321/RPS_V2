@@ -2,7 +2,7 @@ import BasicTable from "@/components/basicTable/basicTable";
 import Combobox from "@/components/combobox/combobox";
 import CreateExamCommittee from "@/components/modals/createExamCommittee";
 import { useQuery } from "@tanstack/react-query";
-import { createFileRoute } from "@tanstack/react-router";
+import { createLazyFileRoute } from "@tanstack/react-router";
 import { ColumnDef } from "@tanstack/react-table";
 import { Suspense, useState } from "react";
 
@@ -137,6 +137,6 @@ const Home = () => {
   );
 };
 
-export const Route = createFileRoute("/admin/")({
+export const Route = createLazyFileRoute("/admin/")({
   component: Home,
 });
