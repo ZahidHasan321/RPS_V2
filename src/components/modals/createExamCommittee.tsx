@@ -20,7 +20,7 @@ type teacher = {
 export type MemberIdItem = {
   idx: number;
   value: string;
-  role?: "CHAIRMAN" | "MEMBER" | "TABULATOR";
+  role?: "Chairman" | "Member" | "Tabulator";
 };
 
 const CreateExamCommittee = () => {

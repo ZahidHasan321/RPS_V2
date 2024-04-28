@@ -77,17 +77,17 @@ const columns: ColumnDef<Member>[] = [
     cell: (info) => info.getValue(),
   },
   {
-    header: "name",
+    header: "Name",
     accessorKey: "name",
     cell: (info) => info.getValue(),
   },
   {
-    header: "role",
+    header: "Role",
     accessorKey: "role",
     cell: (info) => info.getValue(),
   },
   {
-    header: "contact",
+    header: "Contact",
     accessorKey: "contact",
     cell: (info) => info.getValue(),
   },
