@@ -17,6 +17,7 @@ import { Route as AuthImport } from './routes/_auth'
 import { Route as IndexImport } from './routes/index'
 import { Route as ExaminerIndexImport } from './routes/examiner/index'
 import { Route as ExamCommitteeIndexImport } from './routes/exam-committee/index'
+import { Route as DemoIndexImport } from './routes/demo/index'
 
 // Create Virtual Routes
 
@@ -49,6 +50,11 @@ const ExamCommitteeIndexRoute = ExamCommitteeIndexImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const DemoIndexRoute = DemoIndexImport.update({
+  path: '/demo/',
+  getParentRoute: () => rootRoute,
+} as any)
+
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
@@ -59,6 +65,10 @@ declare module '@tanstack/react-router' {
     }
     '/_auth': {
       preLoaderRoute: typeof AuthImport
+      parentRoute: typeof rootRoute
+    }
+    '/demo/': {
+      preLoaderRoute: typeof DemoIndexImport
       parentRoute: typeof rootRoute
     }
     '/exam-committee/': {
@@ -80,6 +90,7 @@ declare module '@tanstack/react-router' {
 
 export const routeTree = rootRoute.addChildren([
   IndexRoute,
+  DemoIndexRoute,
   ExamCommitteeIndexRoute,
   ExaminerIndexRoute,
   AdminIndexLazyRoute,
