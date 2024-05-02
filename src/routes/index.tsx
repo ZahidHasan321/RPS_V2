@@ -1,59 +1,17 @@
-import { useQuery } from "@tanstack/react-query";
-import { createFileRoute, Link } from "@tanstack/react-router";
-import axios from "axios";
-import { Suspense } from "react";
-
-export type Phone = {
-  id: string;
-  name: string;
-  data: Data;
-};
-
-export type Data = {
-  color: string;
-  capacity: string;
-};
+import Catms from "@/components/dashboard/catms";
+import Exams from "@/components/dashboard/exams";
+import Papers from "@/components/dashboard/papers";
+import { createFileRoute } from "@tanstack/react-router";
 
 const Home = () => {
-  const { isPending, isError, data, error } = useQuery({
-    queryKey: ["phones"],
-    queryFn: async (): Promise<Phone[]> => {
-      return await axios("https://api.restful-api.dev/objects").then(
-        (res) => res.data,
-      );
-    },
-  });
-
-  if (isPending) {
-    return <p>Loading</p>;
-  }
-
-  if (isError) {
-    return <p>Error:{error.message}</p>;
-  }
-
-  console.log(data);
-
   return (
-    <div>
-      <div className="flex flex-row gap-10 ">
-        <Link className="text-blue-600" to="/admin">
-          Go to admin
-        </Link>
-        <Link className="text-blue-600" to="/exam-committee">
-          Go to exam committee
-        </Link>
-        <Link className="text-blue-600" to="/examiner">
-          Go to examiner
-        </Link>
+    <div className="m-20">
+      <h1>Ongoing Exams</h1>
+      <Exams />
+      <div className="flex gap-10 my-10">
+        <Papers className="w-2/3" />
+        <Catms className="w-fit" />
       </div>
-      <Suspense fallback={<p>Loading</p>}>
-        {data?.map((item) => (
-          <p key={item.id} className="px-2">
-            {item?.data?.color}
-          </p>
-        ))}
-      </Suspense>
     </div>
   );
 };

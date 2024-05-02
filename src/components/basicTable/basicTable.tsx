@@ -13,14 +13,19 @@ import {
   TableRow,
 } from "../ui/table";
 
+import "../../index.css";
+import { cn } from "@/lib/utils";
+
 type BasicTableProps<T extends object> = {
   data: T[];
   columns: ColumnDef<T>[];
+  className?: string;
 };
 
 const BasicTable = <T extends object>({
   data,
   columns,
+  className,
 }: BasicTableProps<T>) => {
   const table = useReactTable({
     data,
@@ -32,60 +37,71 @@ const BasicTable = <T extends object>({
 
   //TODO: Design the table accordingly
   return (
-    <div className="w-full">
-      <div className="mx-10">
-        <Table className="rounded-md">
-          <TableHeader>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead
-                      key={header.id}
-                      className="border-2 bg-gray-100 font-bold text-black text-base"
-                    >
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext(),
-                          )}
-                    </TableHead>
-                  );
-                })}
+    <div className={cn("rounded-lg border", className)}>
+      <Table>
+        <TableHeader>
+          {table.getHeaderGroups().map((headerGroup) => (
+            <TableRow key={headerGroup.id}>
+              {headerGroup.headers.map((header, idx) => {
+                return (
+                  <TableHead
+                    key={header.id}
+                    className={`relative ${headerGroup.headers.length - 1 !== idx ? "border-r" : ""} bg-gray-100 font-bold text-black text-base`}
+                    style={{ width: `${header.getSize()}px` }}
+                  >
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(
+                          header.column.columnDef.header,
+                          header.getContext(),
+                        )}
+                    <div
+                      onDoubleClick={() => header.column.resetSize()}
+                      onMouseDown={header.getResizeHandler()}
+                      className={`
+                    absolute 
+                    top-0 
+                    right-0 
+                    bg-gray-400 
+                    w-1 
+                    h-full 
+                    cursor-col-resize 
+                    select-none 
+                    opacity-0
+                    rounded-lg
+                    hover:opacity-100
+                    ${header.column.getIsResizing() && "bg-black opacity-100"}
+                    `}
+                    />
+                  </TableHead>
+                );
+              })}
+            </TableRow>
+          ))}
+        </TableHeader>
+        <TableBody>
+          {table.getRowModel().rows?.length ? (
+            table.getRowModel().rows.map((row) => (
+              <TableRow
+                key={row.id}
+                data-state={row.getIsSelected() && "selected"}
+              >
+                {row.getVisibleCells().map((cell) => (
+                  <TableCell key={cell.id}>
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </TableCell>
+                ))}
               </TableRow>
-            ))}
-          </TableHeader>
-          <TableBody>
-            {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id} className="border-2">
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext(),
-                      )}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="h-24 text-center"
-                >
-                  No results.
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
-      </div>
+            ))
+          ) : (
+            <TableRow>
+              <TableCell colSpan={columns.length} className="h-24 text-center">
+                No results.
+              </TableCell>
+            </TableRow>
+          )}
+        </TableBody>
+      </Table>
     </div>
   );
 };

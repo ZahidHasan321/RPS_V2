@@ -126,11 +126,7 @@ const Home = () => {
 
       <div>
         <Suspense fallback={<p>Loading</p>}>
-          {memberList ? (
-            <BasicTable data={memberList} columns={columns} />
-          ) : (
-            <p>There is no data</p>
-          )}
+          <BasicTable data={memberList || []} columns={columns} />
         </Suspense>
       </div>
     </div>
