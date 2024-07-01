@@ -78,7 +78,7 @@ const columns: ColumnDef<Paper>[] = [
 const Papers = ({ className }: { className?: string }) => {
   return (
     <div className={cn(className)}>
-      <h1>Assigned Papers</h1>
+      <h1 className="font-semibold mb-10">Assigned Papers</h1>
       <BasicTable data={papers} columns={columns} />
     </div>
   );
