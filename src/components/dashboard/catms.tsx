@@ -1,6 +1,6 @@
 import { formatOrdinals } from "@/helper/formatOrdinals";
-import { Card, CardHeader, CardTitle } from "../ui/card";
 import { cn } from "@/lib/utils";
+import { Card } from "../ui/card";
 
 const catms = [
   {
@@ -12,7 +12,7 @@ const catms = [
   },
   {
     id: 2,
-    course_code: "CSE 514",
+    course_code: "cse 514",
     course_name: "Artificial Intelligence",
     semester: 5,
     session: "2022-23",
@@ -20,7 +20,7 @@ const catms = [
 ];
 
 type CatmsProps = {
-  className?: string;
+ className?: string;
 };
 
 const Catms = ({ className }: CatmsProps) => {
@@ -28,6 +28,7 @@ const Catms = ({ className }: CatmsProps) => {
     <div className={cn(className)}>
       <h1>Class Test Marks</h1>
       <div className="flex flex-col gap-3">
+        {" "}
         {catms.map((catm) => (
           <Card
             key={catm.id}

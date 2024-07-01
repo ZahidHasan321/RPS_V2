@@ -16,8 +16,8 @@ import { Route as rootRoute } from './routes/__root'
 import { Route as AuthImport } from './routes/_auth'
 import { Route as IndexImport } from './routes/index'
 import { Route as ExaminerIndexImport } from './routes/examiner/index'
-import { Route as ExamCommitteeIndexImport } from './routes/exam-committee/index'
 import { Route as DemoIndexImport } from './routes/demo/index'
+import { Route as ExamSessionSemesterImport } from './routes/exam/$session.$semester'
 
 // Create Virtual Routes
 
@@ -45,13 +45,13 @@ const ExaminerIndexRoute = ExaminerIndexImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const ExamCommitteeIndexRoute = ExamCommitteeIndexImport.update({
-  path: '/exam-committee/',
+const DemoIndexRoute = DemoIndexImport.update({
+  path: '/demo/',
   getParentRoute: () => rootRoute,
 } as any)
 
-const DemoIndexRoute = DemoIndexImport.update({
-  path: '/demo/',
+const ExamSessionSemesterRoute = ExamSessionSemesterImport.update({
+  path: '/exam/$session/$semester',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -71,16 +71,16 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DemoIndexImport
       parentRoute: typeof rootRoute
     }
-    '/exam-committee/': {
-      preLoaderRoute: typeof ExamCommitteeIndexImport
-      parentRoute: typeof rootRoute
-    }
     '/examiner/': {
       preLoaderRoute: typeof ExaminerIndexImport
       parentRoute: typeof rootRoute
     }
     '/admin/': {
       preLoaderRoute: typeof AdminIndexLazyImport
+      parentRoute: typeof rootRoute
+    }
+    '/exam/$session/$semester': {
+      preLoaderRoute: typeof ExamSessionSemesterImport
       parentRoute: typeof rootRoute
     }
   }
@@ -91,9 +91,9 @@ declare module '@tanstack/react-router' {
 export const routeTree = rootRoute.addChildren([
   IndexRoute,
   DemoIndexRoute,
-  ExamCommitteeIndexRoute,
   ExaminerIndexRoute,
   AdminIndexLazyRoute,
+  ExamSessionSemesterRoute,
 ])
 
 /* prettier-ignore-end */

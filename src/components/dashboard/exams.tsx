@@ -48,16 +48,22 @@ const exams = [
 
 const Exams = () => {
   return (
-    <div className="flex flex-row flex-wrap gap-10 ">
+    <div className="flex flex-row flex-wrap gap-10">
       {exams.map((exam) => (
         <Card
           onClick={() => {
             console.log(exam.exam_id);
           }}
-          className="w-96 bg-white shadow-md rounded-lg overflow-hidden transition-all ease-in-out duration-300 hover:shadow-xl"
+          className="w-96 h-fit bg-white shadow-md rounded-lg overflow-hidden transition-all ease-in-out duration-300 hover:shadow-xl"
           key={exam.exam_id}
         >
-          <Link>
+          <Link
+            to={"/exam/$session/$semester"}
+            params={{
+              session: exam.exam_session,
+              semester: exam.semester.toString(),
+            }}
+          >
             <CardHeader>
               <CardTitle>{formatOrdinals(exam.semester)} semester</CardTitle>
               <CardDescription>{exam.program_name}</CardDescription>
