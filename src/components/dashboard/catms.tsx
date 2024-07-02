@@ -26,7 +26,7 @@ type CatmsProps = {
 const Catms = ({ className }: CatmsProps) => {
   return (
     <div className={cn(className)}>
-      <h1>Class Test Marks</h1>
+      <h1 className="font-semibold mb-10">Class Test Marks</h1>
       <div className="flex flex-col gap-3">
         {" "}
         {catms.map((catm) => (

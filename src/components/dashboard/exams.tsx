@@ -48,7 +48,7 @@ const exams = [
 
 const Exams = () => {
   return (
-    <div className="flex flex-row flex-wrap gap-10">
+    <div className="flex flex-row flex-wrap gap-5">
       {exams.map((exam) => (
         <Card
           onClick={() => {
