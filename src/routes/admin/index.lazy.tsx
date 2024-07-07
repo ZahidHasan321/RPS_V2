@@ -5,81 +5,51 @@ import { useQuery } from "@tanstack/react-query";
 import { createLazyFileRoute } from "@tanstack/react-router";
 import { ColumnDef } from "@tanstack/react-table";
 import { Suspense, useState } from "react";
+import axios from "axios";
+import { programs } from "@/constants/programs";
+import { getExamSessions } from "@/common_queries/session";
 
-const years = [
-  {
-    value: "2022",
-    label: "2022",
-  },
-
-  {
-    value: "2023",
-    label: "2023",
-  },
-  {
-    value: "2024",
-    label: "2024",
-  },
-];
-
-const semesters = new Map([
-  [
-    "2022",
-    [
-      {
-        value: "1",
-        label: "1st",
-      },
-      {
-        value: "2",
-        label: "2nd",
-      },
-      {
-        value: "3",
-        label: "3rd",
-      },
-    ],
-  ],
-]);
-
-type Member = {
-  id: number;
-  name: string;
-  role: "chairman" | "member" | "tabulator";
-  contact: number;
+type CommitteeMemberDataType = {
+  exam_id: number;
+  department_id: number;
+  academic_session_id: number;
+  exam_name: string;
+  exam_centre: string;
+  exam_session: string;
+  exam_start_date: string; // Assuming it's always a date string in ISO format
+  exam_end_date: string | null;
+  is_result_submitted: number;
+  result_submit_date: string | null;
+  teacher_id: number;
+  role: string;
+  formation_date: string;
+  user_id: string;
+  title: string;
+  designation: string;
+  area_of_interest: string;
+  department_name: string;
+  university_id: number;
+  faculty: string;
+  undergrad_semester_no: number;
+  grad_semester_no: number;
+  department_abbr: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+  phone: string;
 };
 
-const MemberData: Member[] = [
-  {
-    id: 1,
-    name: "teacher1",
-    role: "chairman",
-    contact: 12345,
-  },
-  {
-    id: 2,
-    name: "teacher2",
-    role: "tabulator",
-    contact: 12345,
-  },
-  {
-    id: 3,
-    name: "teacher3",
-    role: "member",
-    contact: 12345,
-  },
-];
-
-const columns: ColumnDef<Member>[] = [
+const columns: ColumnDef<CommitteeMemberDataType>[] = [
   {
     header: "Id",
-    accessorKey: "id",
+    accessorKey: "teacher_id",
     cell: (info) => info.getValue(),
   },
   {
     header: "Name",
-    accessorKey: "name",
     cell: (info) => info.getValue(),
+    accessorFn: (row) =>
+      `${row.designation} ${row.first_name} ${row.last_name}`,
   },
   {
     header: "Role",
@@ -87,38 +57,89 @@ const columns: ColumnDef<Member>[] = [
     cell: (info) => info.getValue(),
   },
   {
+    header: "Email",
+    accessorKey: "email",
+    cell: (info) => info.getValue(),
+  },
+  {
     header: "Contact",
-    accessorKey: "contact",
+    accessorKey: "phone",
+    cell: (info) => info.getValue(),
+  },
+  {
+    header: "Department",
+    accessorKey: "department_name",
     cell: (info) => info.getValue(),
   },
 ];
 
+async function getExamCommitteeData(
+  session: string,
+  semester: string,
+): Promise<CommitteeMemberDataType[]> {
+  const MemberData = await axios
+    .get(
+      import.meta.env.VITE_API_URL + `/exam-committee/${session}/${semester}`,
+    )
+    .then((res) => res.data);
+  return MemberData;
+}
+
 const Home = () => {
+  const [program, setProgram] = useState("");
   const [session, setSession] = useState("");
   const [semester, setSemester] = useState("");
 
-  const { data: memberList } = useQuery({
-    queryKey: ["committeeMembers", session, semester],
-    queryFn: () => MemberData,
-    enabled: session !== "" && semester !== "",
+  const { data: CommitteeData } = useQuery({
+    queryKey: ["committeeMembers", session, semester, program],
+    queryFn: () => getExamCommitteeData(session, semester),
+    enabled: session !== "" && semester !== "" && program !== "",
+  });
+
+  const { data: academicSessionData } = useQuery({
+    queryKey: ["academicSession", program],
+    queryFn: () => getExamSessions(program),
+    enabled: program !== "",
   });
 
   return (
-    <div className="h-screen w-full flex flex-col">
-      <div className="flex m-10 gap-10">
-        <Combobox
-          frameworks={years}
-          setData={setSession}
-          placeholder="Search session...."
-          label="Select session"
-        />
-        <Combobox
-          frameworks={semesters.get(session) || []}
-          disabled={session === "" ? true : false}
-          setData={setSemester}
-          placeholder="Search semester...."
-          label="Select semester"
-        />
+    <div className="h-screen w-full flex flex-col p-10">
+      <div className="flex my-10 gap-10">
+        <div>
+          <div className="text-sm font-medium text-slate-700">
+            Choose a program
+          </div>
+          <Combobox
+            frameworks={programs}
+            setData={setProgram}
+            placeholder="Search program...."
+            label="Select program"
+          />
+        </div>
+        <div>
+          <div className="text-sm font-medium text-slate-700">
+            Choose a session
+          </div>
+          <Combobox
+            disabled={program === "" || program === undefined}
+            frameworks={academicSessionData?.sessions || []}
+            setData={setSession}
+            placeholder="Search session...."
+            label="Select session"
+          />
+        </div>
+        <div>
+          <div className="text-sm font-medium text-slate-700">
+            Choose a semester
+          </div>
+          <Combobox
+            frameworks={academicSessionData?.semesters.get(session) || []}
+            disabled={session === "" ? true : false}
+            setData={setSemester}
+            placeholder="Search semester...."
+            label="Select semester"
+          />
+        </div>
         <div className="ml-auto">
           <CreateExamCommittee />
         </div>
@@ -126,7 +147,7 @@ const Home = () => {
 
       <div>
         <Suspense fallback={<p>Loading</p>}>
-          <BasicTable data={memberList || []} columns={columns} />
+          <BasicTable data={CommitteeData || []} columns={columns} />
         </Suspense>
       </div>
     </div>
