@@ -18,6 +18,7 @@ import { Route as IndexImport } from './routes/index'
 import { Route as ExaminerIndexImport } from './routes/examiner/index'
 import { Route as DemoIndexImport } from './routes/demo/index'
 import { Route as ExamSessionSemesterImport } from './routes/exam/$session.$semester'
+import { Route as CourseSessionSemesterCourseCodeImport } from './routes/course/$session.$semester.$courseCode'
 
 // Create Virtual Routes
 
@@ -55,6 +56,12 @@ const ExamSessionSemesterRoute = ExamSessionSemesterImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const CourseSessionSemesterCourseCodeRoute =
+  CourseSessionSemesterCourseCodeImport.update({
+    path: '/course/$session/$semester/$courseCode',
+    getParentRoute: () => rootRoute,
+  } as any)
+
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
@@ -83,6 +90,10 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ExamSessionSemesterImport
       parentRoute: typeof rootRoute
     }
+    '/course/$session/$semester/$courseCode': {
+      preLoaderRoute: typeof CourseSessionSemesterCourseCodeImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
@@ -94,6 +105,7 @@ export const routeTree = rootRoute.addChildren([
   ExaminerIndexRoute,
   AdminIndexLazyRoute,
   ExamSessionSemesterRoute,
+  CourseSessionSemesterCourseCodeRoute,
 ])
 
 /* prettier-ignore-end */
