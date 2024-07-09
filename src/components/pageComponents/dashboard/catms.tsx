@@ -1,6 +1,6 @@
 import { formatOrdinals } from "@/helper/formatOrdinals";
 import { cn } from "@/lib/utils";
-import { Card } from "../ui/card";
+import { Card } from "../../ui/card";
 
 const catms = [
   {
@@ -20,13 +20,13 @@ const catms = [
 ];
 
 type CatmsProps = {
- className?: string;
+  className?: string;
 };
 
 const Catms = ({ className }: CatmsProps) => {
   return (
     <div className={cn(className)}>
-      <h1 className="font-semibold mb-10">Class Test Marks</h1>
+      <h1 className="font-semibold text-3xl mb-10">Class Test Marks</h1>
       <div className="flex flex-col gap-3">
         {" "}
         {catms.map((catm) => (

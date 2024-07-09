@@ -96,9 +96,9 @@ const Home = () => {
     enabled: session !== "" && semester !== "" && program !== "",
   });
 
-  const { data: academicSessionData } = useQuery({
-    queryKey: ["academicSession", program],
-    queryFn: () => getExamSessions(program),
+  const { data: academicSessionData, isLoading } = useQuery({
+    queryKey: ["AssignedAcademicSession", program],
+    queryFn: () => getExamSessions(program, 1),
     enabled: program !== "",
   });
 
@@ -147,7 +147,11 @@ const Home = () => {
 
       <div>
         <Suspense fallback={<p>Loading</p>}>
-          <BasicTable data={CommitteeData || []} columns={columns} />
+          <BasicTable
+            data={CommitteeData || []}
+            columns={columns}
+            loading={isLoading}
+          />
         </Suspense>
       </div>
     </div>

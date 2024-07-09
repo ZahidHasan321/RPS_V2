@@ -12,17 +12,18 @@ export type AcademicSessionDataType = {
   program_id: number;
 };
 
-export interface ExamDateType {
+export type ExamDetails = {
   exam_id: number;
   department_id: number;
   academic_session_id: number;
   exam_name: string;
   exam_centre: string;
   exam_session: string;
-  exam_start_date: string | DataTransferItemList; // Assuming ISO 8601 format for date-time
-  exam_end_date?: string | Date; // Explicitly set as null
+  exam_start_date: string;
+  exam_end_date: string;
   is_result_submitted: number;
-  result_submit_date?: string | Date; // Explicitly set as null
+  result_submit_date: string;
+  committee_created: number;
   department_name: string;
   university_id: number;
   faculty: string;
@@ -34,4 +35,4 @@ export interface ExamDateType {
   program_id: number;
   program_name: string;
   program_abbr: string;
-}
+};

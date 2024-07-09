@@ -11,8 +11,8 @@ import {
   DialogTrigger,
 } from "../ui/dialog";
 import { Checkbox } from "../ui/checkbox";
-import axios, { all } from "axios";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import axios, { all, AxiosError } from "axios";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   Tooltip,
   TooltipContent,
@@ -22,6 +22,7 @@ import {
 import { programs } from "@/constants/programs";
 import { getExamSessions } from "@/common_queries/session";
 import { toast } from "sonner";
+import { Loader2Icon } from "lucide-react";
 
 export type MemberIdItem = {
   idx: number;
@@ -84,18 +85,35 @@ const CreateExamCommittee = () => {
   const [program, setProgram] = useState("");
   const [session, setSession] = useState("");
   const [semester, setSemester] = useState("");
+  const queryClient = useQueryClient();
+
   const { data: teachers } = useQuery({
     queryKey: ["teachers"],
     queryFn: getTeachers,
   });
 
   const { data: academicSessionData } = useQuery({
-    queryKey: ["academicSession", program],
+    queryKey: ["UnassignedAcademicSession", program],
     queryFn: () => getExamSessions(program, 0),
     enabled: program !== "",
   });
 
   const createExamCommittee = useMutation({
+    onError: (error) => {
+      if (error instanceof AxiosError) {
+        toast(error.response?.data.name || "Unable to create exam committee", {
+          description: error.response?.data.message,
+        });
+      } else {
+        toast("Unable to create exam committee", {
+          description: error.message,
+        });
+      }
+    },
+    onSuccess(data) {
+      toast(data.data.message);
+      queryClient.invalidateQueries({ queryKey: ["AssignedAcademicSession"] });
+    },
     mutationFn: async () => {
       const memberList = members.map((m) => {
         return {
@@ -115,14 +133,6 @@ const CreateExamCommittee = () => {
       );
     },
   });
-
-  if (createExamCommittee.status === "success") {
-    toast("Exam committee created successfully", {
-      description: `${session} and ${semester} has been created`,
-    });
-  } else if (createExamCommittee.status === "error") {
-    toast("Error creating exam committee");
-  }
 
   console.log(createExamCommittee);
 
@@ -265,6 +275,7 @@ const CreateExamCommittee = () => {
         </div>
         <DialogFooter className="mr-6">
           <Button
+            size={"lg"}
             disabled={createExamCommittee.isPending}
             onClick={() => {
               if (members.length < 2)
@@ -275,10 +286,18 @@ const CreateExamCommittee = () => {
                 return toast("Please select session");
               if (semester === "" || semester === undefined)
                 return toast("Please select semester");
+              if (
+                members.find((item) => item.role === "Chairman") === undefined
+              )
+                return toast("Please select chairman");
               createExamCommittee.mutate();
             }}
           >
-            Submit
+            {createExamCommittee.status === "pending" ? (
+              <Loader2Icon size={32} />
+            ) : (
+              "Submit"
+            )}
           </Button>
         </DialogFooter>
       </DialogContent>
