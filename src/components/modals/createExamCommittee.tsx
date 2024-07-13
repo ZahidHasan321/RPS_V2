@@ -23,38 +23,13 @@ import { programs } from "@/constants/programs";
 import { getExamSessions } from "@/common_queries/session";
 import { toast } from "sonner";
 import { Loader2Icon } from "lucide-react";
+import { TeacherDataType } from "@/type";
 
 export type MemberIdItem = {
   idx: number;
   label: string;
   value: string;
   role?: "Chairman" | "Member" | "Tabulator";
-};
-
-type TeacherDataType = {
-  user_id: string;
-  department_id: number;
-  teacher_id: number;
-  title: string;
-  designation: string;
-  area_of_interest: string;
-  profile_image_id: number;
-  sign_id: number;
-  permanent_address_id: number;
-  email: string;
-  phone: string;
-  first_name_bn: string;
-  last_name_bn: string;
-  first_name: string;
-  last_name: string;
-  dob: string | Date;
-  gender: string;
-  blood_group: string;
-  religion: string;
-  ethnicity: string;
-  nationality: string;
-  password: string; // Consider security implications of storing passwords in plain text
-  present_address_id: number;
 };
 
 const getTeachers = async () => {
@@ -134,9 +109,6 @@ const CreateExamCommittee = () => {
     },
   });
 
-  console.log(createExamCommittee);
-
-  //TODO: Fix the design here
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -199,7 +171,6 @@ const CreateExamCommittee = () => {
               placeholder="Search teacher...."
               label="Select chairman"
               pValue={members.find((item) => item.idx === 0)?.value}
-              width={2}
             />
             <div className="text-sm font-medium text-slate-700 pl-6">
               check as tabulator
@@ -227,7 +198,6 @@ const CreateExamCommittee = () => {
                     placeholder="Search teacher...."
                     label="Select member"
                     pValue={selectedMember?.value}
-                    width={2}
                   />
                   <TooltipProvider>
                     <Tooltip>

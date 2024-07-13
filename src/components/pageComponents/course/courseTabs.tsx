@@ -1,8 +1,7 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import DecodeTab from "./tabs/decode";
-import SetA_tab from "./tabs/set_A";
-import SetB_tab from "./tabs/set_B";
 import CatmTab from "./tabs/catm";
+import SetTab from "./tabs/set";
 
 const CourseTabs = ({
   exam_id,
@@ -12,8 +11,8 @@ const CourseTabs = ({
   course_id: string;
 }) => {
   return (
-    <Tabs className="border-2">
-      <TabsList className="grid w-full grid-cols-6" defaultValue={"decode"}>
+    <Tabs className="border-2" defaultValue="decode">
+      <TabsList className="grid w-full grid-cols-6">
         <div></div>
         <TabsTrigger value="decode">Decode</TabsTrigger>
         <TabsTrigger value="Set-A">Set-A</TabsTrigger>
@@ -25,10 +24,10 @@ const CourseTabs = ({
         <DecodeTab exam_id={exam_id} course_id={course_id} />
       </TabsContent>
       <TabsContent value="Set-A">
-        <SetA_tab exam_id={exam_id} course_id={course_id} set={"A"} />
+        <SetTab exam_id={exam_id} course_id={course_id} set={"A"} />
       </TabsContent>
       <TabsContent value="Set-B">
-        <SetB_tab exam_id={exam_id} course_id={course_id} set={"B"} />
+        <SetTab exam_id={exam_id} course_id={course_id} set={"B"} />
       </TabsContent>
       <TabsContent value="catm">
         <CatmTab exam_id={exam_id} course_id={course_id} />

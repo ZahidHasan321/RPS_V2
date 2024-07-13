@@ -13,7 +13,7 @@ module.exports = {
     },
     extend: {
       fontFamily: {
-        inter: ['Inter', 'sans-serif'],
+        inter: ["Inter", "sans-serif"],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -69,6 +69,10 @@ module.exports = {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
       },
+    },
+    ".popover-content-width-same-as-its-trigger": {
+      width: "var(--radix-popover-trigger-width)",
+      "max-height": "var(--radix-popover-content-available-height)",
     },
   },
   plugins: [require("tailwindcss-animate")],

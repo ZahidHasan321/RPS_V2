@@ -13,11 +13,10 @@ import { createFileRoute } from '@tanstack/react-router'
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as AuthImport } from './routes/_auth'
 import { Route as IndexImport } from './routes/index'
-import { Route as ExaminerIndexImport } from './routes/examiner/index'
 import { Route as ExamExamImport } from './routes/exam/_exam'
 import { Route as ExamExamidImport } from './routes/exam/$exam_id'
+import { Route as ExaminerExamidCourseidSetImport } from './routes/examiner/$exam_id.$course_id.$set'
 import { Route as ExamExamExamidCourseidImport } from './routes/exam/_exam.$exam_id.$course_id'
 
 // Create Virtual Routes
@@ -32,11 +31,6 @@ const ExamRoute = ExamImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const AuthRoute = AuthImport.update({
-  id: '/_auth',
-  getParentRoute: () => rootRoute,
-} as any)
-
 const IndexRoute = IndexImport.update({
   path: '/',
   getParentRoute: () => rootRoute,
@@ -47,11 +41,6 @@ const AdminIndexLazyRoute = AdminIndexLazyImport.update({
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/admin/index.lazy').then((d) => d.Route))
 
-const ExaminerIndexRoute = ExaminerIndexImport.update({
-  path: '/examiner/',
-  getParentRoute: () => rootRoute,
-} as any)
-
 const ExamExamRoute = ExamExamImport.update({
   id: '/_exam',
   getParentRoute: () => ExamRoute,
@@ -59,6 +48,11 @@ const ExamExamRoute = ExamExamImport.update({
 
 const ExamExamidRoute = ExamExamidImport.update({
   path: '/exam/$exam_id',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const ExaminerExamidCourseidSetRoute = ExaminerExamidCourseidSetImport.update({
+  path: '/examiner/$exam_id/$course_id/$set',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -75,10 +69,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
-    '/_auth': {
-      preLoaderRoute: typeof AuthImport
-      parentRoute: typeof rootRoute
-    }
     '/exam/$exam_id': {
       preLoaderRoute: typeof ExamExamidImport
       parentRoute: typeof rootRoute
@@ -91,10 +81,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ExamExamImport
       parentRoute: typeof ExamRoute
     }
-    '/examiner/': {
-      preLoaderRoute: typeof ExaminerIndexImport
-      parentRoute: typeof rootRoute
-    }
     '/admin/': {
       preLoaderRoute: typeof AdminIndexLazyImport
       parentRoute: typeof rootRoute
@@ -102,6 +88,10 @@ declare module '@tanstack/react-router' {
     '/exam/_exam/$exam_id/$course_id': {
       preLoaderRoute: typeof ExamExamExamidCourseidImport
       parentRoute: typeof ExamExamImport
+    }
+    '/examiner/$exam_id/$course_id/$set': {
+      preLoaderRoute: typeof ExaminerExamidCourseidSetImport
+      parentRoute: typeof rootRoute
     }
   }
 }
@@ -114,8 +104,8 @@ export const routeTree = rootRoute.addChildren([
   ExamRoute.addChildren([
     ExamExamRoute.addChildren([ExamExamExamidCourseidRoute]),
   ]),
-  ExaminerIndexRoute,
   AdminIndexLazyRoute,
+  ExaminerExamidCourseidSetRoute,
 ])
 
 /* prettier-ignore-end */

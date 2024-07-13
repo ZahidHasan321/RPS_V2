@@ -5,27 +5,7 @@ import BasicTable from "../../basicTable/basicTable";
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 import { Suspense } from "react";
-
-type PaperData = {
-  exam_id: number;
-  course_id: number;
-  teacher_id: number;
-  set: string;
-  assigned_date: string;
-  is_submitted: number;
-  submit_date: string | null;
-  department_id: number;
-  course_code: string;
-  course_title: string;
-  credit: number;
-  course_type: string;
-  exam_minutes: number;
-  exam_name: string;
-  exam_session: string;
-  department_abbr: string;
-  semester: number;
-  department_name: string;
-};
+import { PaperData } from "@/type";
 
 const columns: ColumnDef<PaperData>[] = [
   {
@@ -39,11 +19,6 @@ const columns: ColumnDef<PaperData>[] = [
     cell: (info) => info.getValue(),
   },
   {
-    header: "Course Type",
-    accessorKey: "course_type",
-    cell: (info) => info.getValue(),
-  },
-  {
     header: "Session",
     accessorKey: "exam_session",
     cell: (info) => info.getValue(),
@@ -51,6 +26,16 @@ const columns: ColumnDef<PaperData>[] = [
   {
     header: "Semester",
     accessorKey: "semester",
+    cell: (info) => info.getValue(),
+  },
+  {
+    header: "Set",
+    accessorKey: "set",
+    cell: (info) => info.getValue(),
+  },
+  {
+    header: "Course Type",
+    accessorKey: "course_type",
     cell: (info) => info.getValue(),
   },
   {
@@ -63,7 +48,12 @@ const columns: ColumnDef<PaperData>[] = [
     cell: (info) => {
       return (
         <Link
-          to={info.row.original.course_code}
+          to={"/examiner/$exam_id/$course_id/$set"}
+          params={{
+            exam_id: info.row.original.exam_id.toString(),
+            course_id: info.row.original.course_id.toString(),
+            set: info.row.original.set,
+          }}
           className="font-medium transition-colors text-blue-400 hover:text-blue-600 visited:text-blue-800"
         >
           Fill Paper
@@ -86,7 +76,7 @@ async function getAssignedPapers(teacher_id: number): Promise<PaperData[]> {
 }
 
 const Papers = ({ className }: { className?: string }) => {
-  const user = { teacher_id: 23456789 };
+  const user = { teacher_id: 12345679 };
 
   const { data: papers, isLoading } = useQuery({
     queryKey: ["assigned_papers", user.teacher_id],

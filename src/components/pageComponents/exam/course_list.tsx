@@ -17,8 +17,7 @@ type CourseData = {
   result_submit_date: string;
   is_catm_submitted: number;
   catm_submit_date: string | null;
-  set_a_decoded: number;
-  set_b_decoded: number;
+  is_decoded: number;
   department_id: number;
   course_code: string;
   course_title: string;

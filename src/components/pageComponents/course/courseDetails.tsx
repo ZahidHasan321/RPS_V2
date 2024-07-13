@@ -11,7 +11,7 @@ const CourseDetalis = ({
   course_id: string;
 }) => {
   const { data: course, isLoading } = useQuery({
-    queryKey: ["course", exam_id, course_id],
+    queryKey: ["courseDetails", exam_id, course_id],
     queryFn: () => getCourseDetails(exam_id, course_id),
   });
 
@@ -61,6 +61,10 @@ const CourseDetalis = ({
           <span className="font-bold mr-1">Course Type:</span>
           {course?.course_type}
         </p>
+        <p>
+          <span className="font-bold mr-1">Result status:</span>
+          {course?.result_status}
+        </p>
       </CardContent>
     </Card>
   );
@@ -73,8 +77,7 @@ type CourseData = {
   result_submit_date: string;
   is_catm_submitted: number;
   catm_submit_date: string | null;
-  set_a_decoded: number;
-  set_b_decoded: number;
+  is_decoded: number;
   department_id: number;
   course_code: string;
   course_title: string;

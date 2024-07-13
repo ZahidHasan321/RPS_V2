@@ -12,7 +12,7 @@ function CoursePage() {
   return (
     <div className="flex flex-col gap-6 p-10">
       <CourseDetalis course_id={course_id} exam_id={exam_id} />
-      <CourseTabs />
+      <CourseTabs exam_id={exam_id} course_id={course_id} />
     </div>
   );
 }
