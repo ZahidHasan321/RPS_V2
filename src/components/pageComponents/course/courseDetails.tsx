@@ -1,4 +1,5 @@
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { CourseData } from "@/type";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { Loader2 } from "lucide-react";
@@ -68,22 +69,6 @@ const CourseDetalis = ({
       </CardContent>
     </Card>
   );
-};
-
-type CourseData = {
-  course_id: number;
-  academic_session_id: number;
-  result_status: "unassigned" | "Pending" | "Completed";
-  result_submit_date: string;
-  is_catm_submitted: number;
-  catm_submit_date: string | null;
-  is_decoded: number;
-  department_id: number;
-  course_code: string;
-  course_title: string;
-  credit: number;
-  course_type: string;
-  exam_minutes: number;
 };
 
 async function getCourseDetails(

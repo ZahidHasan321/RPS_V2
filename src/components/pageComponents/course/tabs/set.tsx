@@ -96,7 +96,7 @@ function ExaminerSection({
 
   if (data.examiner_assigned === false) {
     return (
-      <div>
+      <div className="flex flex-col gap-2 border p-4 items-start">
         <p className="text-red-500">No Examiner Assinged</p>
         <AssignExaminer exam_id={exam_id} course_id={course_id} set={set} />
       </div>
@@ -104,7 +104,7 @@ function ExaminerSection({
   }
 
   return (
-    <div>
+    <div className="flex flex-col gap-2 border p-4 items-start">
       <p>
         <span className="font-bold mr-1">Name:</span>
         {data.designation} {data.first_name} {data.last_name}

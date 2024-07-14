@@ -6,6 +6,7 @@ import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 import { Suspense } from "react";
 import { PaperData } from "@/type";
+import useAuth from "@/hooks/auth";
 
 const columns: ColumnDef<PaperData>[] = [
   {
@@ -76,7 +77,7 @@ async function getAssignedPapers(teacher_id: number): Promise<PaperData[]> {
 }
 
 const Papers = ({ className }: { className?: string }) => {
-  const user = { teacher_id: 12345679 };
+  const { user } = useAuth();
 
   const { data: papers, isLoading } = useQuery({
     queryKey: ["assigned_papers", user.teacher_id],

@@ -18,6 +18,7 @@ import { Route as ExamExamImport } from './routes/exam/_exam'
 import { Route as ExamExamidImport } from './routes/exam/$exam_id'
 import { Route as ExaminerExamidCourseidSetImport } from './routes/examiner/$exam_id.$course_id.$set'
 import { Route as ExamExamExamidCourseidImport } from './routes/exam/_exam.$exam_id.$course_id'
+import { Route as CatmTeacheridExamidCourseidImport } from './routes/catm/$teacher_id.$exam_id.$course_id'
 
 // Create Virtual Routes
 
@@ -61,6 +62,12 @@ const ExamExamExamidCourseidRoute = ExamExamExamidCourseidImport.update({
   getParentRoute: () => ExamExamRoute,
 } as any)
 
+const CatmTeacheridExamidCourseidRoute =
+  CatmTeacheridExamidCourseidImport.update({
+    path: '/catm/$teacher_id/$exam_id/$course_id',
+    getParentRoute: () => rootRoute,
+  } as any)
+
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
@@ -85,6 +92,10 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminIndexLazyImport
       parentRoute: typeof rootRoute
     }
+    '/catm/$teacher_id/$exam_id/$course_id': {
+      preLoaderRoute: typeof CatmTeacheridExamidCourseidImport
+      parentRoute: typeof rootRoute
+    }
     '/exam/_exam/$exam_id/$course_id': {
       preLoaderRoute: typeof ExamExamExamidCourseidImport
       parentRoute: typeof ExamExamImport
@@ -105,6 +116,7 @@ export const routeTree = rootRoute.addChildren([
     ExamExamRoute.addChildren([ExamExamExamidCourseidRoute]),
   ]),
   AdminIndexLazyRoute,
+  CatmTeacheridExamidCourseidRoute,
   ExaminerExamidCourseidSetRoute,
 ])
 

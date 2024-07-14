@@ -29,10 +29,12 @@ export const Route = createFileRoute("/examiner/$exam_id/$course_id/$set")({
 
 function Home() {
   const { exam_id, course_id, set } = Route.useParams();
-  const { data } = useSuspenseQuery(
+  const { data, isLoading, error, isError } = useSuspenseQuery(
     ExamPaperQuery({ exam_id, course_id, set }),
   );
 
+  if (isLoading) return <div>Loading...</div>;
+  if (isError) return <div>{error?.message}</div>;
   if (!data) return <div>No Data Found</div>;
 
   return (

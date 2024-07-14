@@ -37,6 +37,26 @@ export type ExamDetails = {
   program_abbr: string;
 };
 
+export type CourseData = {
+  course_id: number;
+  academic_session_id: number;
+  result_status: "Unassigned" | "Pending" | "Completed";
+  result_submit_date: string;
+  is_catm_submitted: number;
+  catm_submit_date: string | null;
+  is_decoded: number;
+  department_id: number;
+  course_code: string;
+  course_title: string;
+  credit: number;
+  course_type: string;
+  exam_minutes: number;
+  program_name: string;
+  program_abbr: string;
+  department_abbr: string;
+  department_name: string;
+};
+
 export type TeacherDataType = {
   user_id: string;
   department_id: number;
@@ -101,4 +121,42 @@ export type PaperMark = {
   q13: number | null;
   q14: number | null;
   q15: number | null;
+};
+
+export type CatmItem = {
+  course_id: number;
+  department_id: number;
+  course_code: string;
+  course_title: string;
+  credit: number;
+  course_type: string;
+  exam_minutes: number;
+  session: string;
+  exam_session: string;
+  semester: number;
+  department_abbr: string;
+  department_name: string;
+  is_catm_submitted: number;
+  program_name: string;
+  program_abbr: string;
+  exam_id: number;
+  academic_session_id: number;
+};
+
+export type catmTableDataType = {
+  student_id: number;
+  ct_mark: number;
+  attendance_mark: number;
+};
+
+export type courseTeacherType = {
+  designation: string | null;
+  title: string | null;
+  email: string;
+  first_name: string;
+  last_name: string;
+  department_abbr: string;
+  department_name: string;
+  faculty: string;
+  is_catm_submitted: number;
 };

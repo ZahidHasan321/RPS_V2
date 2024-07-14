@@ -9,22 +9,7 @@ import {
 } from "../../ui/card";
 import { Loader2 } from "lucide-react";
 import { Link } from "@tanstack/react-router";
-
-type CourseData = {
-  course_id: number;
-  academic_session_id: number;
-  result_status: "unassigned" | "Pending" | "Completed";
-  result_submit_date: string;
-  is_catm_submitted: number;
-  catm_submit_date: string | null;
-  is_decoded: number;
-  department_id: number;
-  course_code: string;
-  course_title: string;
-  credit: number;
-  course_type: string;
-  exam_minutes: number;
-};
+import { CourseData } from "@/type";
 
 async function getCourses(exam_id: string): Promise<CourseData[]> {
   const data = await axios

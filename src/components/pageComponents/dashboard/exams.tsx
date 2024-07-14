@@ -12,6 +12,7 @@ import { Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { Loader2 } from "lucide-react";
+import useAuth from "@/hooks/auth";
 
 type Exam = {
   exam_id: number;
@@ -42,7 +43,7 @@ async function getAssignedExams(teacher_id: number): Promise<Exam[]> {
 }
 
 const Exams = () => {
-  const user = { teacher_id: 12345679 };
+  const { user } = useAuth();
 
   const { data: exams, isLoading } = useQuery({
     queryKey: ["assigned_exams", user.teacher_id],
