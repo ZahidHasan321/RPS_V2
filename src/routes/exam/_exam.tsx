@@ -1,10 +1,9 @@
 import { createFileRoute, Outlet } from "@tanstack/react-router";
 
-export const Route = createFileRoute("/_auth")({
+export const Route = createFileRoute("/exam/_exam")({
   component: () => (
-    <>
-      <div>Hello /nested/_layout!</div>
+    <div>
       <Outlet />
-    </>
+    </div>
   ),
 });

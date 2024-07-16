@@ -33,7 +33,7 @@ type ComboboxProps = {
   placeholder?: string;
   label?: string;
   pValue?: string;
-  width?: number;
+  className?: string;
 };
 
 const Combobox = ({
@@ -46,7 +46,7 @@ const Combobox = ({
   label = "Select framework",
   disabled = false,
   pValue,
-  width = 1.0,
+  className,
 }: ComboboxProps) => {
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState(pValue ? pValue : "");
@@ -67,7 +67,7 @@ const Combobox = ({
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className={`w-[${200 * width}px] justify-between`}
+          className={cn(className, `min-w-[200px] justify-between`)}
         >
           {value
             ? frameworks.find(
@@ -77,7 +77,12 @@ const Combobox = ({
           <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className={`w-[${200 * width}px] p-0`}>
+      <PopoverContent
+        className={cn(
+          className,
+          `p-0 w-[--radix-popover-trigger-width] max-h-[--radix-popover-content-available-height]`,
+        )}
+      >
         <Command>
           <CommandInput placeholder={placeholder} className="h-9" />
           <CommandList>

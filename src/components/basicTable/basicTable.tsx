@@ -15,17 +15,20 @@ import {
 
 import "../../index.css";
 import { cn } from "@/lib/utils";
+import { Loader2 } from "lucide-react";
 
 type BasicTableProps<T extends object> = {
   data: T[];
   columns: ColumnDef<T>[];
   className?: string;
+  loading?: boolean;
 };
 
 const BasicTable = <T extends object>({
   data,
   columns,
   className,
+  loading,
 }: BasicTableProps<T>) => {
   const table = useReactTable({
     data,
@@ -80,7 +83,7 @@ const BasicTable = <T extends object>({
           ))}
         </TableHeader>
         <TableBody>
-          {table.getRowModel().rows?.length ? (
+          {!loading && table.getRowModel().rows?.length ? (
             table.getRowModel().rows.map((row) => (
               <TableRow
                 key={row.id}
@@ -95,8 +98,15 @@ const BasicTable = <T extends object>({
             ))
           ) : (
             <TableRow>
-              <TableCell colSpan={columns.length} className="h-24 text-center">
-                No results.
+              <TableCell
+                colSpan={columns.length}
+                className="h-24 border-2 text-center text-2xl"
+              >
+                {loading ? (
+                  <Loader2 size={32} className="animate-spin" />
+                ) : (
+                  "No results"
+                )}
               </TableCell>
             </TableRow>
           )}
