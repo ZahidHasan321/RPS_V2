@@ -1,12 +1,12 @@
-import { ExamDateType } from "@/type";
-import axios from "axios";
+import secureAxios from "@/lib/interceptor";
+import { ExamDetails } from "@/type";
 
 export async function getExamSessions(
   program: string,
   committee_created?: number,
 ) {
-  const data = await axios
-    .get(import.meta.env.VITE_API_URL + "/exam", {
+  const data = await secureAxios
+    .get("/exam", {
       params: {
         program_id: program,
         limit: "all",
@@ -18,7 +18,7 @@ export async function getExamSessions(
   const sessions: { label: string; value: string }[] = [];
   const semesters = new Map<string, { value: string; label: string }[]>();
 
-  data.forEach((sessionData: ExamDateType) => {
+  data.forEach((sessionData: ExamDetails) => {
     const exam_session = sessionData.exam_session;
     const semester = sessionData.semester.toString();
 

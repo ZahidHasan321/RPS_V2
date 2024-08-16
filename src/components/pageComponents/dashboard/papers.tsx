@@ -1,12 +1,12 @@
+import useAuth from "@/hooks/auth";
+import secureAxios from "@/lib/interceptor";
 import { cn } from "@/lib/utils";
+import { PaperData } from "@/type";
+import { useQuery } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
 import { ColumnDef } from "@tanstack/react-table";
-import BasicTable from "../../basicTable/basicTable";
-import axios from "axios";
-import { useQuery } from "@tanstack/react-query";
 import { Suspense } from "react";
-import { PaperData } from "@/type";
-import useAuth from "@/hooks/auth";
+import BasicTable from "../../basicTable/basicTable";
 
 const columns: ColumnDef<PaperData>[] = [
   {
@@ -65,8 +65,8 @@ const columns: ColumnDef<PaperData>[] = [
 ];
 
 async function getAssignedPapers(teacher_id: number): Promise<PaperData[]> {
-  const data = await axios
-    .get(import.meta.env.VITE_API_URL + "/examiner", {
+  const data = await secureAxios
+    .get("/examiner", {
       params: {
         teacher_id: teacher_id,
         is_submitted: 0,
@@ -80,8 +80,8 @@ const Papers = ({ className }: { className?: string }) => {
   const { user } = useAuth();
 
   const { data: papers, isLoading } = useQuery({
-    queryKey: ["assigned_papers", user.teacher_id],
-    queryFn: () => getAssignedPapers(user.teacher_id),
+    queryKey: ["assigned_papers", user?.teacher_id],
+    queryFn: () => getAssignedPapers(user?.teacher_id),
   });
 
   return (

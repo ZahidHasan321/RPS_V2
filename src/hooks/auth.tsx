@@ -1,9 +1,7 @@
-const useAuth = () => {
-  return {
-    user: {
-      teacher_id: 12345679,
-    },
-  };
-};
+import { AuthContext } from "@/context/authContext";
+import { AuthContextType } from "@/type";
+import { useContext } from "react";
 
-export default useAuth;
+export default function useAuth(): AuthContextType {
+  return useContext(AuthContext);
+}

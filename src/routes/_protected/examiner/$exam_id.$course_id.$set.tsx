@@ -1,10 +1,10 @@
 import ExamSection from "@/components/pageComponents/examiner/examSection";
 import MarkFillupTable from "@/components/pageComponents/examiner/markFillupTable";
 import MarkShowTable from "@/components/pageComponents/examiner/markShowTable";
+import secureAxios from "@/lib/interceptor";
 import { PaperData } from "@/type";
 import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
-import axios from "axios";
 import { Suspense } from "react";
 
 const ExamPaperQuery = ({
@@ -21,7 +21,9 @@ const ExamPaperQuery = ({
     queryFn: () => getPaper(exam_id, course_id, set),
   });
 
-export const Route = createFileRoute("/examiner/$exam_id/$course_id/$set")({
+export const Route = createFileRoute(
+  "/_protected/examiner/$exam_id/$course_id/$set",
+)({
   component: Home,
   loader: ({ context: { queryClient }, params }) =>
     queryClient.ensureQueryData(ExamPaperQuery(params)),
@@ -56,8 +58,8 @@ async function getPaper(
   course_id: string,
   set: string,
 ): Promise<PaperData | undefined> {
-  const data = await axios
-    .get(import.meta.env.VITE_API_URL + `/examiner`, {
+  const data = await secureAxios
+    .get(`/examiner`, {
       params: {
         exam_id: exam_id,
         course_id: course_id,

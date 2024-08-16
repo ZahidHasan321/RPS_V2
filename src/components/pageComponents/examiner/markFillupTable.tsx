@@ -1,6 +1,7 @@
 import SimpleTable from "@/components/basicTable/simpleTable";
 import { Button } from "@/components/ui/button";
 import { PaperTableColumns } from "@/constants/paperTableColumn";
+import secureAxios from "@/lib/interceptor";
 import { PaperMark } from "@/type";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
@@ -172,8 +173,8 @@ async function fillupMark(
     });
   });
 
-  return await axios
-    .post(import.meta.env.VITE_API_URL + "/question-mark", {
+  return await secureAxios
+    .post("/question-mark", {
       exam_id: exam_id,
       course_id: course_id,
       set: set,

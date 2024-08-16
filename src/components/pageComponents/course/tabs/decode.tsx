@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { ColumnDef } from "@tanstack/react-table";
 import axios from "axios";
 import DecodeTable from "./tables/decodeTable";
+import secureAxios from "@/lib/interceptor";
 
 const DecodeTab = ({
   exam_id,
@@ -72,8 +73,8 @@ async function getDecodeList(
   exam_id: string,
   course_id: string,
 ): Promise<DecodeList> {
-  const data = await axios
-    .get(import.meta.env.VITE_API_URL + `/total-papermark/decode`, {
+  const data = await secureAxios
+    .get(`/total-papermark/decode`, {
       params: {
         exam_id: exam_id,
         course_id: course_id,

@@ -1,6 +1,7 @@
 import { createRouter, RouterProvider } from "@tanstack/react-router";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import AuthProvider from "./Providers/authProvider";
 import { routeTree } from "./routeTree.gen";
 import useAuth from "./hooks/auth";
 
@@ -24,8 +25,8 @@ const router = createRouter({
   routeTree: routeTree,
 
   context: {
-    queryClient: queryClient,
     auth: undefined,
+    queryClient: queryClient,
   },
   defaultPreload: "intent",
   // Since we're using React Query, we don't want loader calls to ever be stale
@@ -33,11 +34,20 @@ const router = createRouter({
   defaultPreloadStaleTime: 0,
 });
 
-export default function App() {
+function InnerApp() {
   const auth = useAuth();
+
   return (
     <QueryClientProvider client={queryClient}>
       <RouterProvider router={router} context={{ auth }} />
     </QueryClientProvider>
+  );
+}
+
+export default function App() {
+  return (
+    <AuthProvider>
+      <InnerApp />
+    </AuthProvider>
   );
 }

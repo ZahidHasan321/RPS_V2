@@ -2,7 +2,7 @@ import Course_List from "@/components/pageComponents/exam/course_list";
 import Exam_Details from "@/components/pageComponents/exam/exam_details";
 import { createFileRoute } from "@tanstack/react-router";
 
-export const Route = createFileRoute("/exam/$exam_id")({
+export const Route = createFileRoute("/_protected/exam/$exam_id")({
   component: Home,
 });
 

@@ -1,8 +1,8 @@
 import BasicTable from "@/components/basicTable/basicTable";
+import secureAxios from "@/lib/interceptor";
 import { catmTableDataType } from "@/type";
 import { useQuery } from "@tanstack/react-query";
 import { ColumnDef } from "@tanstack/react-table";
-import axios from "axios";
 
 export default function ShowCatm({
   exam_id,
@@ -36,7 +36,7 @@ async function getCatm(
   exam_id: string,
   course_id: string,
 ): Promise<catmTableDataType[]> {
-  return await axios
-    .get(import.meta.env.VITE_API_URL + `/catm-mark/${exam_id}/${course_id}`)
+  return await secureAxios
+    .get(`/catm-mark/${exam_id}/${course_id}`)
     .then((res) => res.data);
 }

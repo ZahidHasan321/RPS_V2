@@ -1,4 +1,5 @@
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import secureAxios from "@/lib/interceptor";
 import { CourseData } from "@/type";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
@@ -75,8 +76,8 @@ async function getCourseDetails(
   exam_id: string,
   course_id: string,
 ): Promise<CourseData> {
-  const data = await axios
-    .get(import.meta.env.VITE_API_URL + `/course-semester/${exam_id}`, {
+  const data = await secureAxios
+    .get(`/course-semester/${exam_id}`, {
       params: {
         course_id,
       },

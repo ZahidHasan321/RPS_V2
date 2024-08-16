@@ -10,14 +10,7 @@ import {
 import { Loader2 } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 import { CourseData } from "@/type";
-
-async function getCourses(exam_id: string): Promise<CourseData[]> {
-  const data = await axios
-    .get(import.meta.env.VITE_API_URL + `/course-semester/${exam_id}`)
-    .then((res) => res.data);
-
-  return data;
-}
+import { getCourses } from "@/common_queries/courses";
 
 const Course_List = ({ exam_id }: { exam_id: string }) => {
   const { data: courses, isLoading } = useQuery({

@@ -1,5 +1,6 @@
 import SimpleTable from "@/components/basicTable/simpleTable";
 import { Button } from "@/components/ui/button";
+import secureAxios from "@/lib/interceptor";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   ColumnDef,
@@ -159,15 +160,12 @@ async function getStudentList(
   exam_id: string,
   course_id: string,
 ): Promise<Student[]> {
-  const data = await axios
-    .get(
-      import.meta.env.VITE_API_URL + `/exam/${exam_id}/course/${course_id}`,
-      {
-        params: {
-          limit: "all",
-        },
+  const data = await secureAxios
+    .get(`/exam/${exam_id}/course/${course_id}`, {
+      params: {
+        limit: "all",
       },
-    )
+    })
     .then((res) => res.data);
 
   const processedData = data.map((student: getStudentListResponseType) => {
@@ -211,12 +209,9 @@ async function submitDecodedData(
     }
   });
 
-  return await axios.post(
-    import.meta.env.VITE_API_URL + `/total-papermark/decode`,
-    {
-      exam_id: parseInt(exam_id),
-      course_id: parseInt(course_id),
-      studentDecodeList: processedData,
-    },
-  );
+  return await secureAxios.post(`/total-papermark/decode`, {
+    exam_id: parseInt(exam_id),
+    course_id: parseInt(course_id),
+    studentDecodeList: processedData,
+  });
 }

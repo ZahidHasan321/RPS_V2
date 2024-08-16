@@ -1,6 +1,7 @@
 import CatmCourseDetails from "@/components/pageComponents/catm/catmCourseDetails";
 import FillupCatm from "@/components/pageComponents/catm/fillupCatm";
 import ShowCatm from "@/components/pageComponents/catm/showCatm";
+import secureAxios from "@/lib/interceptor";
 import { CatmItem } from "@/type";
 import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
@@ -21,7 +22,9 @@ const catmQueryOption = ({
     queryFn: () => getCourseDetails(teacher_id, exam_id, course_id),
   });
 
-export const Route = createFileRoute("/catm/$teacher_id/$exam_id/$course_id")({
+export const Route = createFileRoute(
+  "/_protected/catm/$teacher_id/$exam_id/$course_id",
+)({
   component: CatmPage,
   loader: ({ context: { queryClient }, params }) =>
     queryClient.ensureQueryData(catmQueryOption(params)),
@@ -54,8 +57,8 @@ async function getCourseDetails(
   exam_id: string,
   course_id: string,
 ): Promise<CatmItem> {
-  const data = await axios
-    .get(import.meta.env.VITE_API_URL + `/course-teacher/${teacher_id}`, {
+  const data = await secureAxios
+    .get(`/course-teacher/${teacher_id}`, {
       params: {
         exam_id: parseInt(exam_id),
         course_id: parseInt(course_id),

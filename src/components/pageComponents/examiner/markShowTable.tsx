@@ -1,5 +1,6 @@
 import BasicTable from "@/components/basicTable/basicTable";
 import { PaperTableColumns } from "@/constants/paperTableColumn";
+import secureAxios from "@/lib/interceptor";
 import { PaperMark } from "@/type";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
@@ -52,8 +53,8 @@ async function getMarkList(
   course_id: string,
   set: string,
 ): Promise<PaperMark[]> {
-  const data: MarkListItem[] = await axios
-    .get(import.meta.env.VITE_API_URL + "/question-mark", {
+  const data: MarkListItem[] = await secureAxios
+    .get("/question-mark", {
       params: {
         exam_id: exam_id,
         course_id: course_id,

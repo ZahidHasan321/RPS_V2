@@ -1,0 +1,57 @@
+import { Button } from "@/components/ui/button";
+import useAuth from "@/hooks/auth";
+import {
+  createFileRoute,
+  Outlet,
+  redirect,
+  useLocation,
+  useRouter,
+} from "@tanstack/react-router";
+import { toast } from "sonner";
+
+export const Route = createFileRoute("/_protected")({
+  component: LayoutComponent,
+  beforeLoad: ({ context, location }) => {
+    if (!context.auth?.isAuthenticated) {
+      throw redirect({
+        to: "/login",
+        search: {
+          redirect: location.href,
+        },
+      });
+    }
+  },
+});
+
+export default function LayoutComponent() {
+  const { logout } = useAuth();
+  const navigate = Route.useNavigate();
+  const router = useRouter();
+  const location = useLocation();
+
+  console.log("Location", location);
+  async function onLogoutClick() {
+    logout()
+      .then(async () => {
+        await router.invalidate();
+        navigate({ to: "/" });
+      })
+      .catch((error) => {
+        toast("Unable to logout");
+        console.error(error);
+      });
+  }
+
+  return (
+    <div className="flex flex-col">
+      {location.pathname.includes("/exam/pdf/") === false && (
+        <div className="absolute right-0 p-4">
+          <Button onClick={onLogoutClick} variant="destructive">
+            Logout
+          </Button>
+        </div>
+      )}
+      <Outlet />
+    </div>
+  );
+}

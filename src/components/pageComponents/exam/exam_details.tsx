@@ -4,13 +4,7 @@ import axios from "axios";
 import { Card, CardHeader, CardTitle, CardContent } from "../../ui/card";
 import { formatDate } from "@/helper/dateFormatter";
 import { Loader2 } from "lucide-react";
-
-async function getExamDetails(exam_id: string): Promise<ExamDetails> {
-  const data = await axios
-    .get(import.meta.env.VITE_API_URL + `/exam/${exam_id}`)
-    .then((res) => res.data);
-  return data;
-}
+import { getExamDetails } from "@/common_queries/exam";
 
 const Exam_Details = ({ exam_id }: { exam_id: string }) => {
   const { data: examDetails, isLoading } = useQuery({
@@ -71,7 +65,7 @@ const Exam_Details = ({ exam_id }: { exam_id: string }) => {
 
         <p>
           <span className="font-bold mr-1">Result Status:</span>
-          {examDetails.is_result_submitted ? (
+          {examDetails.is_result_completed ? (
             <span className="text-green-500">Completed</span>
           ) : (
             <span className="text-red-500">Pending</span>

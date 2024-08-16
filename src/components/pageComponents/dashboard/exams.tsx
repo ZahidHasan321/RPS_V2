@@ -1,4 +1,9 @@
 import { formatOrdinals } from "@/helper/formatOrdinals";
+import useAuth from "@/hooks/auth";
+import secureAxios from "@/lib/interceptor";
+import { useQuery } from "@tanstack/react-query";
+import { Link } from "@tanstack/react-router";
+import { Loader2 } from "lucide-react";
 import {
   Card,
   CardContent,
@@ -8,11 +13,6 @@ import {
   CardTitle,
 } from "../../ui/card";
 import { Progress } from "../../ui/progress";
-import { Link } from "@tanstack/react-router";
-import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
-import { Loader2 } from "lucide-react";
-import useAuth from "@/hooks/auth";
 
 type Exam = {
   exam_id: number;
@@ -27,16 +27,12 @@ type Exam = {
 };
 
 async function getAssignedExams(teacher_id: number): Promise<Exam[]> {
-  const data = await axios
-    .get(
-      import.meta.env.VITE_API_URL +
-        `/exam-committee/${teacher_id}/assigned-exams`,
-      {
-        params: {
-          is_result_submitted: 0,
-        },
+  const data = await secureAxios
+    .get(`/exam-committee/${teacher_id}/assigned-exams`, {
+      params: {
+        is_result_submitted: 0,
       },
-    )
+    })
     .then((res) => res.data);
 
   return data;
@@ -46,8 +42,8 @@ const Exams = () => {
   const { user } = useAuth();
 
   const { data: exams, isLoading } = useQuery({
-    queryKey: ["assigned_exams", user.teacher_id],
-    queryFn: () => getAssignedExams(user.teacher_id),
+    queryKey: ["assigned_exams", user?.teacher_id],
+    queryFn: () => getAssignedExams(user?.teacher_id),
   });
 
   if (isLoading)

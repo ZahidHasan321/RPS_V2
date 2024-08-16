@@ -2,6 +2,7 @@ import BasicTable from "@/components/basicTable/basicTable";
 import AssignExaminer from "@/components/modals/assignExaminer";
 import { Button } from "@/components/ui/button";
 import { formatDate } from "@/helper/dateFormatter";
+import secureAxios from "@/lib/interceptor";
 import { useQuery } from "@tanstack/react-query";
 import { ColumnDef } from "@tanstack/react-table";
 import axios, { AxiosError } from "axios";
@@ -143,11 +144,8 @@ async function getSetList(
   course_id: string,
   set: string,
 ): Promise<SetList> {
-  return await axios
-    .get(
-      import.meta.env.VITE_API_URL +
-        `/total-papermark/${exam_id}/${course_id}/${set}`,
-    )
+  return await secureAxios
+    .get(`/total-papermark/${exam_id}/${course_id}/${set}`)
     .then((res) => res.data);
 }
 
@@ -166,10 +164,8 @@ async function getExaminerData(
   course_id: string,
   set: string,
 ): Promise<ExaminerType> {
-  return await axios
-    .get(
-      import.meta.env.VITE_API_URL + `/examiner/${exam_id}/${course_id}/${set}`,
-    )
+  return await secureAxios
+    .get(`/examiner/${exam_id}/${course_id}/${set}`)
     .then((res) => res.data);
 }
 

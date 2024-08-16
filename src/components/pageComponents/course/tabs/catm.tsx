@@ -3,6 +3,7 @@ import CourseTeacherDetails from "../../catm/courseTeacherDetails";
 import ShowCatm from "../../catm/showCatm";
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
+import secureAxios from "@/lib/interceptor";
 
 const CatmTab = ({
   exam_id,
@@ -33,10 +34,8 @@ function getCourseTeacher(
   exam_id: string,
   course_id: string,
 ): Promise<courseTeacherType> {
-  return axios
-    .get(
-      import.meta.env.VITE_API_URL + `/course-teacher/${exam_id}/${course_id}`,
-    )
+  return secureAxios
+    .get(`/course-teacher/${exam_id}/${course_id}`)
     .then((res) => res.data);
 }
 

@@ -1,7 +1,16 @@
+import { getExamSessions } from "@/common_queries/session";
+import { programs } from "@/constants/programs";
+import secureAxios from "@/lib/interceptor";
+import { TeacherDataType } from "@/type";
 import { PlusIcon } from "@radix-ui/react-icons";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import axios, { all, AxiosError } from "axios";
+import { Loader2Icon } from "lucide-react";
 import { useState } from "react";
+import { toast } from "sonner";
 import Combobox from "../combobox/combobox";
 import { Button } from "../ui/button";
+import { Checkbox } from "../ui/checkbox";
 import {
   Dialog,
   DialogContent,
@@ -10,20 +19,12 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "../ui/dialog";
-import { Checkbox } from "../ui/checkbox";
-import axios, { all, AxiosError } from "axios";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "../ui/tooltip";
-import { programs } from "@/constants/programs";
-import { getExamSessions } from "@/common_queries/session";
-import { toast } from "sonner";
-import { Loader2Icon } from "lucide-react";
-import { TeacherDataType } from "@/type";
 
 export type MemberIdItem = {
   idx: number;
@@ -33,8 +34,8 @@ export type MemberIdItem = {
 };
 
 const getTeachers = async () => {
-  const data = await axios
-    .get(import.meta.env.VITE_API_URL + "/teacher", {
+  const data = await secureAxios
+    .get("/teacher", {
       params: {
         limit: all,
         department_id: 1,
@@ -97,15 +98,12 @@ const CreateExamCommittee = () => {
         };
       });
 
-      return await axios.post(
-        import.meta.env.VITE_API_URL + "/exam-committee",
-        {
-          memberList,
-          program,
-          session,
-          semester,
-        },
-      );
+      return await secureAxios.post("/exam-committee", {
+        memberList,
+        program,
+        session,
+        semester,
+      });
     },
   });
 

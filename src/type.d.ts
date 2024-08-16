@@ -35,6 +35,7 @@ export type ExamDetails = {
   program_id: number;
   program_name: string;
   program_abbr: string;
+  is_result_completed: number;
 };
 
 export type CourseData = {
@@ -159,4 +160,44 @@ export type courseTeacherType = {
   department_name: string;
   faculty: string;
   is_catm_submitted: number;
+};
+
+type tabulationExamCommitee = {
+  role: "Chairman" | "Member" | "Tabulator";
+  first_name: string;
+  last_name: string;
+  title: string | null;
+};
+
+type TabulationStudentDataType = {
+  student_id: number;
+  student_name: string;
+  hall_name: string;
+  session: string;
+  student_status: string;
+  courses: Map<
+    number,
+    {
+      catm: number | null;
+      fem: number | null;
+      gpa: number | null;
+      total: number | null;
+    }
+  >;
+  improves?: Map<
+    number,
+    {
+      catm: number | null;
+      fem: number | null;
+      gpa: number | null;
+      total: number | null;
+    }
+  >;
+}[];
+
+type AuthContextType = {
+  isAuthenticated: boolean;
+  user: unknown;
+  login: (email: string, password: string) => Promise<void>;
+  logout: () => Promise<void>;
 };

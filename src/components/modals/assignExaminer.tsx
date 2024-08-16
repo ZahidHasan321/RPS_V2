@@ -16,6 +16,7 @@ import {
   DialogTrigger,
 } from "../ui/dialog";
 import { toast } from "sonner";
+import secureAxios from "@/lib/interceptor";
 
 export default function AssignExaminer({
   exam_id,
@@ -100,8 +101,8 @@ export default function AssignExaminer({
 }
 
 async function getTeachers(): Promise<{ label: string; value: string }[]> {
-  const data: TeacherDataType[] | undefined = await axios
-    .get(import.meta.env.VITE_API_URL + "/teacher", {
+  const data: TeacherDataType[] | undefined = await secureAxios
+    .get("/teacher", {
       params: {
         limit: "all",
         department_id: 1,
@@ -127,7 +128,7 @@ async function assignExaminer(
   set: string,
   teacher_id: string,
 ) {
-  return await axios.post(import.meta.env.VITE_API_URL + "/examiner", {
+  return await secureAxios.post("/examiner", {
     exam_id: parseInt(exam_id),
     course_id: parseInt(course_id),
     set: set,

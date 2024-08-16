@@ -1,13 +1,13 @@
+import { getExamSessions } from "@/common_queries/session";
 import BasicTable from "@/components/basicTable/basicTable";
 import Combobox from "@/components/combobox/combobox";
 import CreateExamCommittee from "@/components/modals/createExamCommittee";
+import { programs } from "@/constants/programs";
+import secureAxios from "@/lib/interceptor";
 import { useQuery } from "@tanstack/react-query";
 import { createLazyFileRoute } from "@tanstack/react-router";
 import { ColumnDef } from "@tanstack/react-table";
 import { Suspense, useState } from "react";
-import axios from "axios";
-import { programs } from "@/constants/programs";
-import { getExamSessions } from "@/common_queries/session";
 
 type CommitteeMemberDataType = {
   exam_id: number;
@@ -77,10 +77,8 @@ async function getExamCommitteeData(
   session: string,
   semester: string,
 ): Promise<CommitteeMemberDataType[]> {
-  const MemberData = await axios
-    .get(
-      import.meta.env.VITE_API_URL + `/exam-committee/${session}/${semester}`,
-    )
+  const MemberData = await secureAxios
+    .get(`/exam-committee/${session}/${semester}`)
     .then((res) => res.data);
   return MemberData;
 }
@@ -158,6 +156,6 @@ const Home = () => {
   );
 };
 
-export const Route = createLazyFileRoute("/admin/")({
+export const Route = createLazyFileRoute("/_protected/admin/")({
   component: Home,
 });

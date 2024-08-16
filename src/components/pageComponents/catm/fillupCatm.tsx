@@ -1,5 +1,6 @@
 import SimpleTable from "@/components/basicTable/simpleTable";
 import { Button } from "@/components/ui/button";
+import secureAxios from "@/lib/interceptor";
 import { catmTableDataType } from "@/type";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
@@ -138,15 +139,12 @@ async function getStudentList(
   exam_id: string,
   course_id: string,
 ): Promise<catmTableDataType[]> {
-  const data = await axios
-    .get(
-      import.meta.env.VITE_API_URL + `/exam/${exam_id}/course/${course_id}`,
-      {
-        params: {
-          limit: "all",
-        },
+  const data = await secureAxios
+    .get(`/exam/${exam_id}/course/${course_id}`, {
+      params: {
+        limit: "all",
       },
-    )
+    })
     .then((res) => res.data);
 
   const processedData = data.map((student: { student_id: number }) => {
@@ -164,8 +162,8 @@ async function postCatm(
   course_id: string,
   data: catmTableDataType[],
 ): Promise<unknown> {
-  return await axios
-    .post(import.meta.env.VITE_API_URL + `/catm-mark/${exam_id}/${course_id}`, {
+  return await secureAxios
+    .post(`/catm-mark/${exam_id}/${course_id}`, {
       catmList: data,
     })
     .then((res) => res.data);
