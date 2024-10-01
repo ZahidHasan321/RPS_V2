@@ -81,3 +81,14 @@ export function getLetterGrade(
 
   return grade?.grade ?? " ";
 }
+
+export function getGPA(score: number, credit: number) {
+  const total = markPerCredit * credit;
+  const parcentage = Math.ceil((score / total) * 100);
+
+  const grade = Grades.find(
+    (grade) => parcentage >= grade.lmark && parcentage <= grade.hmark,
+  );
+
+  return grade?.gpa ?? 0;
+}

@@ -46,7 +46,7 @@ const Catms = ({ className }: CatmsProps) => {
     },
     {
       header: "Session",
-      accessorKey: "session",
+      accessorKey: "exam_session",
     },
     {
       header: "Course Type",

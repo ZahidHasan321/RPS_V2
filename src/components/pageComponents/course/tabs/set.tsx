@@ -1,11 +1,10 @@
 import BasicTable from "@/components/basicTable/basicTable";
 import AssignExaminer from "@/components/modals/assignExaminer";
-import { Button } from "@/components/ui/button";
 import { formatDate } from "@/helper/dateFormatter";
 import secureAxios from "@/lib/interceptor";
 import { useQuery } from "@tanstack/react-query";
 import { ColumnDef } from "@tanstack/react-table";
-import axios, { AxiosError } from "axios";
+import { AxiosError } from "axios";
 
 const column: ColumnDef<totalPaperMarkListType>[] = [
   {

@@ -143,6 +143,7 @@ async function getStudentList(
     .get(`/exam/${exam_id}/course/${course_id}`, {
       params: {
         limit: "all",
+        student_status: "Regular",
       },
     })
     .then((res) => res.data);

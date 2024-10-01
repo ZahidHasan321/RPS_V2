@@ -37,6 +37,9 @@ const Course_List = ({ exam_id }: { exam_id: string }) => {
                 exam_id: exam_id,
                 course_id: course.course_id.toString(),
               }}
+              search={{
+                courseType: course.course_type,
+              }}
             >
               <CardHeader>
                 <CardTitle>{course.course_title}</CardTitle>

@@ -1,9 +1,8 @@
+import secureAxios from "@/lib/interceptor";
 import { courseTeacherType } from "@/type";
+import { useQuery } from "@tanstack/react-query";
 import CourseTeacherDetails from "../../catm/courseTeacherDetails";
 import ShowCatm from "../../catm/showCatm";
-import axios from "axios";
-import { useQuery } from "@tanstack/react-query";
-import secureAxios from "@/lib/interceptor";
 
 const CatmTab = ({
   exam_id,

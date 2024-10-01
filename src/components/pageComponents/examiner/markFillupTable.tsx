@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { PaperTableColumns } from "@/constants/paperTableColumn";
 import secureAxios from "@/lib/interceptor";
 import { PaperMark } from "@/type";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   ColumnDef,
   getCoreRowModel,
@@ -97,13 +97,6 @@ export default function MarkFillupTable({
     },
   });
 
-  const { data: course } = useQuery({
-    queryKey: ["course_code", course_id ],
-    queryFn: () => getCourseCode(course_id),
-  })
-  
-  console.log(course);
-
   const table = useReactTable({
     data,
     columns: PaperTableColumns,
@@ -190,8 +183,3 @@ async function fillupMark(
     .then((res) => res.data);
 }
 
-function getCourseCode(course_id: string) {
-  return secureAxios
-    .get(`/course/${course_id}`)
-    .then((res) => res.data);
-}

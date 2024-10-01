@@ -4,6 +4,7 @@ import { tw } from "@/components/pdf/styles";
 import Header from "@/components/pdf/tabulationSheet/Header/header";
 import Body from "@/components/pdf/tabulationSheet/body/body";
 import Footer from "@/components/pdf/tabulationSheet/footer/footer";
+import { getGPA } from "@/constants/grades";
 import secureAxios from "@/lib/interceptor";
 import {
   CourseData,
@@ -184,21 +185,24 @@ async function getStudentData(exam_id: string) {
       processedData[index].courses.set(course.course_id, {
         catm: course.catm,
         fem: course.fem,
-        gpa: course.gpa,
+        gpa: getGPA(total, course.credit),
         total: total ? Math.ceil(total) : null,
       });
     });
 
     if (student.improves) {
       student.improves.map((course) => {
+        const prevCatm = student.courses.find(
+          (c) => c.course_id === course.course_id,
+        )?.catm;
         const total =
-          course.fem && course.catm
-            ? course.fem + course.catm
-            : course.fem || course.catm;
+          course.fem && prevCatm
+            ? course.fem + prevCatm
+            : prevCatm || course.fem;
         processedData[index].improves?.set(course.course_id, {
           catm: course.catm,
-          fem: course.fem,
-          gpa: course.gpa,
+          fem: prevCatm ?? 0,
+          gpa: getGPA(total, course.credit),
           total: total ? Math.ceil(total) : null,
         });
       });

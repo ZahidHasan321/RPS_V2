@@ -69,7 +69,7 @@ export default function AssignExaminer({
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Assign Examiner</DialogTitle>
-          <DialogDescription>Examiner for set {set}</DialogDescription>
+          <DialogDescription>Examiner for set</DialogDescription>
         </DialogHeader>
         {isLoading ? <Loader2 className="w-6 h-6 animate-spin" /> : null}
         {isError ? <div>Error</div> : null}
