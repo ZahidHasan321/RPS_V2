@@ -3,13 +3,12 @@ import { Button } from "@/components/ui/button";
 import { PaperTableColumns } from "@/constants/paperTableColumn";
 import secureAxios from "@/lib/interceptor";
 import { PaperMark } from "@/type";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   ColumnDef,
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import axios from "axios";
 import { Plus } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
@@ -33,6 +32,7 @@ const defaultColumn: Partial<ColumnDef<PaperMark>> = {
 
     // When the input is blurred, we'll call our table meta's updateData function
     const onBlur = () => {
+      
       table.options.meta?.updateData(index, id, value);
     };
 
@@ -96,6 +96,13 @@ export default function MarkFillupTable({
       });
     },
   });
+
+  const { data: course } = useQuery({
+    queryKey: ["course_code", course_id ],
+    queryFn: () => getCourseCode(course_id),
+  })
+  
+  console.log(course);
 
   const table = useReactTable({
     data,
@@ -180,5 +187,11 @@ async function fillupMark(
       set: set,
       questionMarkList,
     })
+    .then((res) => res.data);
+}
+
+function getCourseCode(course_id: string) {
+  return secureAxios
+    .get(`/course/${course_id}`)
     .then((res) => res.data);
 }

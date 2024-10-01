@@ -1,5 +1,7 @@
+import { getCourses } from "@/common_queries/courses";
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
+import { Link } from "@tanstack/react-router";
+import { Loader2 } from "lucide-react";
 import {
   Card,
   CardContent,
@@ -7,10 +9,6 @@ import {
   CardHeader,
   CardTitle,
 } from "../../ui/card";
-import { Loader2 } from "lucide-react";
-import { Link } from "@tanstack/react-router";
-import { CourseData } from "@/type";
-import { getCourses } from "@/common_queries/courses";
 
 const Course_List = ({ exam_id }: { exam_id: string }) => {
   const { data: courses, isLoading } = useQuery({

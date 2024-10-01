@@ -24,24 +24,29 @@ export const Route = createFileRoute("/_public/login")({
 });
 
 function Page() {
-  const [email, setEmail] = useState("");
+  const [teacher_id, setTeacher_id] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter();
   const navigate = useNavigate();
   const search = Route.useSearch();
-  const { login, user, isAuthenticated } = useAuth();
+  const { login } = useAuth();
 
   const onSubmitClick = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const trimmerEmail = email.trim();
+    const trimmedTeacher_id = Number(teacher_id.trim());
     const trimmedPassword = password.trim();
-    if (trimmerEmail === "" || trimmedPassword === "") {
+    if (trimmedPassword === "") {
       toast("Please enter email and password");
       return;
     }
 
-    await login(trimmerEmail, trimmedPassword);
+    if (isNaN(Number(trimmedTeacher_id))) {
+      toast("Please enter a valid teacher id");
+      return;
+    }
+
+    await login(trimmedTeacher_id, trimmedPassword);
 
     await router.invalidate();
     await navigate({ to: search.redirect || "/" });
@@ -54,9 +59,9 @@ function Page() {
         className="flex flex-col items-center justify-center w-[30%] gap-6"
       >
         <Input
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="Email"
+          value={teacher_id}
+          onChange={(e) => setTeacher_id(e.target.value)}
+          placeholder="Teacher id"
         />
         <Input
           value={password}

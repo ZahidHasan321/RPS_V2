@@ -152,7 +152,7 @@ function MyDocument({
   return PageComponent;
 }
 
-function getStudentData(exam_id: string) {
+async function getStudentData(exam_id: string) {
   const processedData: TabulationStudentDataType = [];
   studentData.map((student) => {
     let index = processedData.findIndex(

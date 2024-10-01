@@ -162,14 +162,14 @@ export type courseTeacherType = {
   is_catm_submitted: number;
 };
 
-type tabulationExamCommitee = {
+export type tabulationExamCommitee = {
   role: "Chairman" | "Member" | "Tabulator";
   first_name: string;
   last_name: string;
   title: string | null;
 };
 
-type TabulationStudentDataType = {
+export type TabulationStudentDataType = {
   student_id: number;
   student_name: string;
   hall_name: string;
@@ -195,9 +195,30 @@ type TabulationStudentDataType = {
   >;
 }[];
 
-type AuthContextType = {
+export type User = {
+  permanent_address_id: number;
+  present_address_id: number;
+  blood_group: string | null;
+  dob: Date;
+  email: string;
+  ethnicity: string | null;
+  first_name: string;
+  first_name_bn: string | null;
+  gender: string | null;
+  last_name: string;
+  last_name_bn: string | null;
+  nationality: string | null;
+  phone: string | null;
+  profile_image_id: number | null;
+  religion: string | null;
+  sign_id: number | null;
+  user_id: string;
+  teacher_id: number | undefined;
+};
+
+export type AuthContextType = {
   isAuthenticated: boolean;
-  user: unknown;
-  login: (email: string, password: string) => Promise<void>;
+  user: User | null;
+  login: (teacher_id: number, password: string) => Promise<void>;
   logout: () => Promise<void>;
 };

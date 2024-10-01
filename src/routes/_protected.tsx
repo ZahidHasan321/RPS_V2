@@ -29,12 +29,17 @@ export default function LayoutComponent() {
   const router = useRouter();
   const location = useLocation();
 
-  console.log("Location", location);
+  function sleep(ms: number) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  }
+
   async function onLogoutClick() {
     logout()
-      .then(async () => {
-        await router.invalidate();
-        navigate({ to: "/" });
+      .then(() => {
+        router.invalidate().finally(async () => {
+          await sleep(1000);
+          navigate({ to: "/" });
+        });
       })
       .catch((error) => {
         toast("Unable to logout");

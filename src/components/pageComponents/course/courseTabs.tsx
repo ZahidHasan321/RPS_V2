@@ -11,7 +11,7 @@ const CourseTabs = ({
   course_id: string;
 }) => {
   return (
-    <Tabs className="border-2" defaultValue="decode">
+    <Tabs  defaultValue="decode">
       <TabsList className="grid w-full grid-cols-6">
         <div></div>
         <TabsTrigger value="decode">Decode</TabsTrigger>

@@ -1,10 +1,10 @@
-import { ExamDetails } from "@/type";
-import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
-import { Card, CardHeader, CardTitle, CardContent } from "../../ui/card";
-import { formatDate } from "@/helper/dateFormatter";
-import { Loader2 } from "lucide-react";
 import { getExamDetails } from "@/common_queries/exam";
+import { formatDate } from "@/helper/dateFormatter";
+import { useQuery } from "@tanstack/react-query";
+import { Loader2 } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "../../ui/card";
+import { Link } from "@tanstack/react-router";
+import { Button } from "@/components/ui/button";
 
 const Exam_Details = ({ exam_id }: { exam_id: string }) => {
   const { data: examDetails, isLoading } = useQuery({
@@ -71,6 +71,15 @@ const Exam_Details = ({ exam_id }: { exam_id: string }) => {
             <span className="text-red-500">Pending</span>
           )}
         </p>
+        {examDetails.is_result_completed ? (
+          <Link
+            to="/exam/pdf/tabulation/$exam_id"
+            params={{ exam_id: exam_id }}
+            target="_blank"
+          >
+            <Button>Tabulation sheet</Button>
+          </Link>
+        ) : null}
       </CardContent>
     </Card>
   );

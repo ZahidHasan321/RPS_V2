@@ -28,7 +28,7 @@ export default function CourseList({ courses }: { courses: CourseData[] }) {
             <Text style={tw("w-[60px]")}>{course_code}</Text>
           </Cell>
           <Cell className="grow">
-            <Text>{course_title}</Text>
+            <Text style={tw("px-1")}>{course_title}</Text>
           </Cell>
           <Cell>
             <Text style={tw("px-3")}>{credit}</Text>

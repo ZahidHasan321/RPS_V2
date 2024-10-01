@@ -5,7 +5,6 @@ import secureAxios from "@/lib/interceptor";
 import { CatmItem } from "@/type";
 import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
-import axios from "axios";
 import { Suspense } from "react";
 
 const catmQueryOption = ({

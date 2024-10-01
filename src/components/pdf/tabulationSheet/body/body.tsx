@@ -20,7 +20,7 @@ export default function Body({
 
   const total_credit = useMemo(() => {
     return courses.reduce((acc, { credit }) => acc + credit, 0);
-  }, []);
+  }, [courses]);
 
   useMemo(() => {
     let gpa = 0;
@@ -64,7 +64,7 @@ export default function Body({
         }
       });
     });
-  }, []);
+  }, [studentData, courses, index]);
 
   return (
     <Table

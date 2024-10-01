@@ -64,7 +64,10 @@ const columns: ColumnDef<PaperData>[] = [
   },
 ];
 
-async function getAssignedPapers(teacher_id: number): Promise<PaperData[]> {
+async function getAssignedPapers(
+  teacher_id: number | undefined,
+): Promise<PaperData[]> {
+  if (!teacher_id) return [];
   const data = await secureAxios
     .get("/examiner", {
       params: {

@@ -55,11 +55,12 @@ const Catms = ({ className }: CatmsProps) => {
     {
       header: "Action",
       cell: (info) => {
+        if (!user) return null;
         return (
           <Link
             to="/catm/$teacher_id/$exam_id/$course_id"
             params={{
-              teacher_id: user?.teacher_id.toString(),
+              teacher_id: user?.teacher_id!.toString(),
               exam_id: info.row.original.exam_id.toString(),
               course_id: info.row.original.course_id.toString(),
             }}
@@ -84,7 +85,8 @@ const Catms = ({ className }: CatmsProps) => {
   );
 };
 
-async function getCatms(teacher_id: number): Promise<CatmItem[]> {
+async function getCatms(teacher_id: number | undefined): Promise<CatmItem[]> {
+  if (!teacher_id) return [];
   const data = await secureAxios
     .get(`/course-teacher/${teacher_id}`, {
       params: {

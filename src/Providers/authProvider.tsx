@@ -1,5 +1,6 @@
 import { AuthContext } from "@/context/authContext";
 import secureAxios from "@/lib/interceptor";
+import { User } from "@/type";
 import axios from "axios";
 import { useCallback, useEffect, useState } from "react";
 import { toast } from "sonner";
@@ -11,7 +12,7 @@ function getStoredUser() {
   return storedUser ? JSON.parse(storedUser) : null;
 }
 
-function setStoredUser(user: any | null) {
+function setStoredUser(user: User | null) {
   if (user) {
     localStorage.setItem(key, JSON.stringify(user));
   } else {
@@ -28,12 +29,12 @@ export default function AuthProvider({
 
   const isAuthenticated = !!user;
 
-  const login = useCallback(async (email: string, password: string) => {
+  const login = useCallback(async (teacher_id: number, password: string) => {
     const data = await axios
       .post(
-        import.meta.env.VITE_API_URL + "/login",
+        import.meta.env.VITE_API_URL + "/login/teacher",
         {
-          email,
+          teacher_id,
           password,
         },
         {
@@ -45,6 +46,7 @@ export default function AuthProvider({
     if (data.session_id) {
       setUser(data.user);
       setStoredUser(data.user);
+
       localStorage.setItem("sessionID", data.session_id);
     } else {
       toast("Unable to login");
@@ -60,7 +62,13 @@ export default function AuthProvider({
   }, []);
 
   useEffect(() => {
-    setUser(getStoredUser());
+    const user = getStoredUser();
+    if (user) {
+      setUser(user);
+    } else {
+      logout();
+      setUser(null);
+    }
   }, []);
 
   return (

@@ -1,9 +1,8 @@
 import BasicTable from "@/components/basicTable/basicTable";
+import secureAxios from "@/lib/interceptor";
 import { useQuery } from "@tanstack/react-query";
 import { ColumnDef } from "@tanstack/react-table";
-import axios from "axios";
 import DecodeTable from "./tables/decodeTable";
-import secureAxios from "@/lib/interceptor";
 
 const DecodeTab = ({
   exam_id,

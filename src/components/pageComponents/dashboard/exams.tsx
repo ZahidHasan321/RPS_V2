@@ -26,7 +26,10 @@ type Exam = {
   completed_courses: number;
 };
 
-async function getAssignedExams(teacher_id: number): Promise<Exam[]> {
+async function getAssignedExams(
+  teacher_id: number | undefined,
+): Promise<Exam[]> {
+  if (!teacher_id) return [];
   const data = await secureAxios
     .get(`/exam-committee/${teacher_id}/assigned-exams`, {
       params: {
