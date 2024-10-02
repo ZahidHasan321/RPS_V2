@@ -12,7 +12,6 @@ const CourseTabs = ({
   course_id: string;
   courseType: string;
 }) => {
-  console.log(courseType);
   return (
     <Tabs defaultValue="decode">
       <TabsList className="grid w-full grid-cols-5">
@@ -30,7 +29,11 @@ const CourseTabs = ({
         <div></div>
       </TabsList>
       <TabsContent value="decode">
-        <DecodeTab exam_id={exam_id} course_id={course_id} />
+        <DecodeTab
+          exam_id={exam_id}
+          course_id={course_id}
+          course_type={courseType}
+        />
       </TabsContent>
       {courseType == "Theory" ? (
         <>

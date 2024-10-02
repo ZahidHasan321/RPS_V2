@@ -7,49 +7,71 @@ import DecodeTable from "./tables/decodeTable";
 const DecodeTab = ({
   exam_id,
   course_id,
+  course_type,
 }: {
   exam_id: string;
   course_id: string;
+  course_type: string;
 }) => {
   const { data: DecodeList, isLoading } = useQuery({
     queryKey: ["DecodePage", exam_id, course_id],
     queryFn: () => getDecodeList(exam_id, course_id),
   });
 
+  console.log(course_type);
+  const columns: ColumnDef<StudentDecodeList>[] = [
+    {
+      header: "Student ID",
+      accessorKey: "student_id",
+      cell: (info) => info.getValue(),
+    },
+    {
+      header: "Set-A",
+      accessorKey: "set_A",
+      cell: (info) => info.getValue(),
+    },
+    {
+      header: "Set-B",
+      accessorKey: "set_B",
+      cell: (info) => info.getValue(),
+    },
+  ];
+
+  const LabColumns: ColumnDef<StudentDecodeList>[] = [
+    {
+      header: "Student ID",
+      accessorKey: "student_id",
+      cell: (info) => info.getValue(),
+    },
+    {
+      header: "Set",
+      accessorKey: "Set_A",
+      cell: (info) => info.getValue(),
+    },
+  ];
+
   if (isLoading) return <div>Loading...</div>;
   if (!DecodeList) return <div>No Data found</div>;
 
   if (DecodeList.is_decoded === 0)
-    return <DecodeTable exam_id={exam_id} course_id={course_id} />;
+    return (
+      <DecodeTable
+        exam_id={exam_id}
+        course_id={course_id}
+        course_type={course_type}
+      />
+    );
 
   return (
     <div className="w-full grid place-items-center pb-2">
       <BasicTable
         className="w-[60%]"
         data={DecodeList.studentDecodeList}
-        columns={columns}
+        columns={course_type === "Theory" ? columns : LabColumns}
       />
     </div>
   );
 };
-
-const columns: ColumnDef<StudentDecodeList>[] = [
-  {
-    header: "Student ID",
-    accessorKey: "student_id",
-    cell: (info) => info.getValue(),
-  },
-  {
-    header: "Set-A",
-    accessorKey: "set_A",
-    cell: (info) => info.getValue(),
-  },
-  {
-    header: "Set-B",
-    accessorKey: "set_B",
-    cell: (info) => info.getValue(),
-  },
-];
 
 type StudentDecodeList = {
   student_id: number;

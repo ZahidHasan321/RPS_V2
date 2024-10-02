@@ -73,12 +73,23 @@ const columns = [
   }),
 ];
 
+const LabColumns = [
+  columnHelper.accessor("student_id", {
+    header: "Student ID",
+  }),
+  columnHelper.accessor("set_A", {
+    header: "Set",
+  }),
+];
+
 export default function DecodeTable({
   exam_id,
   course_id,
+  course_type,
 }: {
   exam_id: string;
   course_id: string;
+  course_type: string;
 }) {
   const {
     data: studentList,
@@ -94,7 +105,7 @@ export default function DecodeTable({
 
   const table = useReactTable({
     data,
-    columns,
+    columns: course_type === "Theory" ? columns : LabColumns,
     defaultColumn,
     getCoreRowModel: getCoreRowModel(),
 

@@ -1,5 +1,5 @@
 import { getCourses } from "@/common_queries/courses";
-import { getExamDetails, studentData } from "@/common_queries/exam";
+import { getExamDetails } from "@/common_queries/exam";
 import { tw } from "@/components/pdf/styles";
 import Header from "@/components/pdf/tabulationSheet/Header/header";
 import Body from "@/components/pdf/tabulationSheet/body/body";
@@ -134,7 +134,7 @@ function MyDocument({
 
   const PageComponent: ReactNode[] = [];
 
-  for (let i = 0; i <= studentData.length; i = i + 3) {
+  for (let i = 0; i < studentData.length; i = i + 3) {
     PageComponent.push(
       <Page key={i} size="A3" style={styles.page} orientation="landscape">
         <View>
@@ -153,7 +153,31 @@ function MyDocument({
   return PageComponent;
 }
 
+type studentDataType = {
+  student_name: string;
+  student_id: number;
+  hall_name: string;
+  session: string;
+  student_status: string;
+  courses: {
+    course_id: number;
+    catm: number;
+    fem: number;
+    credit: number;
+  }[];
+  improves: {
+    course_id: number;
+    catm: number;
+    fem: number;
+    credit: number;
+  }[];
+};
+
 async function getStudentData(exam_id: string) {
+  const studentData: studentDataType[] = await secureAxios
+    .get(`/marksheet/${exam_id}`)
+    .then((res) => res.data);
+
   const processedData: TabulationStudentDataType = [];
   studentData.map((student) => {
     let index = processedData.findIndex(
