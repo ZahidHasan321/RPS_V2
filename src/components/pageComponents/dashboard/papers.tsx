@@ -66,25 +66,32 @@ const columns: ColumnDef<PaperData>[] = [
 
 async function getAssignedPapers(
   teacher_id: number | undefined,
+  is_submitted?: number,
 ): Promise<PaperData[]> {
   if (!teacher_id) return [];
   const data = await secureAxios
     .get("/examiner", {
       params: {
         teacher_id: teacher_id,
-        is_submitted: 0,
+        is_submitted: is_submitted,
       },
     })
     .then((res) => res.data);
   return data;
 }
 
-const Papers = ({ className }: { className?: string }) => {
+const Papers = ({
+  className,
+  is_submitted,
+}: {
+  className?: string;
+  is_submitted?: number;
+}) => {
   const { user } = useAuth();
 
   const { data: papers, isLoading } = useQuery({
     queryKey: ["assigned_papers", user?.teacher_id],
-    queryFn: () => getAssignedPapers(user?.teacher_id),
+    queryFn: () => getAssignedPapers(user?.teacher_id, is_submitted),
   });
 
   return (

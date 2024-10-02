@@ -18,8 +18,11 @@ import { Route as ProtectedImport } from './routes/_protected'
 import { Route as ProtectedIndexImport } from './routes/_protected/index'
 import { Route as PublicLoginImport } from './routes/_public/login'
 import { Route as ExamSessionSemesterImport } from './routes/exam/$session.$semester'
+import { Route as ProtectedExaminerAllPapersImport } from './routes/_protected/examiner/all-papers'
+import { Route as ProtectedExamAllExamsImport } from './routes/_protected/exam/all-exams'
 import { Route as ProtectedExamExamImport } from './routes/_protected/exam/_exam'
 import { Route as ProtectedExamExamidImport } from './routes/_protected/exam/$exam_id'
+import { Route as ProtectedCatmAllCatmsImport } from './routes/_protected/catm/all-catms'
 import { Route as CourseSessionSemesterCourseCodeImport } from './routes/course/$session.$semester.$courseCode'
 import { Route as ProtectedExaminerExamidCourseidSetImport } from './routes/_protected/examiner/$exam_id.$course_id.$set'
 import { Route as ProtectedExamPdfTabulationExamidImport } from './routes/_protected/exam/pdf/tabulation.$exam_id'
@@ -70,6 +73,18 @@ const ExamSessionSemesterRoute = ExamSessionSemesterImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const ProtectedExaminerAllPapersRoute = ProtectedExaminerAllPapersImport.update(
+  {
+    path: '/examiner/all-papers',
+    getParentRoute: () => ProtectedRoute,
+  } as any,
+)
+
+const ProtectedExamAllExamsRoute = ProtectedExamAllExamsImport.update({
+  path: '/all-exams',
+  getParentRoute: () => ProtectedExamRoute,
+} as any)
+
 const ProtectedExamExamRoute = ProtectedExamExamImport.update({
   id: '/_exam',
   getParentRoute: () => ProtectedExamRoute,
@@ -77,6 +92,11 @@ const ProtectedExamExamRoute = ProtectedExamExamImport.update({
 
 const ProtectedExamExamidRoute = ProtectedExamExamidImport.update({
   path: '/exam/$exam_id',
+  getParentRoute: () => ProtectedRoute,
+} as any)
+
+const ProtectedCatmAllCatmsRoute = ProtectedCatmAllCatmsImport.update({
+  path: '/catm/all-catms',
   getParentRoute: () => ProtectedRoute,
 } as any)
 
@@ -142,6 +162,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProtectedIndexImport
       parentRoute: typeof ProtectedImport
     }
+    '/_protected/catm/all-catms': {
+      id: '/_protected/catm/all-catms'
+      path: '/catm/all-catms'
+      fullPath: '/catm/all-catms'
+      preLoaderRoute: typeof ProtectedCatmAllCatmsImport
+      parentRoute: typeof ProtectedImport
+    }
     '/_protected/exam/$exam_id': {
       id: '/_protected/exam/$exam_id'
       path: '/exam/$exam_id'
@@ -162,6 +189,20 @@ declare module '@tanstack/react-router' {
       fullPath: '/exam'
       preLoaderRoute: typeof ProtectedExamExamImport
       parentRoute: typeof ProtectedExamRoute
+    }
+    '/_protected/exam/all-exams': {
+      id: '/_protected/exam/all-exams'
+      path: '/all-exams'
+      fullPath: '/exam/all-exams'
+      preLoaderRoute: typeof ProtectedExamAllExamsImport
+      parentRoute: typeof ProtectedExamImport
+    }
+    '/_protected/examiner/all-papers': {
+      id: '/_protected/examiner/all-papers'
+      path: '/examiner/all-papers'
+      fullPath: '/examiner/all-papers'
+      preLoaderRoute: typeof ProtectedExaminerAllPapersImport
+      parentRoute: typeof ProtectedImport
     }
     '/exam/$session/$semester': {
       id: '/exam/$session/$semester'
@@ -220,13 +261,16 @@ declare module '@tanstack/react-router' {
 export const routeTree = rootRoute.addChildren({
   ProtectedRoute: ProtectedRoute.addChildren({
     ProtectedIndexRoute,
+    ProtectedCatmAllCatmsRoute,
     ProtectedExamExamidRoute,
     ProtectedExamRoute: ProtectedExamRoute.addChildren({
       ProtectedExamExamRoute: ProtectedExamExamRoute.addChildren({
         ProtectedExamExamExamidCourseidRoute,
       }),
+      ProtectedExamAllExamsRoute,
       ProtectedExamPdfTabulationExamidRoute,
     }),
+    ProtectedExaminerAllPapersRoute,
     ProtectedAdminIndexLazyRoute,
     ProtectedCatmTeacheridExamidCourseidRoute,
     ProtectedExaminerExamidCourseidSetRoute,
@@ -254,8 +298,10 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "_protected.tsx",
       "children": [
         "/_protected/",
+        "/_protected/catm/all-catms",
         "/_protected/exam/$exam_id",
         "/_protected/exam",
+        "/_protected/examiner/all-papers",
         "/_protected/admin/",
         "/_protected/catm/$teacher_id/$exam_id/$course_id",
         "/_protected/examiner/$exam_id/$course_id/$set"
@@ -275,6 +321,10 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "_protected/index.tsx",
       "parent": "/_protected"
     },
+    "/_protected/catm/all-catms": {
+      "filePath": "_protected/catm/all-catms.tsx",
+      "parent": "/_protected"
+    },
     "/_protected/exam/$exam_id": {
       "filePath": "_protected/exam/$exam_id.tsx",
       "parent": "/_protected"
@@ -284,6 +334,7 @@ export const routeTree = rootRoute.addChildren({
       "parent": "/_protected",
       "children": [
         "/_protected/exam/_exam",
+        "/_protected/exam/all-exams",
         "/_protected/exam/pdf/tabulation/$exam_id"
       ]
     },
@@ -293,6 +344,14 @@ export const routeTree = rootRoute.addChildren({
       "children": [
         "/_protected/exam/_exam/$exam_id/$course_id"
       ]
+    },
+    "/_protected/exam/all-exams": {
+      "filePath": "_protected/exam/all-exams.tsx",
+      "parent": "/_protected/exam"
+    },
+    "/_protected/examiner/all-papers": {
+      "filePath": "_protected/examiner/all-papers.tsx",
+      "parent": "/_protected"
     },
     "/exam/$session/$semester": {
       "filePath": "exam/$session.$semester.tsx"

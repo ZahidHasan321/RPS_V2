@@ -11,14 +11,15 @@ import { Suspense } from "react";
 
 type CatmsProps = {
   className?: string;
+  is_catm_submitted?: number;
 };
 
-const Catms = ({ className }: CatmsProps) => {
+const Catms = ({ className, is_catm_submitted }: CatmsProps) => {
   const { user } = useAuth();
 
   const { data: catms, isLoading } = useQuery({
     queryKey: ["catms", user?.teacher_id],
-    queryFn: () => getCatms(user?.teacher_id),
+    queryFn: () => getCatms(user?.teacher_id, is_catm_submitted),
   });
 
   if (isLoading)
@@ -85,12 +86,15 @@ const Catms = ({ className }: CatmsProps) => {
   );
 };
 
-async function getCatms(teacher_id: number | undefined): Promise<CatmItem[]> {
+async function getCatms(
+  teacher_id: number | undefined,
+  is_catm_submitted?: number,
+): Promise<CatmItem[]> {
   if (!teacher_id) return [];
   const data = await secureAxios
     .get(`/course-teacher/${teacher_id}`, {
       params: {
-        is_catm_submitted: 0,
+        is_catm_submitted: is_catm_submitted,
       },
     })
     .then((res) => res.data);

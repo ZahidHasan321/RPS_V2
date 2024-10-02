@@ -71,15 +71,14 @@ const Exam_Details = ({ exam_id }: { exam_id: string }) => {
             <span className="text-red-500">Pending</span>
           )}
         </p>
-        {examDetails.is_result_completed ? (
-          <Link
-            to="/exam/pdf/tabulation/$exam_id"
-            params={{ exam_id: exam_id }}
-            target="_blank"
-          >
-            <Button>Tabulation sheet</Button>
-          </Link>
-        ) : null}
+
+        <Link
+          to="/exam/pdf/tabulation/$exam_id"
+          params={{ exam_id: exam_id }}
+          target="_blank"
+        >
+          <Button>Tabulation sheet</Button>
+        </Link>
       </CardContent>
     </Card>
   );
