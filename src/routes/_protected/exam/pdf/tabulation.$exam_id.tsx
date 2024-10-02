@@ -177,6 +177,7 @@ async function getStudentData(exam_id: string) {
   const studentData: studentDataType[] = await secureAxios
     .get(`/marksheet/${exam_id}`)
     .then((res) => res.data);
+
   const processedData: TabulationStudentDataType = [];
   studentData.map((student) => {
     let index = processedData.findIndex(
@@ -223,8 +224,8 @@ async function getStudentData(exam_id: string) {
             ? course.fem + prevCatm
             : prevCatm || course.fem;
         processedData[index].improves?.set(course.course_id, {
-          catm: course.catm,
-          fem: prevCatm ?? 0,
+          catm: prevCatm ?? 0,
+          fem: course.fem,
           gpa: getGPA(total, course.credit),
           total: total ? Math.ceil(total) : null,
         });

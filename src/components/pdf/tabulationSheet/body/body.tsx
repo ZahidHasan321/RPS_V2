@@ -256,8 +256,10 @@ export default function Body({
                     <VCell className="w-1/2">
                       <Text>
                         {student.improves?.get(course.course_id)?.gpa
-                          ? student.improves.get(course.course_id)?.gpa ??
-                            0 * course.credit
+                          ? (
+                              (student.improves.get(course.course_id)?.gpa ??
+                                0) * course.credit
+                            ).toFixed(2)
                           : " "}
                       </Text>
                     </VCell>

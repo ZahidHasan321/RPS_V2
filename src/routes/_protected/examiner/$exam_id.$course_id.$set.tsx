@@ -26,7 +26,13 @@ export const Route = createFileRoute(
 )({
   component: Home,
   loader: ({ context: { queryClient }, params }) =>
-    queryClient.ensureQueryData(ExamPaperQuery(params)),
+    queryClient.ensureQueryData(
+      ExamPaperQuery({
+        exam_id: params.exam_id,
+        course_id: params.course_id,
+        set: params.set,
+      }),
+    ),
 });
 
 function Home() {
