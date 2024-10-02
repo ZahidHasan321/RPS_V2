@@ -18,6 +18,38 @@ const DecodeTab = ({
     queryFn: () => getDecodeList(exam_id, course_id),
   });
 
+  console.log(course_type);
+  const columns: ColumnDef<StudentDecodeList>[] = [
+    {
+      header: "Student ID",
+      accessorKey: "student_id",
+      cell: (info) => info.getValue(),
+    },
+    {
+      header: "Set-A",
+      accessorKey: "set_A",
+      cell: (info) => info.getValue(),
+    },
+    {
+      header: "Set-B",
+      accessorKey: "set_B",
+      cell: (info) => info.getValue(),
+    },
+  ];
+
+  const LabColumns: ColumnDef<StudentDecodeList>[] = [
+    {
+      header: "Student ID",
+      accessorKey: "student_id",
+      cell: (info) => info.getValue(),
+    },
+    {
+      header: "Set",
+      accessorKey: "Set_A",
+      cell: (info) => info.getValue(),
+    },
+  ];
+
   if (isLoading) return <div>Loading...</div>;
   if (!DecodeList) return <div>No Data found</div>;
 

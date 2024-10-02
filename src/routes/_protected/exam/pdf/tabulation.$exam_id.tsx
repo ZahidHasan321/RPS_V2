@@ -134,7 +134,7 @@ function MyDocument({
 
   const PageComponent: ReactNode[] = [];
 
-  for (let i = 0; i <= studentData.length; i = i + 3) {
+  for (let i = 0; i < studentData.length; i = i + 3) {
     PageComponent.push(
       <Page key={i} size="A3" style={styles.page} orientation="landscape">
         <View>

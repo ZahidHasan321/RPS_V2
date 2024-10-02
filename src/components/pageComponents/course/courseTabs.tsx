@@ -12,7 +12,6 @@ const CourseTabs = ({
   course_id: string;
   courseType: string;
 }) => {
-  console.log(courseType);
   return (
     <Tabs defaultValue="decode">
       <TabsList className="grid w-full grid-cols-5">
