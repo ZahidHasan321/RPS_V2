@@ -30,7 +30,11 @@ const CourseTabs = ({
         <div></div>
       </TabsList>
       <TabsContent value="decode">
-        <DecodeTab exam_id={exam_id} course_id={course_id} />
+        <DecodeTab
+          exam_id={exam_id}
+          course_id={course_id}
+          course_type={courseType}
+        />
       </TabsContent>
       {courseType == "Theory" ? (
         <>

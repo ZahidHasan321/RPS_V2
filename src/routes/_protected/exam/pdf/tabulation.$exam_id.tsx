@@ -1,5 +1,5 @@
 import { getCourses } from "@/common_queries/courses";
-import { getExamDetails, studentData } from "@/common_queries/exam";
+import { getExamDetails } from "@/common_queries/exam";
 import { tw } from "@/components/pdf/styles";
 import Header from "@/components/pdf/tabulationSheet/Header/header";
 import Body from "@/components/pdf/tabulationSheet/body/body";
@@ -153,7 +153,30 @@ function MyDocument({
   return PageComponent;
 }
 
+type studentDataType = {
+  student_id: number;
+  student_name: string;
+  hall_name: string;
+  session: string;
+  student_status: string;
+  courses: {
+    catm: number;
+    fem: number;
+    course_id: number;
+    credit: number;
+  }[];
+  improves?: {
+    catm: number;
+    fem: number;
+    course_id: number;
+    credit: number;
+  }[];
+};
+
 async function getStudentData(exam_id: string) {
+  const studentData: studentDataType[] = await secureAxios
+    .get(`/marksheet/${exam_id}`)
+    .then((res) => res.data);
   const processedData: TabulationStudentDataType = [];
   studentData.map((student) => {
     let index = processedData.findIndex(
