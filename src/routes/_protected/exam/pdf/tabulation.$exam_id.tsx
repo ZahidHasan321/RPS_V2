@@ -20,34 +20,30 @@ import {
   Text,
   View,
 } from "@react-pdf/renderer";
-import {
-  queryOptions,
-  useQuery,
-  useSuspenseQuery,
-} from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
-import { ReactNode } from "react";
-
-const studentQuery = ({ exam_id }: { exam_id: string }) =>
-  queryOptions({
-    queryKey: ["student", exam_id],
-    queryFn: () => getStudentData(exam_id),
-  });
+import { ReactNode, useEffect, useState } from "react";
 
 export const Route = createFileRoute(
   "/_protected/exam/pdf/tabulation/$exam_id",
 )({
   component: TabulationPage,
-  loader: ({ context: { queryClient }, params }) => {
-    queryClient.ensureQueryData(studentQuery(params));
-  },
 });
 
 function TabulationPage() {
   const { exam_id } = Route.useParams();
+  const [processedData, setProcessedData] = useState<TabulationStudentDataType>(
+    [],
+  );
 
-  const { data: studentData, isLoading: isLoadingStudentData } =
-    useSuspenseQuery(studentQuery({ exam_id }));
+  /* const { data: studentData, isLoading: isLoadingStudentData } = useQuery({
+    queryKey: ["exam", parseInt(exam_id)],
+    queryFn: () => getStudentData(exam_id),
+  }) */ useEffect(() => {
+    getStudentData(exam_id).then((data) => {
+      setProcessedData(processStudentData(data));
+    });
+  }, []);
 
   const { data: courses, isLoading: isLoadingCourses } = useQuery({
     queryKey: ["exam", exam_id],
@@ -64,12 +60,7 @@ function TabulationPage() {
     queryFn: () => getExamDetails(exam_id),
   });
 
-  if (
-    isLoadingCourses ||
-    isLoadingStudentData ||
-    isLoadingExamCommittee ||
-    isLoadingExamDetails
-  ) {
+  if (isLoadingCourses || isLoadingExamCommittee || isLoadingExamDetails) {
     return (
       <PDFViewer style={tw("h-screen w-screen")}>
         <Document>
@@ -101,7 +92,7 @@ function TabulationPage() {
     <PDFViewer style={tw("h-screen w-screen")}>
       <Document>
         <MyDocument
-          studentData={studentData}
+          studentData={processedData}
           courses={courses}
           exam_committee={exam_committee}
           exam_details={exam_details}
@@ -174,10 +165,17 @@ type studentDataType = {
 };
 
 async function getStudentData(exam_id: string) {
-  const studentData: studentDataType[] = await secureAxios
-    .get(`/marksheet/${exam_id}`)
-    .then((res) => res.data);
+  return await secureAxios.get(`/marksheet/${exam_id}`).then((res) => res.data);
+}
 
+async function getExamCommittee(exam_id: string) {
+  return secureAxios
+    .get(`/exam-committee/exam/${exam_id}/members`)
+    .then((res) => res.data);
+}
+
+function processStudentData(studentData: studentDataType[]) {
+  console.log("unprocessed", studentData);
   const processedData: TabulationStudentDataType = [];
   studentData.map((student) => {
     let index = processedData.findIndex(
@@ -233,11 +231,7 @@ async function getStudentData(exam_id: string) {
     }
   });
 
-  return processedData;
-}
+  console.log(processedData);
 
-async function getExamCommittee(exam_id: string) {
-  return await secureAxios
-    .get(`/exam-committee/exam/${exam_id}/members`)
-    .then((res) => res.data);
+  return processedData;
 }
