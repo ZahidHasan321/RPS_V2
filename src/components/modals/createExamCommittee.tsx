@@ -4,7 +4,7 @@ import secureAxios from "@/lib/interceptor";
 import { TeacherDataType } from "@/type";
 import { PlusIcon } from "@radix-ui/react-icons";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import axios, { all, AxiosError } from "axios";
+import { all, AxiosError } from "axios";
 import { Loader2Icon } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";

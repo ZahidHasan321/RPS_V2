@@ -9,7 +9,6 @@ import {
   RowData,
   useReactTable,
 } from "@tanstack/react-table";
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
 

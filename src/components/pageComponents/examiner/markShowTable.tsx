@@ -3,8 +3,6 @@ import { PaperTableColumns } from "@/constants/paperTableColumn";
 import secureAxios from "@/lib/interceptor";
 import { PaperMark } from "@/type";
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
-import { promises } from "dns";
 
 export default function MarkShowTable({
   exam_id,

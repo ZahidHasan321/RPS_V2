@@ -1,6 +1,6 @@
-import { Text, View } from "@react-pdf/renderer";
-import { tw } from "../styles";
 import { cn } from "@/lib/utils";
+import { View } from "@react-pdf/renderer";
+import { tw } from "../styles";
 
 export const Table = ({
   children,

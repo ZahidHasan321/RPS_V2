@@ -1,8 +1,9 @@
+import secureAxios from "@/lib/interceptor";
 import { TeacherDataType } from "@/type";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
 import { Loader2 } from "lucide-react";
 import { useState } from "react";
+import { toast } from "sonner";
 import Combobox from "../combobox/combobox";
 import { Button } from "../ui/button";
 import {
@@ -15,8 +16,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "../ui/dialog";
-import { toast } from "sonner";
-import secureAxios from "@/lib/interceptor";
 
 export default function AssignExaminer({
   exam_id,
