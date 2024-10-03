@@ -14,7 +14,7 @@ export const Route = createFileRoute("/_protected/exam/all-exams")({
 function AllExams() {
   const { user } = useAuth();
   const { data: exams, isLoading } = useQuery({
-    queryKey: ["assigned_exams", user?.teacher_id],
+    queryKey: ["assigned_exams", "all_exams", user?.teacher_id],
     queryFn: () => getAssignedExams(user?.teacher_id),
   });
 
