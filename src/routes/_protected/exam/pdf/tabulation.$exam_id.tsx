@@ -177,7 +177,7 @@ async function getStudentData(exam_id: string) {
   const studentData: studentDataType[] = await secureAxios
     .get(`/marksheet/${exam_id}`)
     .then((res) => res.data);
-
+    
   const processedData: TabulationStudentDataType = [];
   studentData.map((student) => {
     let index = processedData.findIndex(

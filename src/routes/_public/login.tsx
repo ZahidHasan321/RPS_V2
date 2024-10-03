@@ -46,7 +46,7 @@ function Page() {
       return;
     }
 
-    await login(trimmedTeacher_id, trimmedPassword);
+    await login(trimmedTeacher_id, trimmedPassword)
 
     await router.invalidate();
     await navigate({ to: search.redirect || "/" });

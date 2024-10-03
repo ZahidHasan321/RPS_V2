@@ -41,7 +41,8 @@ export default function AuthProvider({
           headers: { "Content-Type": "application/json" },
         },
       )
-      .then((res) => res.data);
+      .then((res) => res.data)
+      .catch(err => console.log(err))
 
     if (data.session_id) {
       setUser(data.user);
