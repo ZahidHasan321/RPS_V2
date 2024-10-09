@@ -259,27 +259,205 @@ declare module '@tanstack/react-router' {
 
 // Create and export the route tree
 
-export const routeTree = rootRoute.addChildren({
-  ProtectedRoute: ProtectedRoute.addChildren({
-    ProtectedIndexRoute,
-    ProtectedCatmAllCatmsRoute,
-    ProtectedExamExamidRoute,
-    ProtectedExamRoute: ProtectedExamRoute.addChildren({
-      ProtectedExamExamRoute: ProtectedExamExamRoute.addChildren({
-        ProtectedExamExamExamidCourseidRoute,
-      }),
-      ProtectedExamAllExamsRoute,
-      ProtectedExamPdfTabulationExamidRoute,
-      ProtectedExamPdfGradesheetExamidCourseidRoute,
-      ProtectedExamPdfSummationExamidCourseidRoute,
-    }),
-    ProtectedExaminerAllPapersRoute,
-    ProtectedAdminIndexLazyRoute,
+interface ProtectedExamExamRouteChildren {
+  ProtectedExamExamExamidCourseidRoute: typeof ProtectedExamExamExamidCourseidRoute
+}
+
+const ProtectedExamExamRouteChildren: ProtectedExamExamRouteChildren = {
+  ProtectedExamExamExamidCourseidRoute: ProtectedExamExamExamidCourseidRoute,
+}
+
+const ProtectedExamExamRouteWithChildren =
+  ProtectedExamExamRoute._addFileChildren(ProtectedExamExamRouteChildren)
+
+interface ProtectedExamRouteChildren {
+  ProtectedExamExamRoute: typeof ProtectedExamExamRouteWithChildren
+  ProtectedExamAllExamsRoute: typeof ProtectedExamAllExamsRoute
+  ProtectedExamPdfTabulationExamidRoute: typeof ProtectedExamPdfTabulationExamidRoute
+  ProtectedExamPdfGradesheetExamidCourseidRoute: typeof ProtectedExamPdfGradesheetExamidCourseidRoute
+  ProtectedExamPdfSummationExamidCourseidRoute: typeof ProtectedExamPdfSummationExamidCourseidRoute
+}
+
+const ProtectedExamRouteChildren: ProtectedExamRouteChildren = {
+  ProtectedExamExamRoute: ProtectedExamExamRouteWithChildren,
+  ProtectedExamAllExamsRoute: ProtectedExamAllExamsRoute,
+  ProtectedExamPdfTabulationExamidRoute: ProtectedExamPdfTabulationExamidRoute,
+  ProtectedExamPdfGradesheetExamidCourseidRoute:
+    ProtectedExamPdfGradesheetExamidCourseidRoute,
+  ProtectedExamPdfSummationExamidCourseidRoute:
+    ProtectedExamPdfSummationExamidCourseidRoute,
+}
+
+const ProtectedExamRouteWithChildren = ProtectedExamRoute._addFileChildren(
+  ProtectedExamRouteChildren,
+)
+
+interface ProtectedRouteChildren {
+  ProtectedIndexRoute: typeof ProtectedIndexRoute
+  ProtectedCatmAllCatmsRoute: typeof ProtectedCatmAllCatmsRoute
+  ProtectedExamExamidRoute: typeof ProtectedExamExamidRoute
+  ProtectedExamRoute: typeof ProtectedExamRouteWithChildren
+  ProtectedExaminerAllPapersRoute: typeof ProtectedExaminerAllPapersRoute
+  ProtectedAdminIndexLazyRoute: typeof ProtectedAdminIndexLazyRoute
+  ProtectedCatmTeacheridExamidCourseidRoute: typeof ProtectedCatmTeacheridExamidCourseidRoute
+  ProtectedExaminerExamidCourseidSetRoute: typeof ProtectedExaminerExamidCourseidSetRoute
+}
+
+const ProtectedRouteChildren: ProtectedRouteChildren = {
+  ProtectedIndexRoute: ProtectedIndexRoute,
+  ProtectedCatmAllCatmsRoute: ProtectedCatmAllCatmsRoute,
+  ProtectedExamExamidRoute: ProtectedExamExamidRoute,
+  ProtectedExamRoute: ProtectedExamRouteWithChildren,
+  ProtectedExaminerAllPapersRoute: ProtectedExaminerAllPapersRoute,
+  ProtectedAdminIndexLazyRoute: ProtectedAdminIndexLazyRoute,
+  ProtectedCatmTeacheridExamidCourseidRoute:
     ProtectedCatmTeacheridExamidCourseidRoute,
+  ProtectedExaminerExamidCourseidSetRoute:
     ProtectedExaminerExamidCourseidSetRoute,
-  }),
-  PublicRoute: PublicRoute.addChildren({ PublicLoginRoute }),
-})
+}
+
+const ProtectedRouteWithChildren = ProtectedRoute._addFileChildren(
+  ProtectedRouteChildren,
+)
+
+interface PublicRouteChildren {
+  PublicLoginRoute: typeof PublicLoginRoute
+}
+
+const PublicRouteChildren: PublicRouteChildren = {
+  PublicLoginRoute: PublicLoginRoute,
+}
+
+const PublicRouteWithChildren =
+  PublicRoute._addFileChildren(PublicRouteChildren)
+
+export interface FileRoutesByFullPath {
+  '': typeof PublicRouteWithChildren
+  '/login': typeof PublicLoginRoute
+  '/': typeof ProtectedIndexRoute
+  '/catm/all-catms': typeof ProtectedCatmAllCatmsRoute
+  '/exam/$exam_id': typeof ProtectedExamExamidRoute
+  '/exam': typeof ProtectedExamExamRouteWithChildren
+  '/exam/all-exams': typeof ProtectedExamAllExamsRoute
+  '/examiner/all-papers': typeof ProtectedExaminerAllPapersRoute
+  '/admin': typeof ProtectedAdminIndexLazyRoute
+  '/catm/$teacher_id/$exam_id/$course_id': typeof ProtectedCatmTeacheridExamidCourseidRoute
+  '/exam/$exam_id/$course_id': typeof ProtectedExamExamExamidCourseidRoute
+  '/exam/pdf/tabulation/$exam_id': typeof ProtectedExamPdfTabulationExamidRoute
+  '/examiner/$exam_id/$course_id/$set': typeof ProtectedExaminerExamidCourseidSetRoute
+  '/exam/pdf/gradesheet/$exam_id/$course_id': typeof ProtectedExamPdfGradesheetExamidCourseidRoute
+  '/exam/pdf/summation/$exam_id/$course_id': typeof ProtectedExamPdfSummationExamidCourseidRoute
+}
+
+export interface FileRoutesByTo {
+  '': typeof PublicRouteWithChildren
+  '/login': typeof PublicLoginRoute
+  '/': typeof ProtectedIndexRoute
+  '/catm/all-catms': typeof ProtectedCatmAllCatmsRoute
+  '/exam/$exam_id': typeof ProtectedExamExamidRoute
+  '/exam': typeof ProtectedExamExamRouteWithChildren
+  '/exam/all-exams': typeof ProtectedExamAllExamsRoute
+  '/examiner/all-papers': typeof ProtectedExaminerAllPapersRoute
+  '/admin': typeof ProtectedAdminIndexLazyRoute
+  '/catm/$teacher_id/$exam_id/$course_id': typeof ProtectedCatmTeacheridExamidCourseidRoute
+  '/exam/$exam_id/$course_id': typeof ProtectedExamExamExamidCourseidRoute
+  '/exam/pdf/tabulation/$exam_id': typeof ProtectedExamPdfTabulationExamidRoute
+  '/examiner/$exam_id/$course_id/$set': typeof ProtectedExaminerExamidCourseidSetRoute
+  '/exam/pdf/gradesheet/$exam_id/$course_id': typeof ProtectedExamPdfGradesheetExamidCourseidRoute
+  '/exam/pdf/summation/$exam_id/$course_id': typeof ProtectedExamPdfSummationExamidCourseidRoute
+}
+
+export interface FileRoutesById {
+  __root__: typeof rootRoute
+  '/_protected': typeof ProtectedRouteWithChildren
+  '/_public': typeof PublicRouteWithChildren
+  '/_public/login': typeof PublicLoginRoute
+  '/_protected/': typeof ProtectedIndexRoute
+  '/_protected/catm/all-catms': typeof ProtectedCatmAllCatmsRoute
+  '/_protected/exam/$exam_id': typeof ProtectedExamExamidRoute
+  '/_protected/exam': typeof ProtectedExamRouteWithChildren
+  '/_protected/exam/_exam': typeof ProtectedExamExamRouteWithChildren
+  '/_protected/exam/all-exams': typeof ProtectedExamAllExamsRoute
+  '/_protected/examiner/all-papers': typeof ProtectedExaminerAllPapersRoute
+  '/_protected/admin/': typeof ProtectedAdminIndexLazyRoute
+  '/_protected/catm/$teacher_id/$exam_id/$course_id': typeof ProtectedCatmTeacheridExamidCourseidRoute
+  '/_protected/exam/_exam/$exam_id/$course_id': typeof ProtectedExamExamExamidCourseidRoute
+  '/_protected/exam/pdf/tabulation/$exam_id': typeof ProtectedExamPdfTabulationExamidRoute
+  '/_protected/examiner/$exam_id/$course_id/$set': typeof ProtectedExaminerExamidCourseidSetRoute
+  '/_protected/exam/pdf/gradesheet/$exam_id/$course_id': typeof ProtectedExamPdfGradesheetExamidCourseidRoute
+  '/_protected/exam/pdf/summation/$exam_id/$course_id': typeof ProtectedExamPdfSummationExamidCourseidRoute
+}
+
+export interface FileRouteTypes {
+  fileRoutesByFullPath: FileRoutesByFullPath
+  fullPaths:
+    | ''
+    | '/login'
+    | '/'
+    | '/catm/all-catms'
+    | '/exam/$exam_id'
+    | '/exam'
+    | '/exam/all-exams'
+    | '/examiner/all-papers'
+    | '/admin'
+    | '/catm/$teacher_id/$exam_id/$course_id'
+    | '/exam/$exam_id/$course_id'
+    | '/exam/pdf/tabulation/$exam_id'
+    | '/examiner/$exam_id/$course_id/$set'
+    | '/exam/pdf/gradesheet/$exam_id/$course_id'
+    | '/exam/pdf/summation/$exam_id/$course_id'
+  fileRoutesByTo: FileRoutesByTo
+  to:
+    | ''
+    | '/login'
+    | '/'
+    | '/catm/all-catms'
+    | '/exam/$exam_id'
+    | '/exam'
+    | '/exam/all-exams'
+    | '/examiner/all-papers'
+    | '/admin'
+    | '/catm/$teacher_id/$exam_id/$course_id'
+    | '/exam/$exam_id/$course_id'
+    | '/exam/pdf/tabulation/$exam_id'
+    | '/examiner/$exam_id/$course_id/$set'
+    | '/exam/pdf/gradesheet/$exam_id/$course_id'
+    | '/exam/pdf/summation/$exam_id/$course_id'
+  id:
+    | '__root__'
+    | '/_protected'
+    | '/_public'
+    | '/_public/login'
+    | '/_protected/'
+    | '/_protected/catm/all-catms'
+    | '/_protected/exam/$exam_id'
+    | '/_protected/exam'
+    | '/_protected/exam/_exam'
+    | '/_protected/exam/all-exams'
+    | '/_protected/examiner/all-papers'
+    | '/_protected/admin/'
+    | '/_protected/catm/$teacher_id/$exam_id/$course_id'
+    | '/_protected/exam/_exam/$exam_id/$course_id'
+    | '/_protected/exam/pdf/tabulation/$exam_id'
+    | '/_protected/examiner/$exam_id/$course_id/$set'
+    | '/_protected/exam/pdf/gradesheet/$exam_id/$course_id'
+    | '/_protected/exam/pdf/summation/$exam_id/$course_id'
+  fileRoutesById: FileRoutesById
+}
+
+export interface RootRouteChildren {
+  ProtectedRoute: typeof ProtectedRouteWithChildren
+  PublicRoute: typeof PublicRouteWithChildren
+}
+
+const rootRouteChildren: RootRouteChildren = {
+  ProtectedRoute: ProtectedRouteWithChildren,
+  PublicRoute: PublicRouteWithChildren,
+}
+
+export const routeTree = rootRoute
+  ._addFileChildren(rootRouteChildren)
+  ._addFileTypes<FileRouteTypes>()
 
 /* prettier-ignore-end */
 
