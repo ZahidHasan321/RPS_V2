@@ -42,9 +42,10 @@ export default function AuthProvider({
         },
       )
       .then((res) => res.data)
-      .catch(err => console.log(err))
-
-    if (data.session_id) {
+      .catch((err) => {
+        console.log(err);
+      });
+    if (data?.session_id) {
       setUser(data.user);
       setStoredUser(data.user);
 

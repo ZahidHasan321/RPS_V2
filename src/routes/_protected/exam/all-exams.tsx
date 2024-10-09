@@ -18,13 +18,6 @@ function AllExams() {
     queryFn: () => getAssignedExams(user?.teacher_id),
   });
 
-  if (isLoading)
-    return (
-      <div className="flex flex-row items-start justify-center">
-        <Loader2 size={32} />
-      </div>
-    );
-
   const columns: ColumnDef<Exam>[] = [
     {
       accessorKey: "exam_id",
@@ -78,7 +71,7 @@ function AllExams() {
 
   return (
     <div className="m-20">
-      <BasicTable columns={columns} data={exams || []} />
+      <BasicTable loading={isLoading} columns={columns} data={exams || []} />
     </div>
   );
 }

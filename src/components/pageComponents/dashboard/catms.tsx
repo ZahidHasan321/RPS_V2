@@ -6,7 +6,6 @@ import { CatmItem } from "@/type";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
 import { ColumnDef } from "@tanstack/react-table";
-import { Loader2 } from "lucide-react";
 import { Suspense } from "react";
 
 type CatmsProps = {
@@ -18,19 +17,9 @@ const Catms = ({ className, is_catm_submitted }: CatmsProps) => {
   const { user } = useAuth();
 
   const { data: catms, isLoading } = useQuery({
-    queryKey: ["catms", user?.teacher_id],
+    queryKey: ["catms", user?.teacher_id, is_catm_submitted],
     queryFn: () => getCatms(user?.teacher_id, is_catm_submitted),
   });
-
-  if (isLoading)
-    return (
-      <div className="flex flex-row items-start justify-center">
-        <Loader2 size={32} />
-      </div>
-    );
-
-  if (!catms)
-    return <div className="w-full grid place-items-center pb-2">No Data</div>;
 
   const columns: ColumnDef<CatmItem>[] = [
     {
@@ -76,10 +65,13 @@ const Catms = ({ className, is_catm_submitted }: CatmsProps) => {
 
   return (
     <div className={cn(className)}>
-      <h1 className="font-semibold text-3xl mb-10">Class Test Marks</h1>
       <div className="flex flex-col gap-3">
         <Suspense fallback={<div>Loading...</div>}>
-          <BasicTable data={catms} columns={columns} loading={isLoading} />
+          <BasicTable
+            data={catms || []}
+            columns={columns}
+            loading={isLoading}
+          />
         </Suspense>
       </div>
     </div>
@@ -91,6 +83,7 @@ async function getCatms(
   is_catm_submitted?: number,
 ): Promise<CatmItem[]> {
   if (!teacher_id) return [];
+
   const data = await secureAxios
     .get(`/course-teacher/${teacher_id}`, {
       params: {

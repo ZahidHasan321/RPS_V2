@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button";
+import NavHeader from "@/components/navigation/navHeader";
 import useAuth from "@/hooks/auth";
 import {
   createFileRoute,
@@ -50,11 +50,7 @@ export default function LayoutComponent() {
   return (
     <div className="flex flex-col">
       {location.pathname.includes("/exam/pdf/") === false && (
-        <div className="absolute right-0 p-4">
-          <Button onClick={onLogoutClick} variant="destructive">
-            Logout
-          </Button>
-        </div>
+        <NavHeader logout={onLogoutClick} />
       )}
       <Outlet />
     </div>

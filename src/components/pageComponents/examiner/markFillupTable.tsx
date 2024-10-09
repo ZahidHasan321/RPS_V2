@@ -32,7 +32,6 @@ const defaultColumn: Partial<ColumnDef<PaperMark>> = {
 
     // When the input is blurred, we'll call our table meta's updateData function
     const onBlur = () => {
-      
       table.options.meta?.updateData(index, id, value);
     };
 
@@ -182,4 +181,3 @@ async function fillupMark(
     })
     .then((res) => res.data);
 }
-

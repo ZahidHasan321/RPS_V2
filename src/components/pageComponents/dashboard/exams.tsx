@@ -1,4 +1,3 @@
-import { formatOrdinals } from "@/helper/formatOrdinals";
 import useAuth from "@/hooks/auth";
 import secureAxios from "@/lib/interceptor";
 import { useQuery } from "@tanstack/react-query";
@@ -24,6 +23,8 @@ type Exam = {
   exam_session: string;
   total_courses: number;
   completed_courses: number;
+  exam_start_date: string;
+  exam_end_date: string;
 };
 
 async function getAssignedExams(
@@ -52,7 +53,7 @@ const Exams = () => {
   if (isLoading)
     return (
       <div className="flex flex-row items-start justify-center">
-        <Loader2 size={32} />
+        <Loader2 size={32} className="animate-spin" />
       </div>
     );
 
@@ -71,24 +72,15 @@ const Exams = () => {
               }}
             >
               <CardHeader>
-                <CardTitle>{formatOrdinals(exam.semester)} semester</CardTitle>
-                <CardDescription>{exam.exam_name}</CardDescription>
+                <CardTitle>{exam.exam_name}</CardTitle>
+                <CardDescription>{exam.exam_session}</CardDescription>
               </CardHeader>
               <CardContent>
                 <p>
-                  <span className="font-bold mr-1">Semester:</span>{" "}
-                  {formatOrdinals(exam.semester)}
-                </p>
-                <p>
-                  <span className="font-bold mr-1">Session:</span>{" "}
-                  {exam.exam_session}
+                  <span className="font-bold mr-1">Start Date: </span>{" "}
+                  {new Date(exam.exam_start_date).toLocaleDateString()}
                 </p>
 
-                {/* <p>
-                  <span className="font-bold mr-1">Exam Period: </span>
-                  {formatDate(new Date(exam.exam_start_date))} -{" "}
-                  {formatDate(new Date(exam.exam_end_date))}
-                </p> */}
                 {/* <p>
                   {" "}
                   <span className="font-bold mr-1">Start date:</span>{" "}

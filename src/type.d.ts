@@ -56,6 +56,8 @@ export type CourseData = {
   program_abbr: string;
   department_abbr: string;
   department_name: string;
+  set_A_submitted: number;
+  set_B_submitted: number;
 };
 
 export type TeacherDataType = {
@@ -221,4 +223,36 @@ export type AuthContextType = {
   user: User | null;
   login: (teacher_id: number, password: string) => Promise<void>;
   logout: () => Promise<void>;
+};
+
+export type Course = {
+  course_code: string;
+  course_id: number;
+  course_title: string;
+  course_type: "Lab" | "Project" | "Theory" | "Thesis" | "Viva" | null;
+  credit: number;
+  department_id: number;
+  exam_minutes: number;
+  department: {
+    department_id: number;
+    department_abbr: string;
+    department_name: string;
+    faculty: string;
+    grad_semester_no: number;
+    undergrad_semester_no: number;
+    university_id: number;
+  };
+};
+
+export type CourseResponse = {
+  student_status: "Improvement" | "Irregular" | "Regular";
+  student_id: number;
+  catm: {
+    ct_mark: number;
+    attendance_mark: number;
+  };
+  setA_mark: number | null;
+  setB_mark: number | null;
+  setA_paper_code: number | null;
+  setB_paper_code: number | null;
 };

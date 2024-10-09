@@ -1,4 +1,10 @@
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+  CardDescription,
+} from "@/components/ui/card";
 import { CatmItem } from "@/type";
 
 export default function CatmCourseDetails({ data }: { data: CatmItem }) {
@@ -6,15 +12,15 @@ export default function CatmCourseDetails({ data }: { data: CatmItem }) {
     <Card>
       <CardHeader>
         <CardTitle>{data.course_title}</CardTitle>
+        <CardDescription>{data.course_code}</CardDescription>
       </CardHeader>
       <CardContent>
         <p>
-          <span className="font-bold mr-1">Course Code:</span>
-          {data.course_code}
+          {" "}
+          <span className="font-bold">Program:</span> {data.program_name}
         </p>
         <p>
-          <span className="font-bold mr-1">Course Title:</span>
-          {data.course_title}
+          <span className="font-bold">Semester:</span> {data.semester}
         </p>
         <p>
           <span className="font-bold mr-1">Credit:</span>

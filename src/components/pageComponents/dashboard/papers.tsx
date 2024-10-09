@@ -96,7 +96,6 @@ const Papers = ({
 
   return (
     <div className={cn(className)}>
-      <h1 className="font-semibold text-3xl mb-10">Assigned Papers</h1>
       <Suspense fallback={<div>Loading...</div>}>
         <BasicTable data={papers || []} columns={columns} loading={isLoading} />
       </Suspense>

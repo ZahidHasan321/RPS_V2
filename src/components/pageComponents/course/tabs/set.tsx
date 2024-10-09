@@ -2,6 +2,7 @@ import BasicTable from "@/components/basicTable/basicTable";
 import AssignExaminer from "@/components/modals/assignExaminer";
 import { formatDate } from "@/helper/dateFormatter";
 import secureAxios from "@/lib/interceptor";
+import { cn } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
 import { ColumnDef } from "@tanstack/react-table";
 import { AxiosError } from "axios";
@@ -52,8 +53,9 @@ const SetTab = ({
     return <div>{error.response?.data?.message}</div>;
 
   return (
-    <div className="flex flex-col gap-2 px-2 mb-2">
+    <div className="flex flex-col justify-center items-center gap-2 px-2 mb-2">
       <ExaminerSection
+        className="w-[60%]"
         data={examinerData}
         isError={isErrorExaminer}
         error={examinerError}
@@ -79,6 +81,7 @@ function ExaminerSection({
   exam_id,
   course_id,
   set,
+  className,
 }: {
   data?: ExaminerType;
   isLoading: boolean;
@@ -87,6 +90,7 @@ function ExaminerSection({
   exam_id: string;
   course_id: string;
   set: string;
+  className?: string;
 }) {
   if (isLoading) return <div>Loading...</div>;
   if (isError && error instanceof AxiosError)
@@ -96,7 +100,9 @@ function ExaminerSection({
 
   if (data.examiner_assigned === false) {
     return (
-      <div className="flex flex-col gap-2 border p-4 items-start">
+      <div
+        className={cn("flex flex-col gap-2 border p-4 items-start", className)}
+      >
         <p className="text-red-500">No Examiner Assinged</p>
         <AssignExaminer exam_id={exam_id} course_id={course_id} set={set} />
       </div>
@@ -104,10 +110,12 @@ function ExaminerSection({
   }
 
   return (
-    <div className="flex flex-col gap-2 border p-4 items-start">
+    <div
+      className={cn("flex flex-col gap-2 border p-4 items-start", className)}
+    >
       <p>
         <span className="font-bold mr-1">Name:</span>
-        {data.designation} {data.first_name} {data.last_name}
+        {data.title} {data.first_name} {data.last_name}
       </p>
       <p>
         <span className="font-bold mr-1">Assigned Date:</span>
@@ -116,7 +124,7 @@ function ExaminerSection({
 
       {data.is_submitted === 1 ? (
         <p>
-          <span className="font-bold mr-1">Submitted Date:</span>
+          <span className="font-bold mr-1">Submit Date:</span>
           {formatDate(new Date(data.submit_date))}
         </p>
       ) : (
@@ -154,6 +162,7 @@ type ExaminerType = {
   last_name: string;
   is_submitted: number;
   designation: string;
+  title: string;
   submit_date: string;
   examiner_assigned?: boolean;
 };

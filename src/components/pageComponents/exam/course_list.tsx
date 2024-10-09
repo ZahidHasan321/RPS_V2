@@ -16,6 +16,12 @@ const Course_List = ({ exam_id }: { exam_id: string }) => {
     queryFn: () => getCourses(exam_id),
   });
 
+  const color = {
+    Unassigned: "text-red-500",
+    Pending: "text-yellow-500",
+    Completed: "text-green-500",
+  };
+
   if (isLoading)
     return (
       <div className="h-52 flex flex-row items-start justify-center">
@@ -24,7 +30,6 @@ const Course_List = ({ exam_id }: { exam_id: string }) => {
     );
   return (
     <div className="flex flex-wrap gap-4">
-      <div className="w-full text-3xl">Course List</div>
       {courses &&
         courses.map((course, idx) => (
           <Card
@@ -46,12 +51,7 @@ const Course_List = ({ exam_id }: { exam_id: string }) => {
                 <CardDescription>{course.course_code}</CardDescription>
               </CardHeader>
               <CardContent>
-                <p>
-                  {" "}
-                  <span className="font-bold mr-1">Type:</span>
-                  {course.course_type}
-                </p>
-
+                <p className="font-bold">{course.course_type} course</p>
                 <p>
                   {" "}
                   <span className="font-bold mr-1">Credit:</span>
@@ -59,8 +59,10 @@ const Course_List = ({ exam_id }: { exam_id: string }) => {
                 </p>
 
                 <p>
-                  <span className="font-bold mr-1">Result Status:</span>{" "}
-                  {course.result_status}
+                  <span className={`font-bold mr-1 `}>Result Status:</span>{" "}
+                  <span className={`${color[course.result_status]}`}>
+                    {course.result_status}
+                  </span>
                 </p>
               </CardContent>
             </Link>

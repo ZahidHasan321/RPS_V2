@@ -1,10 +1,10 @@
 import { getCourses } from "@/common_queries/courses";
 import { getExamDetails } from "@/common_queries/exam";
+import { getStudentData } from "@/common_queries/examResult";
 import { tw } from "@/components/pdf/styles";
 import Header from "@/components/pdf/tabulationSheet/Header/header";
 import Body from "@/components/pdf/tabulationSheet/body/body";
 import Footer from "@/components/pdf/tabulationSheet/footer/footer";
-import { getGPA } from "@/constants/grades";
 import secureAxios from "@/lib/interceptor";
 import {
   CourseData,
@@ -22,7 +22,7 @@ import {
 } from "@react-pdf/renderer";
 import { useQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode } from "react";
 
 export const Route = createFileRoute(
   "/_protected/exam/pdf/tabulation/$exam_id",
@@ -32,18 +32,11 @@ export const Route = createFileRoute(
 
 function TabulationPage() {
   const { exam_id } = Route.useParams();
-  const [processedData, setProcessedData] = useState<TabulationStudentDataType>(
-    [],
-  );
 
-  /* const { data: studentData, isLoading: isLoadingStudentData } = useQuery({
+  const { data: studentData, isLoading: isLoadingStudentData } = useQuery({
     queryKey: ["exam", parseInt(exam_id)],
     queryFn: () => getStudentData(exam_id),
-  }) */ useEffect(() => {
-    getStudentData(exam_id).then((data) => {
-      setProcessedData(processStudentData(data));
-    });
-  }, []);
+  });
 
   const { data: courses, isLoading: isLoadingCourses } = useQuery({
     queryKey: ["exam", exam_id],
@@ -60,7 +53,12 @@ function TabulationPage() {
     queryFn: () => getExamDetails(exam_id),
   });
 
-  if (isLoadingCourses || isLoadingExamCommittee || isLoadingExamDetails) {
+  if (
+    isLoadingCourses ||
+    isLoadingExamCommittee ||
+    isLoadingExamDetails ||
+    isLoadingStudentData
+  ) {
     return (
       <PDFViewer style={tw("h-screen w-screen")}>
         <Document>
@@ -75,7 +73,8 @@ function TabulationPage() {
   if (
     exam_details === undefined ||
     exam_committee === undefined ||
-    courses === undefined
+    courses === undefined ||
+    studentData === undefined
   ) {
     return (
       <PDFViewer style={tw("h-screen w-screen")}>
@@ -92,7 +91,7 @@ function TabulationPage() {
     <PDFViewer style={tw("h-screen w-screen")}>
       <Document>
         <MyDocument
-          studentData={processedData}
+          studentData={studentData}
           courses={courses}
           exam_committee={exam_committee}
           exam_details={exam_details}
@@ -164,74 +163,8 @@ type studentDataType = {
   }[];
 };
 
-async function getStudentData(exam_id: string) {
-  return await secureAxios.get(`/marksheet/${exam_id}`).then((res) => res.data);
-}
-
 async function getExamCommittee(exam_id: string) {
   return secureAxios
     .get(`/exam-committee/exam/${exam_id}/members`)
     .then((res) => res.data);
-}
-
-function processStudentData(studentData: studentDataType[]) {
-  console.log("unprocessed", studentData);
-  const processedData: TabulationStudentDataType = [];
-  studentData.map((student) => {
-    let index = processedData.findIndex(
-      (data) => data.student_id === student.student_id,
-    );
-
-    if (index === -1) {
-      processedData.push({
-        student_id: student.student_id,
-        student_name: student.student_name,
-        hall_name: student.hall_name,
-        session: student.session,
-        student_status: student.student_status,
-        courses: new Map(),
-        improves: new Map(),
-      });
-    }
-
-    index = processedData.findIndex(
-      (data) => data.student_id === student.student_id,
-    );
-
-    student.courses.map((course) => {
-      const total =
-        course.fem && course.catm
-          ? course.fem + course.catm
-          : course.fem || course.catm;
-
-      processedData[index].courses.set(course.course_id, {
-        catm: course.catm,
-        fem: course.fem,
-        gpa: getGPA(total, course.credit),
-        total: total ? Math.ceil(total) : null,
-      });
-    });
-
-    if (student.improves) {
-      student.improves.map((course) => {
-        const prevCatm = student.courses.find(
-          (c) => c.course_id === course.course_id,
-        )?.catm;
-        const total =
-          course.fem && prevCatm
-            ? course.fem + prevCatm
-            : prevCatm || course.fem;
-        processedData[index].improves?.set(course.course_id, {
-          catm: prevCatm ?? 0,
-          fem: course.fem,
-          gpa: getGPA(total, course.credit),
-          total: total ? Math.ceil(total) : null,
-        });
-      });
-    }
-  });
-
-  console.log(processedData);
-
-  return processedData;
 }

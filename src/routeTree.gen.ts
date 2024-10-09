@@ -17,17 +17,17 @@ import { Route as PublicImport } from './routes/_public'
 import { Route as ProtectedImport } from './routes/_protected'
 import { Route as ProtectedIndexImport } from './routes/_protected/index'
 import { Route as PublicLoginImport } from './routes/_public/login'
-import { Route as ExamSessionSemesterImport } from './routes/exam/$session.$semester'
 import { Route as ProtectedExaminerAllPapersImport } from './routes/_protected/examiner/all-papers'
 import { Route as ProtectedExamAllExamsImport } from './routes/_protected/exam/all-exams'
 import { Route as ProtectedExamExamImport } from './routes/_protected/exam/_exam'
 import { Route as ProtectedExamExamidImport } from './routes/_protected/exam/$exam_id'
 import { Route as ProtectedCatmAllCatmsImport } from './routes/_protected/catm/all-catms'
-import { Route as CourseSessionSemesterCourseCodeImport } from './routes/course/$session.$semester.$courseCode'
 import { Route as ProtectedExaminerExamidCourseidSetImport } from './routes/_protected/examiner/$exam_id.$course_id.$set'
 import { Route as ProtectedExamPdfTabulationExamidImport } from './routes/_protected/exam/pdf/tabulation.$exam_id'
 import { Route as ProtectedExamExamExamidCourseidImport } from './routes/_protected/exam/_exam.$exam_id.$course_id'
 import { Route as ProtectedCatmTeacheridExamidCourseidImport } from './routes/_protected/catm/$teacher_id.$exam_id.$course_id'
+import { Route as ProtectedExamPdfSummationExamidCourseidImport } from './routes/_protected/exam/pdf/summation.$exam_id.$course_id'
+import { Route as ProtectedExamPdfGradesheetExamidCourseidImport } from './routes/_protected/exam/pdf/gradesheet.$exam_id.$course_id'
 
 // Create Virtual Routes
 
@@ -68,11 +68,6 @@ const ProtectedAdminIndexLazyRoute = ProtectedAdminIndexLazyImport.update({
   import('./routes/_protected/admin/index.lazy').then((d) => d.Route),
 )
 
-const ExamSessionSemesterRoute = ExamSessionSemesterImport.update({
-  path: '/exam/$session/$semester',
-  getParentRoute: () => rootRoute,
-} as any)
-
 const ProtectedExaminerAllPapersRoute = ProtectedExaminerAllPapersImport.update(
   {
     path: '/examiner/all-papers',
@@ -100,12 +95,6 @@ const ProtectedCatmAllCatmsRoute = ProtectedCatmAllCatmsImport.update({
   getParentRoute: () => ProtectedRoute,
 } as any)
 
-const CourseSessionSemesterCourseCodeRoute =
-  CourseSessionSemesterCourseCodeImport.update({
-    path: '/course/$session/$semester/$courseCode',
-    getParentRoute: () => rootRoute,
-  } as any)
-
 const ProtectedExaminerExamidCourseidSetRoute =
   ProtectedExaminerExamidCourseidSetImport.update({
     path: '/examiner/$exam_id/$course_id/$set',
@@ -128,6 +117,18 @@ const ProtectedCatmTeacheridExamidCourseidRoute =
   ProtectedCatmTeacheridExamidCourseidImport.update({
     path: '/catm/$teacher_id/$exam_id/$course_id',
     getParentRoute: () => ProtectedRoute,
+  } as any)
+
+const ProtectedExamPdfSummationExamidCourseidRoute =
+  ProtectedExamPdfSummationExamidCourseidImport.update({
+    path: '/pdf/summation/$exam_id/$course_id',
+    getParentRoute: () => ProtectedExamRoute,
+  } as any)
+
+const ProtectedExamPdfGradesheetExamidCourseidRoute =
+  ProtectedExamPdfGradesheetExamidCourseidImport.update({
+    path: '/pdf/gradesheet/$exam_id/$course_id',
+    getParentRoute: () => ProtectedExamRoute,
   } as any)
 
 // Populate the FileRoutesByPath interface
@@ -204,26 +205,12 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProtectedExaminerAllPapersImport
       parentRoute: typeof ProtectedImport
     }
-    '/exam/$session/$semester': {
-      id: '/exam/$session/$semester'
-      path: '/exam/$session/$semester'
-      fullPath: '/exam/$session/$semester'
-      preLoaderRoute: typeof ExamSessionSemesterImport
-      parentRoute: typeof rootRoute
-    }
     '/_protected/admin/': {
       id: '/_protected/admin/'
       path: '/admin'
       fullPath: '/admin'
       preLoaderRoute: typeof ProtectedAdminIndexLazyImport
       parentRoute: typeof ProtectedImport
-    }
-    '/course/$session/$semester/$courseCode': {
-      id: '/course/$session/$semester/$courseCode'
-      path: '/course/$session/$semester/$courseCode'
-      fullPath: '/course/$session/$semester/$courseCode'
-      preLoaderRoute: typeof CourseSessionSemesterCourseCodeImport
-      parentRoute: typeof rootRoute
     }
     '/_protected/catm/$teacher_id/$exam_id/$course_id': {
       id: '/_protected/catm/$teacher_id/$exam_id/$course_id'
@@ -253,6 +240,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProtectedExaminerExamidCourseidSetImport
       parentRoute: typeof ProtectedImport
     }
+    '/_protected/exam/pdf/gradesheet/$exam_id/$course_id': {
+      id: '/_protected/exam/pdf/gradesheet/$exam_id/$course_id'
+      path: '/pdf/gradesheet/$exam_id/$course_id'
+      fullPath: '/exam/pdf/gradesheet/$exam_id/$course_id'
+      preLoaderRoute: typeof ProtectedExamPdfGradesheetExamidCourseidImport
+      parentRoute: typeof ProtectedExamImport
+    }
+    '/_protected/exam/pdf/summation/$exam_id/$course_id': {
+      id: '/_protected/exam/pdf/summation/$exam_id/$course_id'
+      path: '/pdf/summation/$exam_id/$course_id'
+      fullPath: '/exam/pdf/summation/$exam_id/$course_id'
+      preLoaderRoute: typeof ProtectedExamPdfSummationExamidCourseidImport
+      parentRoute: typeof ProtectedExamImport
+    }
   }
 }
 
@@ -269,6 +270,8 @@ export const routeTree = rootRoute.addChildren({
       }),
       ProtectedExamAllExamsRoute,
       ProtectedExamPdfTabulationExamidRoute,
+      ProtectedExamPdfGradesheetExamidCourseidRoute,
+      ProtectedExamPdfSummationExamidCourseidRoute,
     }),
     ProtectedExaminerAllPapersRoute,
     ProtectedAdminIndexLazyRoute,
@@ -276,8 +279,6 @@ export const routeTree = rootRoute.addChildren({
     ProtectedExaminerExamidCourseidSetRoute,
   }),
   PublicRoute: PublicRoute.addChildren({ PublicLoginRoute }),
-  ExamSessionSemesterRoute,
-  CourseSessionSemesterCourseCodeRoute,
 })
 
 /* prettier-ignore-end */
@@ -289,9 +290,7 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "__root.tsx",
       "children": [
         "/_protected",
-        "/_public",
-        "/exam/$session/$semester",
-        "/course/$session/$semester/$courseCode"
+        "/_public"
       ]
     },
     "/_protected": {
@@ -335,7 +334,9 @@ export const routeTree = rootRoute.addChildren({
       "children": [
         "/_protected/exam/_exam",
         "/_protected/exam/all-exams",
-        "/_protected/exam/pdf/tabulation/$exam_id"
+        "/_protected/exam/pdf/tabulation/$exam_id",
+        "/_protected/exam/pdf/gradesheet/$exam_id/$course_id",
+        "/_protected/exam/pdf/summation/$exam_id/$course_id"
       ]
     },
     "/_protected/exam/_exam": {
@@ -353,15 +354,9 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "_protected/examiner/all-papers.tsx",
       "parent": "/_protected"
     },
-    "/exam/$session/$semester": {
-      "filePath": "exam/$session.$semester.tsx"
-    },
     "/_protected/admin/": {
       "filePath": "_protected/admin/index.lazy.tsx",
       "parent": "/_protected"
-    },
-    "/course/$session/$semester/$courseCode": {
-      "filePath": "course/$session.$semester.$courseCode.tsx"
     },
     "/_protected/catm/$teacher_id/$exam_id/$course_id": {
       "filePath": "_protected/catm/$teacher_id.$exam_id.$course_id.tsx",
@@ -378,6 +373,14 @@ export const routeTree = rootRoute.addChildren({
     "/_protected/examiner/$exam_id/$course_id/$set": {
       "filePath": "_protected/examiner/$exam_id.$course_id.$set.tsx",
       "parent": "/_protected"
+    },
+    "/_protected/exam/pdf/gradesheet/$exam_id/$course_id": {
+      "filePath": "_protected/exam/pdf/gradesheet.$exam_id.$course_id.tsx",
+      "parent": "/_protected/exam"
+    },
+    "/_protected/exam/pdf/summation/$exam_id/$course_id": {
+      "filePath": "_protected/exam/pdf/summation.$exam_id.$course_id.tsx",
+      "parent": "/_protected/exam"
     }
   }
 }

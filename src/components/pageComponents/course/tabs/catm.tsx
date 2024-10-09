@@ -20,8 +20,8 @@ const CatmTab = ({
   if (isError) return <div>{error?.message}</div>;
 
   return (
-    <div className="flex flex-col gap-2 px-2 mb-2">
-      <CourseTeacherDetails data={data} />
+    <div className="flex flex-col gap-2 px-2 mb-2 items-center">
+      <CourseTeacherDetails data={data} className="w-[60%]" />
       {data?.is_catm_submitted === 1 ? (
         <ShowCatm exam_id={exam_id} course_id={course_id} />
       ) : null}

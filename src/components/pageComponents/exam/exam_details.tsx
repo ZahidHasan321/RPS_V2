@@ -39,13 +39,9 @@ const Exam_Details = ({ exam_id }: { exam_id: string }) => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Exam Details</CardTitle>
+        <CardTitle>{examDetails.exam_name}</CardTitle>
       </CardHeader>
-      <CardContent>
-        <p>
-          <span className="font-bold mr-1">Exam Name:</span>
-          {examDetails.exam_name}
-        </p>
+      <CardContent className="flex flex-col text-md">
         <p>
           <span className="font-bold mr-1">Exam Centre:</span>
           {examDetails.exam_centre}
@@ -73,11 +69,14 @@ const Exam_Details = ({ exam_id }: { exam_id: string }) => {
         </p>
 
         <Link
+          className="mt-4"
           to="/exam/pdf/tabulation/$exam_id"
           params={{ exam_id: exam_id }}
           target="_blank"
         >
-          <Button>Tabulation sheet</Button>
+          <Button className="bg-blue-500 hover:bg-blue-600">
+            Tabulation sheet
+          </Button>
         </Link>
       </CardContent>
     </Card>

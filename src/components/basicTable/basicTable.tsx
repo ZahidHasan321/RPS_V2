@@ -100,10 +100,10 @@ const BasicTable = <T extends object>({
             <TableRow>
               <TableCell
                 colSpan={columns.length}
-                className="h-24 border-2 text-center text-2xl"
+                className="h-24 text-center text-2xl"
               >
                 {loading ? (
-                  <Loader2 size={32} className="animate-spin" />
+                  <Loader2 size={32} className="animate-spin mx-auto" />
                 ) : (
                   "No results"
                 )}
