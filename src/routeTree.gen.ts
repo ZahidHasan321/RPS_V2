@@ -24,10 +24,10 @@ import { Route as ProtectedExamExamidImport } from './routes/_protected/exam/$ex
 import { Route as ProtectedCatmAllCatmsImport } from './routes/_protected/catm/all-catms'
 import { Route as ProtectedExaminerExamidCourseidSetImport } from './routes/_protected/examiner/$exam_id.$course_id.$set'
 import { Route as ProtectedExamPdfTabulationExamidImport } from './routes/_protected/exam/pdf/tabulation.$exam_id'
+import { Route as ProtectedExamPdfGradesheetExamidImport } from './routes/_protected/exam/pdf/gradesheet.$exam_id'
 import { Route as ProtectedExamExamExamidCourseidImport } from './routes/_protected/exam/_exam.$exam_id.$course_id'
 import { Route as ProtectedCatmTeacheridExamidCourseidImport } from './routes/_protected/catm/$teacher_id.$exam_id.$course_id'
 import { Route as ProtectedExamPdfSummationExamidCourseidImport } from './routes/_protected/exam/pdf/summation.$exam_id.$course_id'
-import { Route as ProtectedExamPdfGradesheetExamidCourseidImport } from './routes/_protected/exam/pdf/gradesheet.$exam_id.$course_id'
 
 // Create Virtual Routes
 
@@ -107,6 +107,12 @@ const ProtectedExamPdfTabulationExamidRoute =
     getParentRoute: () => ProtectedExamRoute,
   } as any)
 
+const ProtectedExamPdfGradesheetExamidRoute =
+  ProtectedExamPdfGradesheetExamidImport.update({
+    path: '/pdf/gradesheet/$exam_id',
+    getParentRoute: () => ProtectedExamRoute,
+  } as any)
+
 const ProtectedExamExamExamidCourseidRoute =
   ProtectedExamExamExamidCourseidImport.update({
     path: '/$exam_id/$course_id',
@@ -122,12 +128,6 @@ const ProtectedCatmTeacheridExamidCourseidRoute =
 const ProtectedExamPdfSummationExamidCourseidRoute =
   ProtectedExamPdfSummationExamidCourseidImport.update({
     path: '/pdf/summation/$exam_id/$course_id',
-    getParentRoute: () => ProtectedExamRoute,
-  } as any)
-
-const ProtectedExamPdfGradesheetExamidCourseidRoute =
-  ProtectedExamPdfGradesheetExamidCourseidImport.update({
-    path: '/pdf/gradesheet/$exam_id/$course_id',
     getParentRoute: () => ProtectedExamRoute,
   } as any)
 
@@ -226,6 +226,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProtectedExamExamExamidCourseidImport
       parentRoute: typeof ProtectedExamExamImport
     }
+    '/_protected/exam/pdf/gradesheet/$exam_id': {
+      id: '/_protected/exam/pdf/gradesheet/$exam_id'
+      path: '/pdf/gradesheet/$exam_id'
+      fullPath: '/exam/pdf/gradesheet/$exam_id'
+      preLoaderRoute: typeof ProtectedExamPdfGradesheetExamidImport
+      parentRoute: typeof ProtectedExamImport
+    }
     '/_protected/exam/pdf/tabulation/$exam_id': {
       id: '/_protected/exam/pdf/tabulation/$exam_id'
       path: '/pdf/tabulation/$exam_id'
@@ -239,13 +246,6 @@ declare module '@tanstack/react-router' {
       fullPath: '/examiner/$exam_id/$course_id/$set'
       preLoaderRoute: typeof ProtectedExaminerExamidCourseidSetImport
       parentRoute: typeof ProtectedImport
-    }
-    '/_protected/exam/pdf/gradesheet/$exam_id/$course_id': {
-      id: '/_protected/exam/pdf/gradesheet/$exam_id/$course_id'
-      path: '/pdf/gradesheet/$exam_id/$course_id'
-      fullPath: '/exam/pdf/gradesheet/$exam_id/$course_id'
-      preLoaderRoute: typeof ProtectedExamPdfGradesheetExamidCourseidImport
-      parentRoute: typeof ProtectedExamImport
     }
     '/_protected/exam/pdf/summation/$exam_id/$course_id': {
       id: '/_protected/exam/pdf/summation/$exam_id/$course_id'
@@ -273,17 +273,16 @@ const ProtectedExamExamRouteWithChildren =
 interface ProtectedExamRouteChildren {
   ProtectedExamExamRoute: typeof ProtectedExamExamRouteWithChildren
   ProtectedExamAllExamsRoute: typeof ProtectedExamAllExamsRoute
+  ProtectedExamPdfGradesheetExamidRoute: typeof ProtectedExamPdfGradesheetExamidRoute
   ProtectedExamPdfTabulationExamidRoute: typeof ProtectedExamPdfTabulationExamidRoute
-  ProtectedExamPdfGradesheetExamidCourseidRoute: typeof ProtectedExamPdfGradesheetExamidCourseidRoute
   ProtectedExamPdfSummationExamidCourseidRoute: typeof ProtectedExamPdfSummationExamidCourseidRoute
 }
 
 const ProtectedExamRouteChildren: ProtectedExamRouteChildren = {
   ProtectedExamExamRoute: ProtectedExamExamRouteWithChildren,
   ProtectedExamAllExamsRoute: ProtectedExamAllExamsRoute,
+  ProtectedExamPdfGradesheetExamidRoute: ProtectedExamPdfGradesheetExamidRoute,
   ProtectedExamPdfTabulationExamidRoute: ProtectedExamPdfTabulationExamidRoute,
-  ProtectedExamPdfGradesheetExamidCourseidRoute:
-    ProtectedExamPdfGradesheetExamidCourseidRoute,
   ProtectedExamPdfSummationExamidCourseidRoute:
     ProtectedExamPdfSummationExamidCourseidRoute,
 }
@@ -343,9 +342,9 @@ export interface FileRoutesByFullPath {
   '/admin': typeof ProtectedAdminIndexLazyRoute
   '/catm/$teacher_id/$exam_id/$course_id': typeof ProtectedCatmTeacheridExamidCourseidRoute
   '/exam/$exam_id/$course_id': typeof ProtectedExamExamExamidCourseidRoute
+  '/exam/pdf/gradesheet/$exam_id': typeof ProtectedExamPdfGradesheetExamidRoute
   '/exam/pdf/tabulation/$exam_id': typeof ProtectedExamPdfTabulationExamidRoute
   '/examiner/$exam_id/$course_id/$set': typeof ProtectedExaminerExamidCourseidSetRoute
-  '/exam/pdf/gradesheet/$exam_id/$course_id': typeof ProtectedExamPdfGradesheetExamidCourseidRoute
   '/exam/pdf/summation/$exam_id/$course_id': typeof ProtectedExamPdfSummationExamidCourseidRoute
 }
 
@@ -361,9 +360,9 @@ export interface FileRoutesByTo {
   '/admin': typeof ProtectedAdminIndexLazyRoute
   '/catm/$teacher_id/$exam_id/$course_id': typeof ProtectedCatmTeacheridExamidCourseidRoute
   '/exam/$exam_id/$course_id': typeof ProtectedExamExamExamidCourseidRoute
+  '/exam/pdf/gradesheet/$exam_id': typeof ProtectedExamPdfGradesheetExamidRoute
   '/exam/pdf/tabulation/$exam_id': typeof ProtectedExamPdfTabulationExamidRoute
   '/examiner/$exam_id/$course_id/$set': typeof ProtectedExaminerExamidCourseidSetRoute
-  '/exam/pdf/gradesheet/$exam_id/$course_id': typeof ProtectedExamPdfGradesheetExamidCourseidRoute
   '/exam/pdf/summation/$exam_id/$course_id': typeof ProtectedExamPdfSummationExamidCourseidRoute
 }
 
@@ -382,9 +381,9 @@ export interface FileRoutesById {
   '/_protected/admin/': typeof ProtectedAdminIndexLazyRoute
   '/_protected/catm/$teacher_id/$exam_id/$course_id': typeof ProtectedCatmTeacheridExamidCourseidRoute
   '/_protected/exam/_exam/$exam_id/$course_id': typeof ProtectedExamExamExamidCourseidRoute
+  '/_protected/exam/pdf/gradesheet/$exam_id': typeof ProtectedExamPdfGradesheetExamidRoute
   '/_protected/exam/pdf/tabulation/$exam_id': typeof ProtectedExamPdfTabulationExamidRoute
   '/_protected/examiner/$exam_id/$course_id/$set': typeof ProtectedExaminerExamidCourseidSetRoute
-  '/_protected/exam/pdf/gradesheet/$exam_id/$course_id': typeof ProtectedExamPdfGradesheetExamidCourseidRoute
   '/_protected/exam/pdf/summation/$exam_id/$course_id': typeof ProtectedExamPdfSummationExamidCourseidRoute
 }
 
@@ -402,9 +401,9 @@ export interface FileRouteTypes {
     | '/admin'
     | '/catm/$teacher_id/$exam_id/$course_id'
     | '/exam/$exam_id/$course_id'
+    | '/exam/pdf/gradesheet/$exam_id'
     | '/exam/pdf/tabulation/$exam_id'
     | '/examiner/$exam_id/$course_id/$set'
-    | '/exam/pdf/gradesheet/$exam_id/$course_id'
     | '/exam/pdf/summation/$exam_id/$course_id'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -419,9 +418,9 @@ export interface FileRouteTypes {
     | '/admin'
     | '/catm/$teacher_id/$exam_id/$course_id'
     | '/exam/$exam_id/$course_id'
+    | '/exam/pdf/gradesheet/$exam_id'
     | '/exam/pdf/tabulation/$exam_id'
     | '/examiner/$exam_id/$course_id/$set'
-    | '/exam/pdf/gradesheet/$exam_id/$course_id'
     | '/exam/pdf/summation/$exam_id/$course_id'
   id:
     | '__root__'
@@ -438,9 +437,9 @@ export interface FileRouteTypes {
     | '/_protected/admin/'
     | '/_protected/catm/$teacher_id/$exam_id/$course_id'
     | '/_protected/exam/_exam/$exam_id/$course_id'
+    | '/_protected/exam/pdf/gradesheet/$exam_id'
     | '/_protected/exam/pdf/tabulation/$exam_id'
     | '/_protected/examiner/$exam_id/$course_id/$set'
-    | '/_protected/exam/pdf/gradesheet/$exam_id/$course_id'
     | '/_protected/exam/pdf/summation/$exam_id/$course_id'
   fileRoutesById: FileRoutesById
 }
@@ -512,8 +511,8 @@ export const routeTree = rootRoute
       "children": [
         "/_protected/exam/_exam",
         "/_protected/exam/all-exams",
+        "/_protected/exam/pdf/gradesheet/$exam_id",
         "/_protected/exam/pdf/tabulation/$exam_id",
-        "/_protected/exam/pdf/gradesheet/$exam_id/$course_id",
         "/_protected/exam/pdf/summation/$exam_id/$course_id"
       ]
     },
@@ -544,6 +543,10 @@ export const routeTree = rootRoute
       "filePath": "_protected/exam/_exam.$exam_id.$course_id.tsx",
       "parent": "/_protected/exam/_exam"
     },
+    "/_protected/exam/pdf/gradesheet/$exam_id": {
+      "filePath": "_protected/exam/pdf/gradesheet.$exam_id.tsx",
+      "parent": "/_protected/exam"
+    },
     "/_protected/exam/pdf/tabulation/$exam_id": {
       "filePath": "_protected/exam/pdf/tabulation.$exam_id.tsx",
       "parent": "/_protected/exam"
@@ -551,10 +554,6 @@ export const routeTree = rootRoute
     "/_protected/examiner/$exam_id/$course_id/$set": {
       "filePath": "_protected/examiner/$exam_id.$course_id.$set.tsx",
       "parent": "/_protected"
-    },
-    "/_protected/exam/pdf/gradesheet/$exam_id/$course_id": {
-      "filePath": "_protected/exam/pdf/gradesheet.$exam_id.$course_id.tsx",
-      "parent": "/_protected/exam"
     },
     "/_protected/exam/pdf/summation/$exam_id/$course_id": {
       "filePath": "_protected/exam/pdf/summation.$exam_id.$course_id.tsx",

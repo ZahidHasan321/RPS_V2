@@ -58,6 +58,7 @@ function processStudentData(studentData: studentDataType[]) {
       processedData[index].courses.set(course.course_id, {
         catm: course.catm,
         fem: course.fem,
+        credit: course.credit,
         gpa: getGPA(total, course.credit),
         total: total ? Math.ceil(total) : null,
       });
@@ -75,6 +76,7 @@ function processStudentData(studentData: studentDataType[]) {
         processedData[index].improves?.set(course.course_id, {
           catm: prevCatm ?? 0,
           fem: course.fem,
+          credit: course.credit,
           gpa: getGPA(total, course.credit),
           total: total ? Math.ceil(total) : null,
         });

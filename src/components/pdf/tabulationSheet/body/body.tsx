@@ -26,7 +26,10 @@ export default function Body({
     let gpa = 0;
     courses.map((course) => {
       studentData.slice(index, index + 3).map((student, idx) => {
-        if (student.student_status === "Improvement" && student.improves?.get(course.course_id)) {
+        if (
+          student.student_status === "Improvement" &&
+          student.improves?.get(course.course_id)
+        ) {
           const improvedGPA = student.improves?.get(course.course_id)?.gpa ?? 0;
           const regularGPA = student.courses.get(course.course_id)?.gpa ?? 0;
           gpa = improvedGPA > regularGPA ? improvedGPA : regularGPA;
@@ -45,7 +48,6 @@ export default function Body({
 
           const total = course.credit * gpa;
 
-          console.log(student.student_id, course.course_code, total, gpa);
           setTCP((prev) => {
             const newTCP = [...prev];
 

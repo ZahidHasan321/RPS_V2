@@ -34,7 +34,7 @@ function TabulationPage() {
   const { exam_id } = Route.useParams();
 
   const { data: studentData, isLoading: isLoadingStudentData } = useQuery({
-    queryKey: ["exam", parseInt(exam_id)],
+    queryKey: ["exam", exam_id],
     queryFn: () => getStudentData(exam_id),
   });
 

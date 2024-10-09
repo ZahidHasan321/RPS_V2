@@ -26,8 +26,8 @@ export default function AuthProvider({
   children: React.ReactNode;
 }) {
   const [user, setUser] = useState(null);
-
   const isAuthenticated = !!user;
+  const [loading, setLoading] = useState(true);
 
   const login = useCallback(async (teacher_id: number, password: string) => {
     const data = await axios
@@ -67,6 +67,7 @@ export default function AuthProvider({
     const user = getStoredUser();
     if (user) {
       setUser(user);
+      setLoading(false);
     } else {
       logout();
       setUser(null);
@@ -75,7 +76,7 @@ export default function AuthProvider({
 
   return (
     <AuthContext.Provider value={{ user, login, isAuthenticated, logout }}>
-      {children}
+      {loading ? null : children}
     </AuthContext.Provider>
   );
 }

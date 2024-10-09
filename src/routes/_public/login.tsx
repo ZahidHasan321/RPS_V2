@@ -31,7 +31,7 @@ function Page() {
   const search = Route.useSearch();
   const { login } = useAuth();
 
-  const onSubmitClick = async (e: React.FormEvent) => {
+  const onSubmitClick = (e: React.FormEvent) => {
     e.preventDefault();
 
     const trimmedTeacher_id = Number(teacher_id.trim());
@@ -46,10 +46,11 @@ function Page() {
       return;
     }
 
-    await login(trimmedTeacher_id, trimmedPassword)
-
-    await router.invalidate();
-    await navigate({ to: search.redirect || "/" });
+    login(trimmedTeacher_id, trimmedPassword).then(() => {
+      router.invalidate().then(() => {
+        navigate({ to: search.redirect || "/" });
+      });
+    });
   };
 
   return (
