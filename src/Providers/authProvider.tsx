@@ -64,14 +64,14 @@ export default function AuthProvider({
   }, []);
 
   useEffect(() => {
-    const user = getStoredUser();
-    if (user) {
-      setUser(user);
-      setLoading(false);
+    const storedUser = getStoredUser();
+    if (storedUser) {
+      setUser(storedUser);
     } else {
-      logout();
+      if (user) logout();
       setUser(null);
     }
+    setLoading(false);
   }, []);
 
   return (
