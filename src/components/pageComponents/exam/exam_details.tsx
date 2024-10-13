@@ -1,10 +1,10 @@
 import { getExamDetails } from "@/common_queries/exam";
+import { Button } from "@/components/ui/button";
 import { formatDate } from "@/helper/dateFormatter";
 import { useQuery } from "@tanstack/react-query";
+import { Link } from "@tanstack/react-router";
 import { Loader2 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "../../ui/card";
-import { Link } from "@tanstack/react-router";
-import { Button } from "@/components/ui/button";
 
 const Exam_Details = ({ exam_id }: { exam_id: string }) => {
   const { data: examDetails, isLoading } = useQuery({
@@ -68,8 +68,7 @@ const Exam_Details = ({ exam_id }: { exam_id: string }) => {
           )}
         </p>
 
-        <Link
-          className="mt-4"
+        <div className="flex flex-row gap-4 mt-4"><Link
           to="/exam/pdf/tabulation/$exam_id"
           params={{ exam_id: exam_id }}
           target="_blank"
@@ -78,6 +77,12 @@ const Exam_Details = ({ exam_id }: { exam_id: string }) => {
             Tabulation sheet
           </Button>
         </Link>
+
+          <Link to="/exam/pdf/gradesheet/$exam_id" params={{ exam_id: exam_id }} target="_blank">
+            <Button className="bg-blue-500 hover:bg-blue-600">
+              Gradesheet</Button>
+          </Link>
+        </div>
       </CardContent>
     </Card>
   );
