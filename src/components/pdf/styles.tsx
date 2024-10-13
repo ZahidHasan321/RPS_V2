@@ -1,17 +1,16 @@
 import { createTw } from "react-pdf-tailwind";
 import { Font } from "@react-pdf/renderer";
-import open_sans from "./fonts/OpenSans-Regular.ttf";
-import open_sans_bold from "./fonts/OpenSans-Bold.ttf";
-import open_sans_extraBold from "./fonts/OpenSans-ExtraBold.ttf";
-import open_sans_italic from "./fonts/OpenSans-Italic.ttf";
-import open_sans_light from "./fonts/OpenSans-Light.ttf";
-import open_sans_bold_italic from "./fonts/OpenSans-BoldItalic.ttf";
-import open_sans_extraBold_italic from "./fonts/OpenSans-ExtraBoldItalic.ttf";
-import open_sans_light_italic from "./fonts/OpenSans-LightItalic.ttf";
-import open_sans_semibold from "./fonts/OpenSans-Semibold.ttf";
-import open_sans_semibold_italic from "./fonts/OpenSans-SemiboldItalic.ttf";
+import open_sans from "/fonts/OpenSans-Regular.ttf";
+import open_sans_bold from "/fonts/OpenSans-Bold.ttf";
+import open_sans_extraBold from "/fonts/OpenSans-ExtraBold.ttf";
+import open_sans_italic from "/fonts/OpenSans-Italic.ttf";
+import open_sans_light from "/fonts/OpenSans-Light.ttf";
+import open_sans_bold_italic from "/fonts/OpenSans-BoldItalic.ttf";
+import open_sans_extraBold_italic from "/fonts/OpenSans-ExtraBoldItalic.ttf";
+import open_sans_light_italic from "/fonts/OpenSans-LightItalic.ttf";
+import open_sans_semibold from "/fonts/OpenSans-Semibold.ttf";
+import open_sans_semibold_italic from "/fonts/OpenSans-SemiboldItalic.ttf";
 
-export const tw = createTw({});
 
 Font.register({
   family: "Open sans",
@@ -35,4 +34,12 @@ Font.register({
       fontStyle: "italic",
     },
   ],
+});
+
+export const tw = createTw({
+  theme: {
+    fontFamily: {
+      sans: "Open sans",
+    },
+  }
 });

@@ -4,6 +4,7 @@ import Papers from "@/components/pageComponents/dashboard/papers";
 import { Separator } from "@/components/ui/separator";
 import { createFileRoute } from "@tanstack/react-router";
 
+
 const Home = () => {
   return (
     <div className="mx-20 my-10 flex flex-col gap-10 font-inter">

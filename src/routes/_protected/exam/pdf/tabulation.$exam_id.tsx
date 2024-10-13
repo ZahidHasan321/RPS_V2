@@ -39,7 +39,7 @@ function TabulationPage() {
   });
 
   const { data: courses, isLoading: isLoadingCourses } = useQuery({
-    queryKey: ["exam", exam_id],
+    queryKey: ["courses", exam_id],
     queryFn: () => getCourses(exam_id),
   });
 
@@ -142,26 +142,6 @@ function MyDocument({
 
   return PageComponent;
 }
-
-type studentDataType = {
-  student_id: number;
-  student_name: string;
-  hall_name: string;
-  session: string;
-  student_status: string;
-  courses: {
-    catm: number;
-    fem: number;
-    course_id: number;
-    credit: number;
-  }[];
-  improves?: {
-    catm: number;
-    fem: number;
-    course_id: number;
-    credit: number;
-  }[];
-};
 
 async function getExamCommittee(exam_id: string) {
   return secureAxios

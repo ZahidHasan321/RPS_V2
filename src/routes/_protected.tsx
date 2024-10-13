@@ -43,7 +43,7 @@ export default function LayoutComponent() {
       })
       .catch((error) => {
         toast("Unable to logout");
-        console.error(error);
+        console.log(error);
       });
   }
 

@@ -1,8 +1,11 @@
+import { getCourses } from "@/common_queries/courses";
 import { getExamDetails } from "@/common_queries/exam";
 import { getStudentData } from "@/common_queries/examResult";
+import GradesheetFooter from "@/components/pdf/gradesheet/footer";
+import GradesheetBody from "@/components/pdf/gradesheet/gradesheetBody";
 import GradesheetHeader from "@/components/pdf/gradesheet/header";
 import { tw } from "@/components/pdf/styles";
-import { ExamDetails, TabulationStudentDataType } from "@/type";
+import { CourseData, ExamDetails, TabulationStudentDataType } from "@/type";
 import { Document, Page, PDFViewer, Text } from "@react-pdf/renderer";
 import { useQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
@@ -24,18 +27,40 @@ function GradesheetPDF() {
     queryFn: () => getExamDetails(exam_id),
   });
 
-  if (isLoadingStudentData || isLoadingExamDetails) {
-    return <div>Loading...</div>;
+  const { data: courses, isLoading: isLoadingCourses } = useQuery({
+    queryKey: ["courses", exam_id],
+    queryFn: () => getCourses(exam_id),
+  });
+
+
+  if (isLoadingCourses || isLoadingStudentData || isLoadingExamDetails) {
+    return (
+      <PDFViewer style={tw("h-screen w-screen")}>
+        <Document>
+          <Page orientation="landscape" size="A4">
+            <Text>Loading...</Text>
+          </Page>
+        </Document>
+      </PDFViewer>
+    );
   }
 
-  if (!studentData || !examDetails) {
-    return <div>No Data</div>;
+  if (!studentData || !examDetails || !courses) {
+    return (
+      <PDFViewer style={tw("h-screen w-screen")}>
+        <Document>
+          <Page orientation="landscape" size="A4">
+            <Text>No Data</Text>
+          </Page>
+        </Document>
+      </PDFViewer>
+    );
   }
 
   return (
     <PDFViewer style={tw("h-screen w-screen")}>
       <Document>
-        <GradesheetPage studentData={studentData} examDetails={examDetails} />
+        <GradesheetPage courses={courses} studentData={studentData} examDetails={examDetails} />
       </Document>
     </PDFViewer>
   );
@@ -44,21 +69,24 @@ function GradesheetPDF() {
 function GradesheetPage({
   studentData,
   examDetails,
+  courses
 }: {
   studentData: TabulationStudentDataType;
   examDetails: ExamDetails;
+  courses: CourseData[]
 }): React.ReactNode[] {
   const pages: React.ReactNode[] = [];
-
-  studentData.map((student) => {
+  studentData.map((student, index) => {
     pages.push(
       <Page
         key={student.student_id}
         size="A4"
         orientation="landscape"
-        style={tw("flex flex-col p-10 text-xs")}
+        style={tw("flex flex-col p-20 text-xs gap-4 justify-between font-sans")}
       >
-        <GradesheetHeader />
+        <GradesheetHeader examDetails={examDetails} student={student} index={index} />
+        <GradesheetBody student={student} courses={courses} />
+        <GradesheetFooter />
       </Page>,
     );
   });

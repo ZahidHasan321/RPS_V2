@@ -261,9 +261,9 @@ export default function Body({
                       <Text>
                         {student.improves?.get(course.course_id)?.gpa
                           ? (
-                              (student.improves.get(course.course_id)?.gpa ??
-                                0) * course.credit
-                            ).toFixed(2)
+                            (student.improves.get(course.course_id)?.gpa ??
+                              0) * course.credit
+                          ).toFixed(2)
                           : " "}
                       </Text>
                     </VCell>
@@ -271,9 +271,9 @@ export default function Body({
                       <Text>
                         {student.courses?.get(course.course_id)?.gpa != null
                           ? (
-                              course.credit *
-                              (student.courses.get(course.course_id)?.gpa ?? 0)
-                            ).toFixed(2)
+                            course.credit *
+                            (student.courses.get(course.course_id)?.gpa ?? 0)
+                          ).toFixed(2)
                           : " "}
                       </Text>
                     </VCell>

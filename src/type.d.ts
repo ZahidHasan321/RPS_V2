@@ -182,7 +182,7 @@ export type TabulationStudentDataType = {
     {
       catm: number | null;
       fem: number | null;
-      credit: number | null;
+      credit: number;
       gpa: number | null;
       total: number | null;
     }
@@ -192,7 +192,7 @@ export type TabulationStudentDataType = {
     {
       catm: number | null;
       fem: number | null;
-      credit: number | null;
+      credit: number;
       gpa: number | null;
       total: number | null;
     }

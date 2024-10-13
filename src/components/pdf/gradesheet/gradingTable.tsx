@@ -20,25 +20,25 @@ export default function GradingTable({ classname }: { classname?: string }) {
   return (
     <Table className={cn(classname)}>
       <Row className="w-full">
-        <Cell className="w-3/5">
+        <Cell className="w-3/6">
           <Text style={tw("font-bold")}>Numerical Range</Text>
         </Cell>
-        <Cell className="w-1/5">
+        <Cell className="w-2/6">
           <Text style={tw("font-bold")}>Letter Grade</Text>
         </Cell>
-        <Cell className="w-1/5">
-          <Text style={tw("font-bold")}>Grade Point</Text>
+        <Cell className="w-1/6">
+          <Text style={tw("font-bold text-xs")}>Grade Point</Text>
         </Cell>
       </Row>
       {tableData.map(({ MO, LG, GP }, idx) => (
         <Row className="w-full" key={idx}>
-          <Cell className="w-3/5">
+          <Cell className="w-3/6">
             <Text>{MO}</Text>
           </Cell>
-          <Cell className="w-1/5">
+          <Cell className="w-2/6">
             <Text>{LG}</Text>
           </Cell>
-          <Cell className="w-1/5">
+          <Cell className="w-1/6">
             <Text>{typeof GP === "number" ? GP.toFixed(2) : GP}</Text>
           </Cell>
         </Row>
