@@ -53,7 +53,7 @@ export default function GradesheetBody({ student, courses }: { student: Tabulati
           courses.map((course) => (
             <Row key={course.course_code} className="w-full">
               <Cell className="w-[10%]"><Text style={tw("font-bold")}>{course.course_code}</Text></Cell>
-              <Cell className="w-[50%]"><Text>{course.course_title}</Text></Cell>
+              <Cell className="w-[50%]"><Text style={tw("text-left pl-2")}>{course.course_title}</Text></Cell>
               <Cell className="w-[10%]"><Text style={tw("font-bold")}>{course.credit}</Text></Cell>
               <Cell className="w-[10%]"><Text style={tw("font-bold")}>{getLetterGrade(student.student_status == "Improvement" ? student.improves?.get(course.course_id)?.total : student.courses.get(course.course_id)?.total, course.credit)}</Text></Cell>
               <Cell className="w-[10%]"><Text style={tw("font-bold")}>{student.student_status == "Improvement" ? student.improves?.get(course.course_id)?.gpa : student.courses.get(course.course_id)?.gpa}</Text></Cell>
@@ -70,7 +70,7 @@ export default function GradesheetBody({ student, courses }: { student: Tabulati
         </View>
 
         <View style={tw("flex flex-row gap-6")}>
-          <Text style={tw("font-bold")}>Total Credit Points: {TCP}</Text>
+          <Text >Total Credit Points: {TCP}</Text>
           <Text>Grade Point Average: {(TCP / TCE).toFixed(2)}</Text>
           <Text style={tw("font-bold")}> Result: {TCP / TCE > 2.20 ? "P" : "F"}</Text>
         </View>

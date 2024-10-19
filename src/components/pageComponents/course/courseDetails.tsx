@@ -71,45 +71,10 @@ const CourseDetalis = ({
           <span className="font-bold mr-1">Course Type:</span>
           {course?.course_type}
         </p>
-        {course.course_type === "Theory" ? (
-          <>
-            <p>
-              {" "}
-              <span className="font-bold mr-1">First Examiner:</span>{" "}
-              {course.set_A_submitted ? (
-                <span className="text-green-500">Submitted</span>
-              ) : (
-                <span className="text-red-500">Pending</span>
-              )}
-            </p>
-            <p>
-              {" "}
-              <span className="font-bold mr-1">Second Examiner:</span>
-              {course.set_B_submitted ? (
-                <span className="text-green-500">Submitted</span>
-              ) : (
-                <span className="text-red-500">Pending</span>
-              )}
-            </p>
-          </>
-        ) : (
-          <p>
-            <span className="font-bold mr-1">Examiner Submitted:</span>
-            {course?.set_A_submitted ? (
-              <span className="text-green-500">Submitted</span>
-            ) : (
-              <span className="text-red-500">Pending</span>
-            )}
-          </p>
-        )}
-        <p>
-          <span className="font-bold mr-1">Catm status:</span>
-          {course.is_catm_submitted ? (
-            <span className="text-green-500">Submitted</span>
-          ) : (
-            <span className="text-red-500">Pending</span>
-          )}
-        </p>
+        {/* <p> */}
+        {/*   <span className="font-bold mr-1">No of examiners:</span> */}
+        {/*   {course?.examiner_no} */}
+        {/* </p> */}
         <p>
           <span className="font-bold mr-1">Result status:</span>
           <span className={color[course?.result_status]}>

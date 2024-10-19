@@ -18,7 +18,6 @@ const DecodeTab = ({
     queryFn: () => getDecodeList(exam_id, course_id),
   });
 
-  console.log(course_type);
   const columns: ColumnDef<StudentDecodeList>[] = [
     {
       header: "Student ID",

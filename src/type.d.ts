@@ -56,8 +56,8 @@ export type CourseData = {
   program_abbr: string;
   department_abbr: string;
   department_name: string;
-  set_A_submitted: number;
-  set_B_submitted: number;
+  examiner_no: number;
+  examiner_submitted: number;
 };
 
 export type TeacherDataType = {
